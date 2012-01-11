@@ -10,21 +10,30 @@ namespace Inori\Banklink\iPizza;
  */
 final class Fields
 {
+    // Order data
     const SERVICE_ID        = 'VK_SERVICE';
-    const VERSION           = 'VK_VERSION';
-    const RECIEVER_ID       = 'VK_SND_ID';
-    const ORDER_ID          = 'VK_STAMP';
     const SUM               = 'VK_AMOUNT';
-    const CURRENCY          = 'VK_CURR';
-    const RECIEVER_BANK_ACC = 'VK_ACC';
-    const RECIEVER_NAME     = 'VK_NAME';
+    const ORDER_ID          = 'VK_STAMP';
     const ORDER_REFERENCE   = 'VK_REF';
+    const CURRENCY          = 'VK_CURR';
     const DESCRIPTION       = 'VK_MSG';
-    const CHARSET           = 'VK_CHARSET';
-    const CHECKSUM          = 'VK_MAC';
+    const USER_LANG         = 'VK_LANG';
+
+    // Seller (site owner) info
+    const SELLER_ID         = 'VK_SND_ID';
+    const SELLER_NAME       = 'VK_NAME';
+    const SELLER_BANK_ACC   = 'VK_ACC';
+
+    // Callback URLs
     const SUCCESS_URL       = 'VK_RETURN';
     const CANCEL_URL        = 'VK_CANCEL';
-    const USER_LANG         = 'VK_LANG';
+
+    // Request configs
+    // This data will most likely be static
+    const PROTOCOL_VERSION  = 'VK_VERSION';
+    const CHARSET           = 'VK_CHARSET';
+
+    const CHECKSUM          = 'VK_MAC';
 
     /**
      * Can't instantiate this class
