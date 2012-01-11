@@ -10,6 +10,13 @@ namespace Inori\Banklink;
  */
 abstract class Banklink
 {
+    protected $protocol;
+
+//    public function __construct(Protocol $protocol)
+//    {
+//        $this->protocol = $protocol;
+//    }
+
     /**
      *
      * @param array $data Data recieved with a callback request

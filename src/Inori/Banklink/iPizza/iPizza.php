@@ -2,7 +2,7 @@
 
 namespace Inori\Banklink\iPizza;
 
-use Inori\Banklink\Banklink;
+use Inori\Banklink\Protocol;
 
 /**
  * This class implements iPizza protocol support
@@ -10,7 +10,7 @@ use Inori\Banklink\Banklink;
  * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
  * @since  11.01.2012
  */
-abstract class Protocol
+class iPizza implements Protocol
 {
     protected $privateKeyLocation;
     protected $publicKeyLocation;
