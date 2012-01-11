@@ -10,7 +10,7 @@ use Inori\Banklink\Banklink;
  * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
  * @since  11.01.2012
  */
-abstract class iPizza extends Banklink
+abstract class Protocol
 {
     protected $privateKeyLocation;
     protected $publicKeyLocation;
