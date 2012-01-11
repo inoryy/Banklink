@@ -13,7 +13,7 @@
 >
     <testsuites>
         <testsuite name="Banklink Test Suite">
-            <directory>./tests/Inori/</directory>
+            <directory>./tests/Inori/Test/</directory>
         </testsuite>
     </testsuites>
 
