@@ -1,4 +1,4 @@
-Banklink implementations for connecting with Estonian Internet Banks.
+Banklink implementations for Estonian Internet Banks services.
 ==============
 
 Swedbank, SEB and Sampo all share one protocol - iPizza.
