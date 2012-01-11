@@ -1,4 +1,5 @@
-iPizza for PHP
+Banklink implementations for connecting with Estonian Internet Banks.
 ==============
 
-iPizza is a standard authentication protocol that is used in communication services with Estonian Internet Banks.
+Swedbank, SEB and Sampo all share one protocol - iPizza.
+Nordea uses e-payment.
