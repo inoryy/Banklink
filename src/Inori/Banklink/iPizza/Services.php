@@ -1,6 +1,6 @@
 <?php
 
-namespace iPizza;
+namespace Inori\Banklink\iPizza;
 
 /**
  * List of all services available via iPizza
@@ -14,7 +14,7 @@ final class Services
     const PAYMENT_REQUEST      = '1001';
     const AUTHENTICATE         = '3001';
 
-    // Reponses
+    // Responses
     const PAYMENT_SUCCESS      = '1101';
     const PAYMENT_CANCEL       = '1901';
     const PAYMENT_ERROR        = '1902';
@@ -26,5 +26,4 @@ final class Services
     {
 
     }
-
 }
