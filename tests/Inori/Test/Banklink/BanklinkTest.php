@@ -19,6 +19,9 @@ class BanklinkTest extends \PHPUnit_Framework_TestCase
         $this->object = $stub;
     }
 
+    /**
+     * @covers Inori\Banklink\Banklink::generateOrderReference
+     */
     public function testGenerateOrderReference()
     {
         $orderId  = 3425235672;
