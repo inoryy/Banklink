@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Banklink-ET-php" default="build" basedir=".">
+    <property name="source" value="src"/>
+    <property name="basedir" value="." />
+
+    <target name="clean"
+         description="Clean up and create artifact directories">
+        <delete dir="${basedir}/build/api"/>
+        <delete dir="${basedir}/build/code-browser"/>
+        <delete dir="${basedir}/build/coverage"/>
+        <delete dir="${basedir}/build/logs"/>
+        <delete dir="${basedir}/build/pdepend"/>
+        <delete dir="${basedir}/generatedJUnitFiles"/>
+
+        <mkdir dir="${basedir}/build/api"/>
+        <mkdir dir="${basedir}/build/code-browser"/>
+        <mkdir dir="${basedir}/build/coverage"/>
+        <mkdir dir="${basedir}/build/logs"/>
+        <mkdir dir="${basedir}/build/pdepend"/>
+
+        <touch file="${basedir}/build/logs/checkstyle.xml" />
+    </target>
+
+    <target name="phpunit"
+         description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
+        <exec command="phpunit --log-junit build/logs/junit.xml --coverage-clover build/logs/clover.xml"/>
+    </target>
+
+    <target name="pdepend"
+         description="Generate jdepend.xml and software metrics charts using PHP_Depend">
+        <exec command="pdepend --jdepend-xml=${basedir}/build/logs/jdepend.xml --jdepend-chart=${basedir}/build/pdepend/dependencies.svg --overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg ${source}" />
+    </target>
+
+    <target name="phpmd"
+         description="Generate pmd.xml using PHPMD">
+        <exec command="phpmd ${source} xml codesize,unusedcode,naming,design --reportfile ${basedir}/build/logs/pmd.xml" />
+    </target>
+
+    <target name="phpcpd"
+         description="Generate pmd-cpd.xml using PHPCPD">
+        <exec command="phpcpd --log-pmd ${basedir}/build/logs/pmd-cpd.xml ${source}" />
+    </target>
+
+    <target name="phploc"
+         description="Generate phploc.csv">
+        <exec command="phploc --log-csv ${basedir}/build/logs/phploc.csv ${source}" />
+    </target>
+
+    <target name="phpcs"
+         description="Generate checkstyle.xml using PHP_CodeSniffer">
+        <exec command="phpcs --report=checkstyle --report-file=${basedir}/build/logs/checkstyle.xml ${source}" />
+    </target>
+
+    <target name="phpdoc"
+         description="Generate API documentation using PHPDocumentor">
+        <exec command="phpdoc --directory ${source} --target ${basedir}/build/api" />
+    </target>
+
+    <target name="phpcb"
+         description="Aggregate tool output with PHP_CodeBrowser">
+        <exec command="phpcb --log ${basedir}/build/logs --source ${source} --output ${basedir}/build/code-browser" />
+    </target>
+
+    <target name="build" depends="clean,phpunit,phpcb,phpdoc,phpcs,phploc,phpcpd,phpmd,pdepend"/>
+</project>

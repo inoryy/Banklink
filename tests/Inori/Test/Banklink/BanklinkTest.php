@@ -3,8 +3,6 @@
 namespace Inori\Test\Banklink;
 
 /**
- *
- *
  * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
  * @since  11.01.2012
  */

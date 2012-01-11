@@ -19,7 +19,7 @@
 
     <filter>
         <whitelist>
-            <directory>./src/Inori/</directory>
+            <directory>./tests/</directory>
         </whitelist>
     </filter>
 </phpunit>
