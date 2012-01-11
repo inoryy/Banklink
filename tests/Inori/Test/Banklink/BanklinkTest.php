@@ -20,12 +20,27 @@ class BanklinkTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test for normal checksum
+     *
      * @covers Inori\Banklink\Banklink::generateOrderReference
      */
     public function testGenerateOrderReference()
     {
         $orderId  = 3425235672;
         $orderRef = 34252356727;
+
+        $this->assertEquals($orderRef, $this->object->generateOrderReference($orderId));
+    }
+
+    /**
+     * Test for 0 checksum
+     *
+     * @covers Inori\Banklink\Banklink::generateOrderReference
+     */
+    public function testGenerateOrderReference0Checksum()
+    {
+        $orderId  = 1010;
+        $orderRef = 10100;
 
         $this->assertEquals($orderRef, $this->object->generateOrderReference($orderId));
     }
