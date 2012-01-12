@@ -32,35 +32,37 @@ abstract class Banklink
      *
      * For more info see http://www.pangaliit.ee/en/settlements-and-standards/reference-number-of-the-invoice
      *
-     * @param integer $orderId
+     * @param string|integer $orderId Will be used as a string but can be int too since php doesn't have strong types
+     *
+     * @throws InvalidArgumentException If order id is too long or short
      *
      * @return integer
      */
     public function generateOrderReference($orderId)
     {
-        $rsMultiplier = array(7, 3, 1);
-        $ixCurrentMultiplier = 0;
+        $len = strlen($orderId);
 
-        for ($i = strlen($orderId) - 1; $i >= 0; $i--) {
-            $rsProduct[$i] = substr($orderId, $i, 1) * $rsMultiplier[$ixCurrentMultiplier];
-            if ($ixCurrentMultiplier == 2) {
-                $ixCurrentMultiplier = 0;
+        if (1 > $len || 19 < $len) {
+            throw new \InvalidArgumentException('OrderId must be between 1 and 19 digits');
+        }
+
+        $multiplier = array(7, 3, 1);
+        $current = 0;
+        $sumProduct = 0;
+
+        for ($i = $len - 1; $i >= 0; $i--) {
+            $sumProduct += substr($orderId, $i, 1) * $multiplier[$current];
+
+            if ($current == 2) {
+                $current = 0;
             } else {
-                $ixCurrentMultiplier++;
+                $current++;
             }
         }
 
-        $sumProduct = 0;
-        foreach ($rsProduct as $product) {
-            $sumProduct += $product;
-        }
+        $rounded = ceil($sumProduct/10) * 10;
+        $checkSum = $rounded - $sumProduct;
 
-        if ($sumProduct % 10 == 0) {
-            $ixReference = 0;
-        } else {
-            $ixReference = 10 - ($sumProduct % 10);
-        }
-
-        return $orderId . $ixReference;
+        return $orderId . $checkSum;
     }
 }
