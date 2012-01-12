@@ -44,4 +44,17 @@ class BanklinkTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($orderRef, $this->object->generateOrderReference($orderId));
     }
+
+    /**
+     * Test for too long/too short id
+     *
+     * @expectedException InvalidArgumentException
+     *
+     * @covers Inori\Banklink\Banklink::generateOrderReference
+     */
+    public function testGenerateOrderReferenceValidation()
+    {
+        $this->object->generateOrderReference('');
+        $this->object->generateOrderReference(12345678901234567890);
+    }
 }
