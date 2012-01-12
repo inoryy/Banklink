@@ -26,7 +26,7 @@ final class Fields
 
     // Callback URLs
     const SUCCESS_URL       = 'VK_RETURN';
-    const CANCEL_URL        = 'VK_CANCEL';
+    const FAILURE_URL       = 'VK_CANCEL';
 
     // Request configs
     // This data will most likely be static

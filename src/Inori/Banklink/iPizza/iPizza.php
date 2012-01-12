@@ -10,24 +10,30 @@ use Inori\Banklink\Protocol;
  * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
  * @since  11.01.2012
  */
-class iPizza implements Protocol
+class iPizza extends Protocol
 {
-    protected $privateKeyLocation;
-    protected $publicKeyLocation;
+    private $privateKeyLocation;
+    private $publicKeyLocation;
 
-    protected $sellerId;
-    protected $sellerName;
-    protected $sellerAccountNumber;
+    private $sellerId;
+    private $sellerName;
+    private $sellerAccountNumber;
 
-    protected $protocolVersion = '008';
-    protected $charset         = 'UTF-8';
+    private $successUrl;
+    private $failureUrl;
+
+    private $protocolVersion = '008';
+    private $charset         = 'UTF-8';
+
 
 
     /**
      * initialize basic data that will be used for all issued service requests
      */
-    public function __construct($sellerId, $sellerName, $sellerAccNum, $privKeyLoc, $pubKeyLoc)
+    public function __construct($sellerId, $sellerName, $sellerAccNum, $privKeyLoc, $pubKeyLoc, $successUrl, $failureUrl)
     {
+        $this->successUrl          = $successUrl;
+        $this->failureUrl          = $failureUrl;
         $this->sellerId            = $sellerId;
         $this->sellerName          = $sellerName;
         $this->sellerAccountNumber = $sellerAccNum;
@@ -35,13 +41,21 @@ class iPizza implements Protocol
         $this->privateKeyLocation  = $privKeyLoc;
     }
 
-    public function prepareRequest()
+    /**
+     * @see Protocol::prepareRequest()
+     */
+    public function prepareRequest($serviceId, $orderId, $message, $sum, $language, $currency = 'EUR')
     {
 
     }
 
     public function validateData()
     {
-        
+
+    }
+
+    protected function generateChecksum()
+    {
+
     }
 }
