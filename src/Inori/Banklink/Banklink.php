@@ -32,32 +32,29 @@ abstract class Banklink
      *
      * For more info see http://www.pangaliit.ee/en/settlements-and-standards/reference-number-of-the-invoice
      *
-     * @param string|integer $orderId Will be used as a string but can be int too since php doesn't have strong types
+     * @param string|integer $orderId Order id
      *
      * @throws InvalidArgumentException If order id is too long or short
      *
-     * @return integer
+     * @return string
      */
     public function generateOrderReference($orderId)
     {
+        $orderId = (string)$orderId;
         $len = strlen($orderId);
 
         if (1 > $len || 19 < $len) {
             throw new \InvalidArgumentException('OrderId must be between 1 and 19 digits');
         }
 
-        $multiplier = array(7, 3, 1);
         $current = 0;
+        $multiplier = array(7, 3, 1);
         $sumProduct = 0;
 
         for ($i = $len - 1; $i >= 0; $i--) {
-            $sumProduct += substr($orderId, $i, 1) * $multiplier[$current];
+            $sumProduct += (int)$orderId[$i] * $multiplier[$current];
 
-            if ($current == 2) {
-                $current = 0;
-            } else {
-                $current++;
-            }
+            $current = $current < 2 ? ++$current : 0;
         }
 
         $rounded = ceil($sumProduct/10) * 10;
