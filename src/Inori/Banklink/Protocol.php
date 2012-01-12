@@ -10,5 +10,7 @@ namespace Inori\Banklink;
  */
 interface Protocol
 {
+    function prepareRequest();
 
+    function validateData();
 }

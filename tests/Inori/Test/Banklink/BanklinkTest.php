@@ -12,7 +12,8 @@ class BanklinkTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $stub = $this->getMockForAbstractClass('Inori\Banklink\Banklink');
+        // really long and weird way to disable original constructor for mocked abstract class...
+        $stub = $this->getMockForAbstractClass('Inori\Banklink\Banklink', array(), '', false);
         $stub->expects($this->any())
              ->method('generateOrderReference');
 

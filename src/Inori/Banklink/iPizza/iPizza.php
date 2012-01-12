@@ -34,4 +34,14 @@ class iPizza implements Protocol
         $this->publicKeyLocation   = $pubKeyLoc;
         $this->privateKeyLocation  = $privKeyLoc;
     }
+
+    public function prepareRequest()
+    {
+
+    }
+
+    public function validateData()
+    {
+        
+    }
 }

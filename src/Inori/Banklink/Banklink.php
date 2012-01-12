@@ -12,10 +12,10 @@ abstract class Banklink
 {
     protected $protocol;
 
-//    public function __construct(Protocol $protocol)
-//    {
-//        $this->protocol = $protocol;
-//    }
+    public function __construct(Protocol $protocol)
+    {
+        $this->protocol = $protocol;
+    }
 
     /**
      *
@@ -32,7 +32,7 @@ abstract class Banklink
      *
      * For more info see http://www.pangaliit.ee/en/settlements-and-standards/reference-number-of-the-invoice
      *
-     * @param string|integer $orderId Order id
+     * @param integer $orderId Order id
      *
      * @throws InvalidArgumentException If order id is too long or short
      *
