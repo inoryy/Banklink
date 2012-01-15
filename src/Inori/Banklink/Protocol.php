@@ -22,7 +22,7 @@ abstract class Protocol
      */
     abstract public function prepareRequest($serviceId, $orderId, $message, $sum, $language, $currency = 'EUR');
 
-    abstract public function validateData();
+    abstract protected function validateData();
 
     abstract protected function generateChecksum();
 

@@ -49,7 +49,7 @@ class iPizza extends Protocol
 
     }
 
-    public function validateData()
+    protected function validateData()
     {
 
     }
