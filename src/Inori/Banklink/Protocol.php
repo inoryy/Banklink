@@ -28,11 +28,6 @@ abstract class Protocol
     abstract protected function getSignature($data, $key);
 
     /**
-     * @param string $serviceId
-     */
-    abstract protected function getServiceFields($serviceId);
-
-    /**
      * Generates order reference using 7-3-1 algorithm
      *
      * For more info see http://www.pangaliit.ee/en/settlements-and-standards/reference-number-of-the-invoice

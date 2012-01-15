@@ -12,8 +12,8 @@ use Inori\Banklink\Protocol;
  */
 class iPizza extends Protocol
 {
-    private $privateKey;
     private $publicKey;
+    private $privateKey;
 
     private $sellerId;
     private $sellerName;
@@ -82,7 +82,7 @@ class iPizza extends Protocol
         openssl_free_key($keyId);
 
         $result = base64_encode($signature);
-        
+
         return $result;
     }
 
@@ -94,48 +94,12 @@ class iPizza extends Protocol
      */
     protected function generateChecksum(array $data)
     {
-        if (!isset($data[Fields::SERVICE_ID])) {
-            throw new \InvalidArgumentException('Cannot generate checksum without service id');
-        }
-
         $checksum = '';
-        $fields = $this->getServiceFields($data[Fields::SERVICE_ID]);
 
-        foreach ($fields as $field) {
-            if (!isset($data[$field])) {
-                throw new \InvalidArgumentException(sprintf('%s field is required for %s service', $field, $data[Fields::SERVICE_ID]));
-            }
-
-            $checksum .= sprintf('000%d%s', strlen($data[$field]), $data[$field]);
+        foreach ($data as $field => $content) {
+            $checksum .= sprintf('000%d%s', strlen($content), $content);
         }
 
         return $checksum;
-    }
-
-    /**
-     * @param string $serviceId
-     */
-    protected function getServiceFields($serviceId)
-    {
-        if (Services::PAYMENT_REQUEST === $serviceId) {
-            return array(
-                Fields::SERVICE_ID,
-                Fields::PROTOCOL_VERSION,
-                Fields::SELLER_ID,
-                Fields::ORDER_ID,
-                Fields::SUM,
-                Fields::CURRENCY,
-                Fields::SELLER_BANK_ACC,
-                Fields::SELLER_NAME,
-                Fields::ORDER_REFERENCE,
-                Fields::DESCRIPTION,
-                Fields::CHARSET,
-                Fields::SUCCESS_URL,
-                Fields::FAILURE_URL,
-                Fields::USER_LANG
-            );
-        } else {
-            throw new \InvalidArgumentException('Unsupported service id: '.$serviceId);
-        }
     }
 }
