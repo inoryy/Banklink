@@ -33,7 +33,7 @@ final class Fields
     const PROTOCOL_VERSION  = 'VK_VERSION';
     const CHARSET           = 'VK_CHARSET';
 
-    const CHECKSUM          = 'VK_MAC';
+    const SIGNATURE         = 'VK_MAC';
 
     /**
      * Can't instantiate this class

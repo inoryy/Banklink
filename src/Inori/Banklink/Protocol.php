@@ -11,20 +11,26 @@ namespace Inori\Banklink;
 abstract class Protocol
 {
     /**
+     * Prepares array of data for a payment request (Service id: 1001)
      *
-     *
-     * @param string  $serviceId
      * @param integer $orderId
      * @param string  $message
      * @param float   $sum
      * @param string  $language
      * @param string  $currency
+     *
+     * @return array
      */
-    abstract public function prepareRequest($serviceId, $orderId, $message, $sum, $language, $currency = 'EUR');
+    abstract public function preparePaymentRequest($orderId, $message, $sum, $language, $currency = 'EUR');
 
-    abstract protected function validateData();
+    abstract protected function generateChecksum(array $data);
 
-    abstract protected function generateChecksum();
+    abstract protected function getSignature($data, $key);
+
+    /**
+     * @param string $serviceId
+     */
+    abstract protected function getServiceFields($serviceId);
 
     /**
      * Generates order reference using 7-3-1 algorithm

@@ -26,4 +26,5 @@ class SEB extends Banklink
         return false;
     }
 
+    
 }
