@@ -7,7 +7,8 @@ use Inori\Banklink\iPizza\iPizza;
 /**
  * iPizza protocol test
  *
- * Private/public keys in use are SEB test keys
+ * Test data is taken from SEB Test pack: http://seb.ee/files/upos/manused.zip
+ * Not the best way to test abstract protocol, but only real-world data I can use for testing
  *
  * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
  * @since  15.01.2012
@@ -19,9 +20,9 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->object = new iPizza(
-            '123456',
-            'Test Testov',
-            '654321',
+            'testvpos',
+            'Keegi',
+            '10002050618003',
             __DIR__.'/Fixture/private_key.pem',
             __DIR__.'/Fixture/public_key.pem',
             'http://www.google.com',
@@ -34,19 +35,19 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
         $expected = array(
           'VK_SERVICE' => '1001',
           'VK_VERSION' => '008',
-          'VK_SND_ID'  => '123456',
+          'VK_SND_ID'  => 'testvpos',
           'VK_STAMP'   => '1',
           'VK_AMOUNT'  => '100',
           'VK_CURR'    => 'EUR',
-          'VK_ACC'     => '654321',
-          'VK_NAME'    => 'Test Testov',
+          'VK_ACC'     => '10002050618003',
+          'VK_NAME'    => 'Keegi',
           'VK_REF'     => '13',
           'VK_MSG'     => 'Test payment',
           'VK_CHARSET' => 'UTF-8',
           'VK_RETURN'  => 'http://www.google.com',
           'VK_CANCEL'  => 'http://www.google.com',
           'VK_LANG'    => 'ENG',
-          'VK_MAC'     => 'J9S5amcEfXoItiM3GA5rSDksYlY5wEshgD1MirRcWmu77F1e4zx+1EndSjdgiEKNdHkncyFXH77WWhEVNaNm/wA0XjIs/04Oo5G+CprDWNR1H7iYjgLjVGsFI3fyxiYNIocSO0Dr0CG9SGFq9pxj7zHo+z1X7+38ekZRhbNippM='
+          'VK_MAC'     => 'Q1UMrfV8COxm8tyyjBTxBgC5lcfc7bkqM4l2JRVk5aKFq/F0b8kGDyEls31pXbmdjdRGBO6z9HHzfF86GJzkagP5CmRVTK/crOdnZD/cECR9wNmxQ1i5SpNeLOILl+tZK4tQTGxY2Sl8tDd38RUMKe/F1J/39HrKDJLufCuGSXs='
         );
 
         $request = $this->object->preparePaymentRequest('1', 'Test payment', '100', 'ENG', 'EUR');

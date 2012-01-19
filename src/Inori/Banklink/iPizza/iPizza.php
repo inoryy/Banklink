@@ -96,10 +96,38 @@ class iPizza extends Protocol
     {
         $checksum = '';
 
-        foreach ($data as $field => $content) {
-            $checksum .= sprintf('000%d%s', strlen($content), $content);
+        foreach ($this->getServiceFields($data[Fields::SERVICE_ID]) as $fieldName) {
+            if (!isset($data[$fieldName])) {
+                throw new \InvalidArgumentException(sprintf('Cannot generate checksum without %s field', $fieldName));
+            }
+            $content = $data[$fieldName];
+            
+            $checksum .= str_pad(strlen($content), 3, '0', STR_PAD_LEFT) . $content;
         }
 
         return $checksum;
+    }
+
+    /**
+     * @param string $serviceId
+     */
+    protected function getServiceFields($serviceId)
+    {
+        if (Services::PAYMENT_REQUEST === $serviceId) {
+            return array(
+                Fields::SERVICE_ID,
+                Fields::PROTOCOL_VERSION,
+                Fields::SELLER_ID,
+                Fields::ORDER_ID,
+                Fields::SUM,
+                Fields::CURRENCY,
+                Fields::SELLER_BANK_ACC,
+                Fields::SELLER_NAME,
+                Fields::ORDER_REFERENCE,
+                Fields::DESCRIPTION
+            );
+        }
+
+        throw new \InvalidArgumentException('Unsupported service id: '.$serviceId);
     }
 }
