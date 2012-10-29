@@ -68,6 +68,14 @@ class iPizza extends Protocol
     }
 
     /**
+     * @see Protocol::handlePaymentResponse()
+     */
+    public function verifyPaymentResponse(array $data)
+    {
+        return false;
+    }
+
+    /**
      *
      * @param type $data
      * @param type $key
@@ -94,14 +102,15 @@ class iPizza extends Protocol
      */
     protected function generateChecksum(array $data)
     {
+        $id = $data[Fields::SERVICE_ID];
         $checksum = '';
 
-        foreach ($this->getServiceFields($data[Fields::SERVICE_ID]) as $fieldName) {
+        foreach ($this->getServiceFields($id) as $fieldName) {
             if (!isset($data[$fieldName])) {
-                throw new \InvalidArgumentException(sprintf('Cannot generate checksum without %s field', $fieldName));
+                throw new \InvalidArgumentException(sprintf('Cannot generate %s service checksum without %s field', $id, $fieldName));
             }
             $content = $data[$fieldName];
-            
+
             $checksum .= str_pad(strlen($content), 3, '0', STR_PAD_LEFT) . $content;
         }
 

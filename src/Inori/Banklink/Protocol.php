@@ -23,6 +23,15 @@ abstract class Protocol
      */
     abstract public function preparePaymentRequest($orderId, $message, $sum, $language, $currency = 'EUR');
 
+    /**
+     * Data should be filtered prior to calling this method
+     *
+     * @param array $data Response data
+     *
+     * @return array
+     */
+    abstract public function verifyPaymentResponse(array $data);
+
     abstract protected function generateChecksum(array $data);
 
     abstract protected function getSignature($data, $key);

@@ -54,4 +54,25 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $request);
     }
+
+    public function testVerifyPaymentResponse()
+    {
+        $response = array(
+            'VK_SERVICE'  => '1001',
+            'VK_VERSION'  => '008',
+            'VK_SND_ID'   => 'testvpos',
+            'VK_REC_ID'   => 'Test',
+            'VK_STAMP'    => '1',
+            'VK_T_NO'     => '',
+            'VK_AMOUNT'   => '100',
+            'VK_CURR'     => 'EUR',
+            'VK_REC_ACC'  => '',
+            'VK_REC_NAME' => '',
+            'VK_SND_ACC'  => '',
+            'VK_SND_NAME' => '',
+            'VK_REF'      => '',
+            'VK_MSG'      => '',
+            'VK_T_DATE'   => ''
+        );
+    }
 }
