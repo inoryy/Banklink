@@ -21,13 +21,14 @@ abstract class Banklink
         $this->protocol = $protocol;
     }
 
+    public function preparePaymentRequest($orderId, $message, $sum, $language, $currency = 'EUR')
+    {
+        return $this->protocol->preparePaymentRequest($orderId, $message, $sum, $language, $currency);
+    }
+
     /**
      *
      * @param array $data Data recieved with a callback request
      */
     abstract public function handleCallback(array $data);
-
-    abstract public function prepareRequestArray();
-
-    abstract public function prepareRequestHtmlForm();
 }

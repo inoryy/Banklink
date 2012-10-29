@@ -15,11 +15,11 @@ use Inori\Banklink\iPizza\iPizza;
  */
 class iPizzaTest extends \PHPUnit_Framework_TestCase
 {
-    private $object;
+    private $iPizza;
 
     public function setUp()
     {
-        $this->object = new iPizza(
+        $this->iPizza = new iPizza(
             'testvpos',
             'Keegi',
             '10002050618003',
@@ -50,7 +50,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
           'VK_MAC'     => 'Q1UMrfV8COxm8tyyjBTxBgC5lcfc7bkqM4l2JRVk5aKFq/F0b8kGDyEls31pXbmdjdRGBO6z9HHzfF86GJzkagP5CmRVTK/crOdnZD/cECR9wNmxQ1i5SpNeLOILl+tZK4tQTGxY2Sl8tDd38RUMKe/F1J/39HrKDJLufCuGSXs='
         );
 
-        $request = $this->object->preparePaymentRequest('1', 'Test payment', '100', 'ENG', 'EUR');
+        $request = $this->iPizza->preparePaymentRequest('1', 'Test payment', '100', 'ENG', 'EUR');
 
         $this->assertEquals($expected, $request);
     }
