@@ -62,7 +62,7 @@ class iPizza extends Protocol
         $data[Fields::FAILURE_URL]      = $this->failureUrl;
         $data[Fields::USER_LANG]        = $language;
 
-        $data[Fields::SIGNATURE]        = $this->getSignature($data, $this->privateKey);
+        $data[Fields::SIGNATURE]        = $this->getRequestSignature($data, $this->privateKey);
 
         return $data;
     }
@@ -70,9 +70,15 @@ class iPizza extends Protocol
     /**
      * @see Protocol::handlePaymentResponse()
      */
-    public function verifyPaymentResponse(array $data)
+    public function verifyPaymentResponse(array $response)
     {
-        return false;
+        $checksum = $this->generateChecksum($response);
+
+        $keyId = openssl_pkey_get_public($this->publicKey);
+        $result = openssl_verify($checksum, base64_decode($response[Fields::SIGNATURE]), $keyId);
+        openssl_free_key($keyId);
+
+        return $result;
     }
 
     /**
@@ -81,7 +87,7 @@ class iPizza extends Protocol
      * @param type $key
      * @return type
      */
-    protected function getSignature($data, $key)
+    protected function getRequestSignature($data, $key)
     {
         $checksum = $this->generateChecksum($data);
 
@@ -103,14 +109,14 @@ class iPizza extends Protocol
     protected function generateChecksum(array $data)
     {
         $id = $data[Fields::SERVICE_ID];
-        $checksum = '';
 
+        $checksum = '';
         foreach ($this->getServiceFields($id) as $fieldName) {
             if (!isset($data[$fieldName])) {
                 throw new \InvalidArgumentException(sprintf('Cannot generate %s service checksum without %s field', $id, $fieldName));
             }
-            $content = $data[$fieldName];
 
+            $content = $data[$fieldName];
             $checksum .= str_pad(strlen($content), 3, '0', STR_PAD_LEFT) . $content;
         }
 
@@ -122,21 +128,40 @@ class iPizza extends Protocol
      */
     protected function getServiceFields($serviceId)
     {
-        if (Services::PAYMENT_REQUEST === $serviceId) {
-            return array(
-                Fields::SERVICE_ID,
-                Fields::PROTOCOL_VERSION,
-                Fields::SELLER_ID,
-                Fields::ORDER_ID,
-                Fields::SUM,
-                Fields::CURRENCY,
-                Fields::SELLER_BANK_ACC,
-                Fields::SELLER_NAME,
-                Fields::ORDER_REFERENCE,
-                Fields::DESCRIPTION
-            );
+        switch ($serviceId) {
+            case Services::PAYMENT_REQUEST:
+                return array(
+                    Fields::SERVICE_ID,
+                    Fields::PROTOCOL_VERSION,
+                    Fields::SELLER_ID,
+                    Fields::ORDER_ID,
+                    Fields::SUM,
+                    Fields::CURRENCY,
+                    Fields::SELLER_BANK_ACC,
+                    Fields::SELLER_NAME,
+                    Fields::ORDER_REFERENCE,
+                    Fields::DESCRIPTION
+                );
+            case Services::PAYMENT_SUCCESS:
+                return array(
+                    Fields::SERVICE_ID,
+                    Fields::PROTOCOL_VERSION,
+                    Fields::SELLER_ID,
+                    Fields::SELLER_ID_RESPONSE,
+                    Fields::ORDER_ID,
+                    Fields::TRANSACTION_ID,
+                    Fields::SUM,
+                    Fields::CURRENCY,
+                    Fields::SELLER_BANK_ACC_RESPONSE,
+                    Fields::SELLER_NAME_RESPONSE,
+                    Fields::ORDER_REFERENCE,
+                    Fields::SENDER_BANK_ACC,
+                    Fields::SENDER_NAME,
+                    Fields::DESCRIPTION,
+                    Fields::TRANSACTION_DATE,
+                );
+            default:
+                throw new \InvalidArgumentException('Unsupported service id: '.$serviceId);
         }
-
-        throw new \InvalidArgumentException('Unsupported service id: '.$serviceId);
     }
 }

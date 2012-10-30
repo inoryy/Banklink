@@ -20,9 +20,18 @@ final class Fields
     const USER_LANG         = 'VK_LANG';
 
     // Seller (site owner) info
-    const SELLER_ID         = 'VK_SND_ID';
-    const SELLER_NAME       = 'VK_NAME';
-    const SELLER_BANK_ACC   = 'VK_ACC';
+    const SELLER_ID                = 'VK_SND_ID';
+    const SELLER_NAME              = 'VK_NAME';
+    const SELLER_BANK_ACC          = 'VK_ACC';
+
+    // data provided in response
+    const SELLER_ID_RESPONSE       = 'VK_REC_ID';
+    const SELLER_NAME_RESPONSE     = 'VK_REC_NAME';
+    const SELLER_BANK_ACC_RESPONSE = 'VK_REC_ACC';
+    const SENDER_NAME              = 'VK_SND_NAME';
+    const SENDER_BANK_ACC          = 'VK_SND_ACC';
+    const TRANSACTION_ID           = 'VK_T_NO';
+    const TRANSACTION_DATE         = 'VK_T_DATE';
 
     // Callback URLs
     const SUCCESS_URL       = 'VK_RETURN';

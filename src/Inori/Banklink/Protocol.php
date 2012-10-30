@@ -26,15 +26,15 @@ abstract class Protocol
     /**
      * Data should be filtered prior to calling this method
      *
-     * @param array $data Response data
+     * @param array $response Response data
      *
      * @return array
      */
-    abstract public function verifyPaymentResponse(array $data);
+    abstract public function verifyPaymentResponse(array $response);
 
     abstract protected function generateChecksum(array $data);
 
-    abstract protected function getSignature($data, $key);
+    abstract protected function getRequestSignature($data, $key);
 
     /**
      * Generates order reference using 7-3-1 algorithm
