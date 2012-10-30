@@ -57,7 +57,8 @@ class iPizza extends Protocol
         $data[Fields::SELLER_NAME]      = $this->sellerName;
         $data[Fields::ORDER_REFERENCE]  = $this->generateOrderReference($orderId);
         $data[Fields::DESCRIPTION]      = $message;
-        $data[Fields::CHARSET]          = $this->charset;
+        $data[Fields::CHARSET]          = $this->charset; // Move to: SEB
+        $data[Fields::ENCODING]         = $this->charset; // Move to: Swedbank
         $data[Fields::SUCCESS_URL]      = $this->successUrl;
         $data[Fields::FAILURE_URL]      = $this->failureUrl;
         $data[Fields::USER_LANG]        = $language;

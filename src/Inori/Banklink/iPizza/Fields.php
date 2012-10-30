@@ -41,6 +41,7 @@ final class Fields
     // This data will most likely be static
     const PROTOCOL_VERSION  = 'VK_VERSION';
     const CHARSET           = 'VK_CHARSET';
+    const ENCODING          = 'VK_ENCODING';
 
     const SIGNATURE         = 'VK_MAC';
 
