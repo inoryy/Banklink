@@ -3,6 +3,7 @@
 namespace Inori\Test\Banklink\Protocol;
 
 use Inori\Banklink\Protocol\iPizza;
+use Inori\Banklink\Response\PaymentResponse;
 
 /**
  * iPizza protocol test
@@ -53,9 +54,9 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedRequestData, $request->getRequestData());
     }
 
-    public function testVerifyPaymentResponseCorrect()
+    public function testHandlePaymentResponseSuccess()
     {
-        $response = array(
+        $responseData = array(
             'VK_SERVICE'  => '1101',
             'VK_VERSION'  => '008',
             'VK_SND_ID'   => 'GENIPIZZA',
@@ -75,17 +76,19 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_MAC'      => 'Lma6+YAm7JyU0WOOMpqNINT7ub8xLjrmYePBRcAFrY/Ea8Z/EhM9rYFMQive5GLDagWvay8zCNIHevYUD0P7I49hZwivluRF8C+cLPUaOcH8ySp5vHscgqurS7Aqg+gNWrRKwqWTjuxvjuqD8r/JlY1N+3sDpF1mU8HAc7NnRGDOyo1AmwUyOPa7mLsAYPXuzKW+qXqGL5uGMOqAw9kRgNkxCQHh/QpmvX7jm0oQ7KxypIAIZAYBjf8usDp3OT4AKd9B/FJ5fdX7JOSlL+Kjj7uD3qW3kVBz1JJ/riVRGdct5qouTNe0deB2jZbD5fuWa1XlJVWOG2xOGfGYhN7pfg=='
         );
 
-        $this->assertTrue($this->iPizza->verifyPaymentResponse($response));
+        $response = $this->iPizza->handlePaymentResponse($responseData);
+
+        $this->assertEquals(PaymentResponse::STATUS_SUCCESS, $response->getStatus());
     }
 
-    public function testVerifyPaymentResponseInCorrect()
+    public function testHandlePaymentResponseError()
     {
-        $response = array(
+        $responseData = array(
             'VK_SERVICE'  => '1101',
             'VK_VERSION'  => '008',
             'VK_SND_ID'   => 'GENIPIZZA',
             'VK_REC_ID'   => 'uid258629',
-            'VK_STAMP'    => '1',
+            'VK_STAMP'    => '2',
             'VK_T_NO'     => '17947',
             'VK_AMOUNT'   => '100',
             'VK_CURR'     => 'EUR',
@@ -97,9 +100,11 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_AUTO'     => 'N',
             'VK_SND_NAME' => 'Test Account Owner',
             'VK_SND_ACC'  => '221234576897',
-            'VK_MAC'      => 'Rma6+YAm7JyU0WOOMpqNINT7ub8xLjrmYePBRcAFrY/Ea8Z/EhM9rYFMQive5GLDagWvay8zCNIHevYUD0P7I49hZwivluRF8C+cLPUaOcH8ySp5vHscgqurS7Aqg+gNWrRKwqWTjuxvjuqD8r/JlY1N+3sDpF1mU8HAc7NnRGDOyo1AmwUyOPa7mLsAYPXuzKW+qXqGL5uGMOqAw9kRgNkxCQHh/QpmvX7jm0oQ7KxypIAIZAYBjf8usDp3OT4AKd9B/FJ5fdX7JOSlL+Kjj7uD3qW3kVBz1JJ/riVRGdct5qouTNe0deB2jZbD5fuWa1XlJVWOG2xOGfGYhN7pfg=='
+            'VK_MAC'      => 'Lma6+YAm7JyU0WOOMpqNINT7ub8xLjrmYePBRcAFrY/Ea8Z/EhM9rYFMQive5GLDagWvay8zCNIHevYUD0P7I49hZwivluRF8C+cLPUaOcH8ySp5vHscgqurS7Aqg+gNWrRKwqWTjuxvjuqD8r/JlY1N+3sDpF1mU8HAc7NnRGDOyo1AmwUyOPa7mLsAYPXuzKW+qXqGL5uGMOqAw9kRgNkxCQHh/QpmvX7jm0oQ7KxypIAIZAYBjf8usDp3OT4AKd9B/FJ5fdX7JOSlL+Kjj7uD3qW3kVBz1JJ/riVRGdct5qouTNe0deB2jZbD5fuWa1XlJVWOG2xOGfGYhN7pfg=='
         );
 
-        $this->assertFalse($this->iPizza->verifyPaymentResponse($response));
+        $response = $this->iPizza->handlePaymentResponse($responseData);
+
+        $this->assertEquals(PaymentResponse::STATUS_ERROR, $response->getStatus());
     }
 }

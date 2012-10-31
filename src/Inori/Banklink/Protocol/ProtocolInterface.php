@@ -27,14 +27,5 @@ interface ProtocolInterface
      *
      * @return \Inori\Banklink\PaymentResponse
      */
-    function preparePaymentResponse(array $responseData);
-
-    /**
-     * Data should be filtered prior to calling this method
-     *
-     * @param array $response Response data
-     *
-     * @return array
-     */
-    function verifyPaymentResponse(array $response);
+    function handlePaymentResponse(array $responseData);
 }

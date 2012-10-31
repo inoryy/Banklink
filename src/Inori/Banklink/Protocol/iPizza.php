@@ -5,8 +5,8 @@ namespace Inori\Banklink\Protocol;
 use Inori\Banklink\Protocol\iPizza\Fields,
     Inori\Banklink\Protocol\iPizza\Services;
 
-use Inori\Banklink\Request,
-    Inori\Banklink\Response;
+use Inori\Banklink\Request\PaymentRequest,
+    Inori\Banklink\Response\PaymentResponse;
 
 use Inori\Banklink\Protocol\Util\ProtocolUtils;
 
@@ -26,8 +26,7 @@ class iPizza implements ProtocolInterface
     protected $sellerName;
     protected $sellerAccountNumber;
 
-    protected $successUrl;
-    protected $failureUrl;
+    protected $endpointUrl;
 
     protected $protocolVersion = '008';
     protected $requestUrl      = 'http://example.com';
@@ -42,16 +41,15 @@ class iPizza implements ProtocolInterface
      * @param integer $sellerAccNum
      * @param string  $privateKey    Private key location
      * @param string  $publicKey     Public key (certificate) location
-     * @param string  $successUrl
-     * @param string  $failureUrl
+     * @param string  $endpointUrl
+     * @param string  $cancelUrl
      */
-    public function __construct($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $successUrl, $failureUrl)
+    public function __construct($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $endpointUrl)
     {
-        $this->successUrl          = $successUrl;
-        $this->failureUrl          = $failureUrl;
         $this->sellerId            = $sellerId;
         $this->sellerName          = $sellerName;
         $this->sellerAccountNumber = $sellerAccNum;
+        $this->endpointUrl         = $endpointUrl;
 
         $this->publicKey           = $publicKey;
         $this->privateKey          = $privateKey;
@@ -71,26 +69,34 @@ class iPizza implements ProtocolInterface
     {
         $requestData = $this->preparePaymentRequestData($orderId, $sum, $message, $language, $currency);
 
-        return new Request\PaymentRequest($this->requestUrl, $requestData);
-    }
-
-    public function preparePaymentResponse(array $responseData)
-    {
-        ;
+        return new PaymentRequest($this->requestUrl, $requestData);
     }
 
     /**
-     * @see Protocol::handlePaymentResponse()
+     *
+     * @param array $responseData
+     * @return \Inori\Banklink\Response\PaymentResponse
      */
-    public function verifyPaymentResponse(array $response)
+    public function handlePaymentResponse(array $responseData)
     {
-        $checksum = $this->generateHash($response);
+        $status = $responseData[Fields::SERVICE_ID] == Services::PAYMENT_SUCCESS ? PaymentResponse::STATUS_SUCCESS : PaymentResponse::STATUS_CANCELED;
+        if (!$this->verifyResponseSignature($responseData)) {
+            $status = PaymentResponse::STATUS_ERROR;
+        }
 
-        $keyId = openssl_pkey_get_public('file://'.$this->publicKey);
-        $result = openssl_verify($checksum, base64_decode($response[Fields::SIGNATURE]), $keyId);
-        openssl_free_key($keyId);
+        $response = new PaymentResponse($status, $responseData);
+        $response->setOrderId($responseData[Fields::ORDER_ID]);
 
-        return (boolean) $result;
+        if (PaymentResponse::STATUS_SUCCESS === $status) {
+            $response->setSum($responseData[Fields::SUM]);
+            $response->setCurrency($responseData[Fields::CURRENCY]);
+            $response->setSenderName($responseData[Fields::SENDER_NAME]);
+            $response->setSenderBankAccount($responseData[Fields::SENDER_BANK_ACC]);
+            $response->setTransactionId($responseData[Fields::TRANSACTION_ID]);
+            $response->setTransactionDate(new \DateTime($responseData[Fields::TRANSACTION_DATE]));
+        }
+
+        return $response;
     }
 
     /**
@@ -111,8 +117,8 @@ class iPizza implements ProtocolInterface
         $data[Fields::DESCRIPTION]      = $message;
         $data[Fields::CHARSET]          = $this->charset; // Move to: SEB
         $data[Fields::ENCODING]         = $this->charset; // Move to: Swedbank
-        $data[Fields::SUCCESS_URL]      = $this->successUrl;
-        $data[Fields::FAILURE_URL]      = $this->failureUrl;
+        $data[Fields::SUCCESS_URL]      = $this->endpointUrl;
+        $data[Fields::CANCEL_URL]       = $this->endpointUrl;
         $data[Fields::USER_LANG]        = $language;
 
         $data[Fields::SIGNATURE]        = $this->getRequestSignature($data, $this->privateKey);
@@ -137,6 +143,20 @@ class iPizza implements ProtocolInterface
         $result = base64_encode($signature);
 
         return $result;
+    }
+
+    /**
+     * @see Protocol::handlePaymentResponse()
+     */
+    protected function verifyResponseSignature(array $response)
+    {
+        $checksum = $this->generateHash($response);
+
+        $keyId = openssl_pkey_get_public('file://'.$this->publicKey);
+        $result = openssl_verify($checksum, base64_decode($response[Fields::SIGNATURE]), $keyId);
+        openssl_free_key($keyId);
+
+        return (boolean) $result;
     }
 
     /**

@@ -17,11 +17,11 @@ class Response
     /**
      * Response signature verified, but transaction was canceled
      */
-    const STATUS_FAILURE = 0;
+    const STATUS_CANCELED = 0;
     /**
      * Response signature could not be verified
      */
-    const STATUS_ERROR   = -1;
+    const STATUS_ERROR = -1;
 
     protected $id;
 
@@ -34,12 +34,9 @@ class Response
     /**
      * Response constructor
      */
-    public function __construct($id, $status, \DateTime $date, array $rawResponseData)
+    public function __construct($status, array $rawResponseData)
     {
-        $this->id     = $id;
         $this->status = $status;
-        $this->date   = $date;
-
         $this->rawResponseData = $rawResponseData;
     }
 
@@ -52,6 +49,11 @@ class Response
         return $this->status;
     }
 
+    public function setTransactionId($id)
+    {
+        $this->id = $id;
+    }
+
     /**
      *
      * @return integer
@@ -59,6 +61,14 @@ class Response
     public function getTransactionId()
     {
         return $this->id;
+    }
+
+    /**
+     *
+     */
+    public function setTransactionDate($date)
+    {
+        $this->date = $date;
     }
 
     /**
