@@ -19,18 +19,27 @@ abstract class Banklink
     protected $requestUrl;
 
     /**
-     *
-     * @param ProtocolInterface $protocol
+     * @param \Inori\Banklink\Protocol\ProtocolInterface $protocol
+     * @param string | null                              $requestUrl
      */
     public function __construct(ProtocolInterface $protocol, $requestUrl = null)
     {
         $this->protocol = $protocol;
-        
+
         if ($requestUrl) {
             $this->requestUrl = $requestUrl;
         }
     }
 
+    /**
+     * @param integer $orderId
+     * @param float $sum
+     * @param string $message
+     * @param string $language
+     * @param string $currency
+     *
+     * @return \Inori\Banklink\Request\PaymentRequest
+     */
     public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
     {
         $requestData = $this->protocol->preparePaymentRequestData($orderId, $sum, $message, $language, $currency);
@@ -41,7 +50,8 @@ abstract class Banklink
 
     /**
      *
-     * @param array $responseData Data recieved with a callback request
+     * @param array $responseData
+     * @return \Inori\Banklink\Response\Response
      */
     public function handleResponse(array $responseData)
     {

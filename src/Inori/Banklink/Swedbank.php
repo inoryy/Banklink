@@ -12,6 +12,10 @@ class Swedbank extends Banklink
 {
     protected $requestUrl = 'http://swedbank.ee';
 
+    /**
+     *
+     * @return array
+     */
     protected function getAdditionalFields()
     {
         return array(

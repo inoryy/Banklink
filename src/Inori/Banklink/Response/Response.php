@@ -32,7 +32,9 @@ class Response
     protected $rawResponseData = array();
 
     /**
-     * Response constructor
+     *
+     * @param integer $status
+     * @param array $rawResponseData
      */
     public function __construct($status, array $rawResponseData)
     {
@@ -49,6 +51,10 @@ class Response
         return $this->status;
     }
 
+    /**
+     *
+     * @param string $id
+     */
     public function setTransactionId($id)
     {
         $this->id = $id;
@@ -64,7 +70,7 @@ class Response
     }
 
     /**
-     *
+     * @param \DateTime $date
      */
     public function setTransactionDate($date)
     {
@@ -72,7 +78,6 @@ class Response
     }
 
     /**
-     *
      * @return \DateTime
      */
     public function getTransactionDate()

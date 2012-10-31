@@ -21,7 +21,10 @@ final class Services
     const AUTHENTICATE_SUCCESS = '3002';
 
     /**
+     *
      * @param string $serviceId
+     * @return array
+     * @throws \InvalidArgumentException
      */
     public static function getFieldsForService($serviceId)
     {
@@ -72,6 +75,10 @@ final class Services
         }
     }
 
+    /**
+     *
+     * @return array
+     */
     public static function getPaymentServices()
     {
         return array(
@@ -82,6 +89,10 @@ final class Services
         );
     }
 
+    /**
+     *
+     * @return array
+     */
     public static function getAuthenticationServices()
     {
         return array(

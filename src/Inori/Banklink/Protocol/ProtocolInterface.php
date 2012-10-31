@@ -25,7 +25,7 @@ interface ProtocolInterface
      *
      * @param array $responseData
      *
-     * @return \Inori\Banklink\PaymentResponse
+     * @return \Inori\Banklink\Response\Response
      */
     function handleResponse(array $responseData);
 }

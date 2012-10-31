@@ -14,6 +14,10 @@ class SEB extends Banklink
 {
     protected $requestUrl = 'http://seb.ee';
 
+    /**
+     *
+     * @return array
+     */
     protected function getAdditionalFields()
     {
         return array(

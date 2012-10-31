@@ -55,12 +55,12 @@ class iPizza implements ProtocolInterface
 
     /**
      *
-     * @param type  $orderId
-     * @param type  $sum
-     * @param type  $message
-     * @param type  $language
-     * @param type  $currency
-     * @return type
+     * @param integer  $orderId
+     * @param float  $sum
+     * @param string  $message
+     * @param string  $language
+     * @param string  $currency
+     * @return array
      */
     public function preparePaymentRequestData($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
     {
@@ -88,7 +88,7 @@ class iPizza implements ProtocolInterface
     /**
      *
      * @param array $responseData
-     * @return \Inori\Banklink\Response\PaymentResponse
+     * @return \Inori\Banklink\Response\Response
      * @throws \InvalidArgumentException
      */
     public function handleResponse(array $responseData)
