@@ -58,7 +58,14 @@ class iPizza implements ProtocolInterface
     }
 
     /**
-     * @see Protocol::preparePaymentRequest()
+     *
+     * @param integer $orderId
+     * @param float $sum
+     * @param string $message
+     * @param string $language
+     * @param string $currency
+     *
+     * @return \Inori\Banklink\Request\PaymentRequest
      */
     public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
     {
