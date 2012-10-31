@@ -48,8 +48,5 @@ final class Fields
     /**
      * Can't instantiate this class
      */
-    private function __construct()
-    {
-
-    }
+    private function __construct() {}
 }

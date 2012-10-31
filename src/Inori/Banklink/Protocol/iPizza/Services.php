@@ -20,10 +20,49 @@ final class Services
     const PAYMENT_ERROR        = '1902';
 
     /**
+     * @param string $serviceId
+     */
+    public static function getFieldsForService($serviceId)
+    {
+        switch ($serviceId) {
+            case Services::PAYMENT_REQUEST:
+                return array(
+                    Fields::SERVICE_ID,
+                    Fields::PROTOCOL_VERSION,
+                    Fields::SELLER_ID,
+                    Fields::ORDER_ID,
+                    Fields::SUM,
+                    Fields::CURRENCY,
+                    Fields::SELLER_BANK_ACC,
+                    Fields::SELLER_NAME,
+                    Fields::ORDER_REFERENCE,
+                    Fields::DESCRIPTION
+                );
+            case Services::PAYMENT_SUCCESS:
+                return array(
+                    Fields::SERVICE_ID,
+                    Fields::PROTOCOL_VERSION,
+                    Fields::SELLER_ID,
+                    Fields::SELLER_ID_RESPONSE,
+                    Fields::ORDER_ID,
+                    Fields::TRANSACTION_ID,
+                    Fields::SUM,
+                    Fields::CURRENCY,
+                    Fields::SELLER_BANK_ACC_RESPONSE,
+                    Fields::SELLER_NAME_RESPONSE,
+                    Fields::SENDER_BANK_ACC,
+                    Fields::SENDER_NAME,
+                    Fields::ORDER_REFERENCE,
+                    Fields::DESCRIPTION,
+                    Fields::TRANSACTION_DATE,
+                );
+            default:
+                throw new \InvalidArgumentException('Unsupported service id: '.$serviceId);
+        }
+    }
+
+    /**
      * Can't instantiate this class
      */
-    private function __construct()
-    {
-
-    }
+    private function __construct() {}
 }

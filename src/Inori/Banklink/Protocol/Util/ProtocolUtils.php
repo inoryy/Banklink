@@ -1,41 +1,15 @@
 <?php
 
-namespace Inori\Banklink\Protocol;
+namespace Inori\Banklink\Protocol\Util;
 
 /**
- * Description of Protocol
+ * Description of ProtocolUtils
  *
  * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
- * @since  11.01.2012
+ * @since  31.10.2012
  */
-abstract class Protocol
+class ProtocolUtils
 {
-    /**
-     * Prepares array of data for a payment request (Service id: 1001)
-     *
-     * @param integer $orderId
-     * @param string  $message
-     * @param float   $sum
-     * @param string  $language
-     * @param string  $currency
-     *
-     * @return array
-     */
-    abstract public function preparePaymentRequest($orderId, $message, $sum, $language, $currency = 'EUR');
-
-    /**
-     * Data should be filtered prior to calling this method
-     *
-     * @param array $response Response data
-     *
-     * @return array
-     */
-    abstract public function verifyPaymentResponse(array $response);
-
-    abstract protected function generateChecksum(array $data);
-
-    abstract protected function getRequestSignature($data, $key);
-
     /**
      * Generates order reference using 7-3-1 algorithm
      *
@@ -47,7 +21,7 @@ abstract class Protocol
      *
      * @return string
      */
-    public function generateOrderReference($orderId)
+    public static function generateOrderReference($orderId)
     {
         $orderId = (string)$orderId;
         $len = strlen($orderId);

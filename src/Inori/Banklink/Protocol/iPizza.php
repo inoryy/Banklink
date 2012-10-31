@@ -1,8 +1,11 @@
 <?php
 
-namespace Inori\Banklink\Protocol\iPizza;
+namespace Inori\Banklink\Protocol;
 
-use Inori\Banklink\Protocol\Protocol;
+use Inori\Banklink\Protocol\iPizza\Fields,
+    Inori\Banklink\Protocol\iPizza\Services;
+
+use Inori\Banklink\Protocol\Util\ProtocolUtils;
 
 /**
  * This class implements iPizza protocol support
@@ -10,7 +13,7 @@ use Inori\Banklink\Protocol\Protocol;
  * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
  * @since  11.01.2012
  */
-class iPizza extends Protocol
+class iPizza implements ProtocolInterface
 {
     private $publicKey;
     private $privateKey;
@@ -55,7 +58,7 @@ class iPizza extends Protocol
         $data[Fields::CURRENCY]         = $currency;
         $data[Fields::SELLER_BANK_ACC]  = $this->sellerAccountNumber;
         $data[Fields::SELLER_NAME]      = $this->sellerName;
-        $data[Fields::ORDER_REFERENCE]  = $this->generateOrderReference($orderId);
+        $data[Fields::ORDER_REFERENCE]  = ProtocolUtils::generateOrderReference($orderId);
         $data[Fields::DESCRIPTION]      = $message;
         $data[Fields::CHARSET]          = $this->charset; // Move to: SEB
         $data[Fields::ENCODING]         = $this->charset; // Move to: Swedbank
@@ -73,7 +76,7 @@ class iPizza extends Protocol
      */
     public function verifyPaymentResponse(array $response)
     {
-        $checksum = $this->generateChecksum($response);
+        $checksum = $this->generateHash($response);
 
         $keyId = openssl_pkey_get_public($this->publicKey);
         $result = openssl_verify($checksum, base64_decode($response[Fields::SIGNATURE]), $keyId);
@@ -90,7 +93,7 @@ class iPizza extends Protocol
      */
     protected function getRequestSignature($data, $key)
     {
-        $checksum = $this->generateChecksum($data);
+        $checksum = $this->generateHash($data);
 
         $keyId = openssl_get_privatekey($key);
         openssl_sign($checksum, $signature, $keyId);
@@ -107,14 +110,14 @@ class iPizza extends Protocol
      *
      * @return string
      */
-    protected function generateChecksum(array $data)
+    protected function generateHash(array $data)
     {
         $id = $data[Fields::SERVICE_ID];
 
         $checksum = '';
-        foreach ($this->getServiceFields($id) as $fieldName) {
+        foreach (Services::getFieldsForService($id) as $fieldName) {
             if (!isset($data[$fieldName])) {
-                throw new \InvalidArgumentException(sprintf('Cannot generate %s service checksum without %s field', $id, $fieldName));
+                throw new \LogicException(sprintf('Cannot generate %s service hash without %s field', $id, $fieldName));
             }
 
             $content = $data[$fieldName];
@@ -122,47 +125,5 @@ class iPizza extends Protocol
         }
 
         return $checksum;
-    }
-
-    /**
-     * @param string $serviceId
-     */
-    protected function getServiceFields($serviceId)
-    {
-        switch ($serviceId) {
-            case Services::PAYMENT_REQUEST:
-                return array(
-                    Fields::SERVICE_ID,
-                    Fields::PROTOCOL_VERSION,
-                    Fields::SELLER_ID,
-                    Fields::ORDER_ID,
-                    Fields::SUM,
-                    Fields::CURRENCY,
-                    Fields::SELLER_BANK_ACC,
-                    Fields::SELLER_NAME,
-                    Fields::ORDER_REFERENCE,
-                    Fields::DESCRIPTION
-                );
-            case Services::PAYMENT_SUCCESS:
-                return array(
-                    Fields::SERVICE_ID,
-                    Fields::PROTOCOL_VERSION,
-                    Fields::SELLER_ID,
-                    Fields::SELLER_ID_RESPONSE,
-                    Fields::ORDER_ID,
-                    Fields::TRANSACTION_ID,
-                    Fields::SUM,
-                    Fields::CURRENCY,
-                    Fields::SELLER_BANK_ACC_RESPONSE,
-                    Fields::SELLER_NAME_RESPONSE,
-                    Fields::SENDER_BANK_ACC,
-                    Fields::SENDER_NAME,
-                    Fields::ORDER_REFERENCE,
-                    Fields::DESCRIPTION,
-                    Fields::TRANSACTION_DATE,
-                );
-            default:
-                throw new \InvalidArgumentException('Unsupported service id: '.$serviceId);
-        }
     }
 }
