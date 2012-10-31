@@ -12,8 +12,6 @@ use Inori\Banklink\Protocol\iPizza;
  */
 class Swedbank extends Banklink
 {
-    const FIELD_ENCODING = 'VK_ENCODING';
-
     public function __construct(iPizza $protocol)
     {
         parent::__construct($protocol);
@@ -26,7 +24,7 @@ class Swedbank extends Banklink
 
     protected function getRequestUrl()
     {
-        return 'http://example.com';
+        return 'http://swedbank.ee';
     }
 
     protected function getProtocolVersion()
@@ -37,7 +35,7 @@ class Swedbank extends Banklink
     protected function getAdditionalFields()
     {
         return array(
-            self::FIELD_ENCODING => 'UTF-8'
+            'VK_ENCODING' => 'UTF-8'
         );
     }
 }

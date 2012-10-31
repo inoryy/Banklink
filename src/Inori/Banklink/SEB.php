@@ -12,8 +12,6 @@ use Inori\Banklink\Protocol\iPizza;
  */
 class SEB extends Banklink
 {
-    const FIELD_ENCODING = 'VK_CHARSET';
-
     public function __construct(iPizza $protocol)
     {
         parent::__construct($protocol);
@@ -26,7 +24,7 @@ class SEB extends Banklink
 
     protected function getRequestUrl()
     {
-        return 'http://example.com';
+        return 'http://seb.ee';
     }
 
     protected function getProtocolVersion()
@@ -37,7 +35,7 @@ class SEB extends Banklink
     protected function getAdditionalFields()
     {
         return array(
-            self::FIELD_ENCODING => 'UTF-8'
+            'VK_CHARSET' => 'UTF-8'
         );
     }
 }

@@ -21,9 +21,8 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'uid258629',
             'Test Testov',
             '119933113300',
-            __DIR__.'/Fixture/iPizza/private_key.pem',
-            __DIR__.'/Fixture/iPizza/public_key.pem',
-            'http://www.google.com',
+            __DIR__.'/../Fixture/iPizza/private_key.pem',
+            __DIR__.'/../Fixture/iPizza/public_key.pem',
             'http://www.google.com'
         );
     }
