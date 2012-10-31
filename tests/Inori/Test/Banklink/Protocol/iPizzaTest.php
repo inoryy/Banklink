@@ -123,4 +123,16 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(PaymentResponse::STATUS_ERROR, $response->getStatus());
     }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testHandleResponseUnsupportedService()
+    {
+        $responseData = array(
+            'VK_SERVICE'  => '1111',
+        );
+
+        $response = $this->iPizza->handleResponse($responseData);
+    }
 }
