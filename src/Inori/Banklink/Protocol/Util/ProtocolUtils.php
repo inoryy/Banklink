@@ -3,7 +3,7 @@
 namespace Inori\Banklink\Protocol\Util;
 
 /**
- * Description of ProtocolUtils
+ * Protocol utilities that are used across all protocols
  *
  * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
  * @since  31.10.2012

@@ -33,10 +33,10 @@ abstract class Banklink
 
     /**
      * @param integer $orderId
-     * @param float $sum
-     * @param string $message
-     * @param string $language
-     * @param string $currency
+     * @param float   $sum
+     * @param string  $message
+     * @param string  $language
+     * @param string  $currency
      *
      * @return \Inori\Banklink\Request\PaymentRequest
      */
@@ -49,8 +49,8 @@ abstract class Banklink
     }
 
     /**
-     *
      * @param array $responseData
+     * 
      * @return \Inori\Banklink\Response\Response
      */
     public function handleResponse(array $responseData)

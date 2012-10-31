@@ -54,12 +54,12 @@ class iPizza implements ProtocolInterface
     }
 
     /**
-     *
      * @param integer  $orderId
-     * @param float  $sum
-     * @param string  $message
-     * @param string  $language
-     * @param string  $currency
+     * @param float    $sum
+     * @param string   $message
+     * @param string   $language
+     * @param string   $currency
+     *
      * @return array
      */
     public function preparePaymentRequestData($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
@@ -80,15 +80,18 @@ class iPizza implements ProtocolInterface
             Fields::USER_LANG        => $language
         );
 
-        $requestData[Fields::SIGNATURE] = $this->getRequestSignature($requestData, $this->privateKey);
+        $requestData[Fields::SIGNATURE] = $this->getRequestSignature($requestData);
 
         return $requestData;
     }
 
     /**
+     * Determine which response exactly by service id, if it's supported then call related internal method
      *
      * @param array $responseData
+     *
      * @return \Inori\Banklink\Response\Response
+     *
      * @throws \InvalidArgumentException
      */
     public function handleResponse(array $responseData)
@@ -102,14 +105,19 @@ class iPizza implements ProtocolInterface
     }
 
     /**
+     * Prepare payment response instance
+     * Some data is only set if response is succesful
      *
      * @param array $responseData
+     *
      * @return \Inori\Banklink\Response\PaymentResponse
      */
     protected function handlePaymentResponse(array $responseData)
     {
+        // try to guess status by service id
         $status = $responseData[Fields::SERVICE_ID] == Services::PAYMENT_SUCCESS ? PaymentResponse::STATUS_SUCCESS : PaymentResponse::STATUS_CANCEL;
         if (!$this->verifyResponseSignature($responseData)) {
+            // if verification fails then force error status
             $status = PaymentResponse::STATUS_ERROR;
         }
 
@@ -129,17 +137,18 @@ class iPizza implements ProtocolInterface
     }
 
     /**
+     * Generate request signature built with mandatory request data and private key
      *
-     * @param array  $data
-     * @param string $key
+     * @param array $data
+     *
      * @return string
      */
-    protected function getRequestSignature($data, $key)
+    protected function getRequestSignature($data)
     {
-        $checksum = $this->generateHash($data);
+        $hash = $this->generateHash($data);
 
-        $keyId = openssl_get_privatekey('file://'.$key);
-        openssl_sign($checksum, $signature, $keyId);
+        $keyId = openssl_get_privatekey('file://'.$this->privateKey);
+        openssl_sign($hash, $signature, $keyId);
         openssl_free_key($keyId);
 
         $result = base64_encode($signature);
@@ -148,24 +157,31 @@ class iPizza implements ProtocolInterface
     }
 
     /**
-     * @see Protocol::handlePaymentResponse()
+     * Verify that response data is correctly signed
+     *
+     * @param array $response
+     *
+     * @return boolean
      */
     protected function verifyResponseSignature(array $response)
     {
-        $checksum = $this->generateHash($response);
+        $hash = $this->generateHash($response);
 
         $keyId = openssl_pkey_get_public('file://'.$this->publicKey);
-        $result = openssl_verify($checksum, base64_decode($response[Fields::SIGNATURE]), $keyId);
+        $result = openssl_verify($hash, base64_decode($response[Fields::SIGNATURE]), $keyId);
         openssl_free_key($keyId);
 
         return (boolean) $result;
     }
 
     /**
+     * Generate request/response hash based on mandatory fields
      *
      * @param array $data
      *
      * @return string
+     * 
+     * @throws \LogicException
      */
     protected function generateHash(array $data)
     {

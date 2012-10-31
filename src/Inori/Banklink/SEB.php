@@ -15,6 +15,19 @@ class SEB extends Banklink
     protected $requestUrl = 'http://seb.ee';
 
     /**
+     * Force iPizza protocol
+     *
+     * @param \Inori\Banklink\iPizza $protocol
+     */
+    public function __construct(iPizza $protocol)
+    {
+        parent::__construct($protocol);
+    }
+
+    /**
+     * Force UTF-8 encoding
+     *
+     * @see Banklink::getAdditionalFields()
      *
      * @return array
      */

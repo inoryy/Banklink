@@ -21,6 +21,7 @@ final class Services
     const AUTHENTICATE_SUCCESS = '3002';
 
     /**
+     * Fetch mandatory fields for a given service
      *
      * @param string $serviceId
      * @return array
@@ -76,6 +77,7 @@ final class Services
     }
 
     /**
+     * Fetch supported payment services
      *
      * @return array
      */
@@ -90,6 +92,7 @@ final class Services
     }
 
     /**
+     * Fetch supported authentication services
      *
      * @return array
      */
