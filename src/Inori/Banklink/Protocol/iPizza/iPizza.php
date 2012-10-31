@@ -1,8 +1,8 @@
 <?php
 
-namespace Inori\Banklink\iPizza;
+namespace Inori\Banklink\Protocol\iPizza;
 
-use Inori\Banklink\Protocol;
+use Inori\Banklink\Protocol\Protocol;
 
 /**
  * This class implements iPizza protocol support
@@ -43,7 +43,7 @@ class iPizza extends Protocol
     /**
      * @see Protocol::preparePaymentRequest()
      */
-    public function preparePaymentRequest($orderId, $message, $sum, $language, $currency = 'EUR')
+    public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
     {
         $data = array();
 

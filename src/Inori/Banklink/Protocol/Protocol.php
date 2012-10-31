@@ -1,6 +1,6 @@
 <?php
 
-namespace Inori\Banklink;
+namespace Inori\Banklink\Protocol;
 
 /**
  * Description of Protocol

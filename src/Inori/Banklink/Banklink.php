@@ -2,6 +2,9 @@
 
 namespace Inori\Banklink;
 
+use Inori\Banklink\Protocol\Protocol;
+
+
 /**
  * General abstract class that defines public API for all banklink implementations
  *
@@ -21,9 +24,9 @@ abstract class Banklink
         $this->protocol = $protocol;
     }
 
-    public function preparePaymentRequest($orderId, $message, $sum, $language, $currency = 'EUR')
+    public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
     {
-        return $this->protocol->preparePaymentRequest($orderId, $message, $sum, $language, $currency);
+        return $this->protocol->preparePaymentRequest($orderId, $sum, $message, $language, $currency);
     }
 
     /**

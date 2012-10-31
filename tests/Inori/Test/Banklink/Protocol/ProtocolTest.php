@@ -1,6 +1,6 @@
 <?php
 
-namespace Inori\Test\Banklink;
+namespace Inori\Test\Banklink\Protocol;
 
 /**
  * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
@@ -13,9 +13,10 @@ class ProtocolTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         // really long and weird way to disable original constructor for mocked abstract class...
-        $stub = $this->getMockForAbstractClass('Inori\Banklink\Protocol', array(), '', false);
+        $stub = $this->getMockForAbstractClass('Inori\Banklink\Protocol\Protocol', array(), '', false);
         $stub->expects($this->any())
-             ->method('generateOrderReference');
+             ->method('generateOrderReference')
+        ;
 
         $this->object = $stub;
     }
@@ -23,7 +24,7 @@ class ProtocolTest extends \PHPUnit_Framework_TestCase
     /**
      * Test for normal checksum
      *
-     * @covers Inori\Banklink\Protocol::generateOrderReference
+     * @covers Inori\Banklink\Protocol\Protocol::generateOrderReference
      */
     public function testGenerateOrderReference()
     {
@@ -36,7 +37,7 @@ class ProtocolTest extends \PHPUnit_Framework_TestCase
     /**
      * Test for 0 checksum
      *
-     * @covers Inori\Banklink\Protocol::generateOrderReference
+     * @covers Inori\Banklink\Protocol\Protocol::generateOrderReference
      */
     public function testGenerateOrderReference0Checksum()
     {
@@ -51,7 +52,7 @@ class ProtocolTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException InvalidArgumentException
      *
-     * @covers Inori\Banklink\Protocol::generateOrderReference
+     * @covers Inori\Banklink\Protocol\Protocol::generateOrderReference
      */
     public function testGenerateOrderReferenceValidation()
     {

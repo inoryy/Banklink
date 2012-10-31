@@ -1,6 +1,6 @@
 <?php
 
-namespace Inori\Banklink\iPizza;
+namespace Inori\Banklink\Protocol\iPizza;
 
 /**
  * List of all services available via iPizza
