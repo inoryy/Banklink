@@ -2,6 +2,8 @@
 
 namespace Inori\Banklink;
 
+use Inori\Banklink\Protocol\iPizza;
+
 /**
  * Banklink implementation for SEB bank using iPizza protocol for communication
  *
@@ -10,21 +12,18 @@ namespace Inori\Banklink;
  */
 class SEB extends Banklink
 {
-
-    public function handleResponse(array $data)
+    public function __construct(iPizza $protocol)
     {
-        return false;
+        parent::__construct($protocol);
     }
 
-    public function prepareRequestArray()
+    protected function getRequestUrl()
     {
-        return false;
+        return 'http://example.com';
     }
 
-    public function prepareRequestHtmlForm()
+    protected function getProtocolVersion()
     {
-        return false;
+        return '008';
     }
-
-
 }

@@ -55,6 +55,16 @@ class iPizza implements ProtocolInterface
         $this->privateKey          = $privateKey;
     }
 
+    public function setRequestUrl($requestUrl)
+    {
+        $this->requestUrl = $requestUrl;
+    }
+
+    public function setProtocolVersion($protocolVersion)
+    {
+        $this->protocolVersion = $protocolVersion;
+    }
+
     /**
      *
      * @param integer $orderId

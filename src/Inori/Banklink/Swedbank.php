@@ -2,6 +2,8 @@
 
 namespace Inori\Banklink;
 
+use Inori\Banklink\Protocol\iPizza;
+
 /**
  * Banklink implementation for Swedbank bank using iPizza protocol for communication
  *
@@ -10,10 +12,18 @@ namespace Inori\Banklink;
  */
 class Swedbank extends Banklink
 {
-    protected $requestUrl = '';
-
-    public function handleResponse(array $data)
+    public function __construct(iPizza $protocol)
     {
-        return false;
+        parent::__construct($protocol);
+    }
+
+    protected function getRequestUrl()
+    {
+        return 'http://example.com';
+    }
+
+    protected function getProtocolVersion()
+    {
+        return '008';
     }
 }

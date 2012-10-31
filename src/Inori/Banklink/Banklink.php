@@ -2,8 +2,7 @@
 
 namespace Inori\Banklink;
 
-use Inori\Banklink\Protocol\Protocol;
-
+use Inori\Banklink\Protocol\ProtocolInterface;
 
 /**
  * General abstract class that defines public API for all banklink implementations
@@ -17,10 +16,13 @@ abstract class Banklink
 
     /**
      *
-     * @param Protocol $protocol
+     * @param ProtocolInterface $protocol
      */
-    public function __construct(Protocol $protocol)
+    public function __construct(ProtocolInterface $protocol)
     {
+        $protocol->setRequestUrl($this->getRequestUrl());
+        $protocol->setProtocolVersion($this->getProtocolVersion());
+
         $this->protocol = $protocol;
     }
 
@@ -31,7 +33,13 @@ abstract class Banklink
 
     /**
      *
-     * @param array $data Data recieved with a callback request
+     * @param array $responseData Data recieved with a callback request
      */
-    public function handleResponse(array $data) {}
+    public function handleResponse(array $responseData)
+    {
+        return $this->protocol->handleResponse($responseData);
+    }
+
+    abstract protected function getRequestUrl();
+    abstract protected function getProtocolVersion();
 }

@@ -28,4 +28,8 @@ interface ProtocolInterface
      * @return \Inori\Banklink\PaymentResponse
      */
     function handleResponse(array $responseData);
+
+    function setRequestUrl($requestUrl);
+
+    function setProtocolVersion($protocolVersion);
 }
