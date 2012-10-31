@@ -12,15 +12,7 @@ use Inori\Banklink\Protocol\iPizza;
  */
 class SEB extends Banklink
 {
-    public function __construct(iPizza $protocol)
-    {
-        parent::__construct($protocol);
-    }
-
-    protected function getRequestUrl()
-    {
-        return 'http://seb.ee';
-    }
+    protected $requestUrl = 'http://seb.ee';
 
     protected function getAdditionalFields()
     {

@@ -16,13 +16,19 @@ abstract class Banklink
 {
     protected $protocol;
 
+    protected $requestUrl;
+
     /**
      *
      * @param ProtocolInterface $protocol
      */
-    public function __construct(ProtocolInterface $protocol)
+    public function __construct(ProtocolInterface $protocol, $requestUrl = null)
     {
         $this->protocol = $protocol;
+        
+        if ($requestUrl) {
+            $this->requestUrl = $requestUrl;
+        }
     }
 
     public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
@@ -30,7 +36,7 @@ abstract class Banklink
         $requestData = $this->protocol->preparePaymentRequestData($orderId, $sum, $message, $language, $currency);
         $requestData = array_merge($requestData, $this->getAdditionalFields());
 
-        return new PaymentRequest($this->getRequestUrl(), $requestData);
+        return new PaymentRequest($this->requestUrl, $requestData);
     }
 
     /**
@@ -42,7 +48,6 @@ abstract class Banklink
         return $this->protocol->handleResponse($responseData);
     }
 
-    abstract protected function getRequestUrl();
     /**
      * Get array of any additional fields not directly supported by protocol (ex. encoding)
      *
