@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Banklink-ET-php" default="build" basedir=".">
+<project name="Banklink" default="build" basedir=".">
     <property name="source" value="src"/>
     <property name="basedir" value="." />
 
