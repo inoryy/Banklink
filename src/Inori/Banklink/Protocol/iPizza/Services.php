@@ -12,12 +12,13 @@ final class Services
 {
     // Requests
     const PAYMENT_REQUEST      = '1001';
-    const AUTHENTICATE         = '3001';
+    const AUTHENTICATE_REQUEST         = '3001';
 
     // Responses
     const PAYMENT_SUCCESS      = '1101';
     const PAYMENT_CANCEL       = '1901';
     const PAYMENT_ERROR        = '1902';
+    const AUTHENTICATE_SUCCESS = '3002';
 
     /**
      * @param string $serviceId
@@ -69,6 +70,24 @@ final class Services
             default:
                 throw new \InvalidArgumentException('Unsupported service id: '.$serviceId);
         }
+    }
+
+    public static function getPaymentServices()
+    {
+        return array(
+            self::PAYMENT_REQUEST,
+            self::PAYMENT_SUCCESS,
+            self::PAYMENT_CANCEL,
+            self::PAYMENT_ERROR
+        );
+    }
+
+    public static function getAuthenticationServices()
+    {
+        return array(
+            self::AUTHENTICATE_REQUEST,
+            self::AUTHENTICATE_SUCCESS
+        );
     }
 
     /**

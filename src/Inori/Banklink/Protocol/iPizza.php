@@ -76,8 +76,24 @@ class iPizza implements ProtocolInterface
      *
      * @param array $responseData
      * @return \Inori\Banklink\Response\PaymentResponse
+     * @throws \InvalidArgumentException
      */
-    public function handlePaymentResponse(array $responseData)
+    public function handleResponse(array $responseData)
+    {
+        $service = $responseData[Fields::SERVICE_ID];
+        if (in_array($service, Services::getPaymentServices())) {
+            return $this->handlePaymentResponse($responseData);
+        }
+
+        throw new \InvalidArgumentException('Unsupported service with id: '.$service);
+    }
+
+    /**
+     *
+     * @param array $responseData
+     * @return \Inori\Banklink\Response\PaymentResponse
+     */
+    protected function handlePaymentResponse(array $responseData)
     {
         $status = $responseData[Fields::SERVICE_ID] == Services::PAYMENT_SUCCESS ? PaymentResponse::STATUS_SUCCESS : PaymentResponse::STATUS_CANCEL;
         if (!$this->verifyResponseSignature($responseData)) {

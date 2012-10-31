@@ -76,7 +76,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_MAC'      => 'Lma6+YAm7JyU0WOOMpqNINT7ub8xLjrmYePBRcAFrY/Ea8Z/EhM9rYFMQive5GLDagWvay8zCNIHevYUD0P7I49hZwivluRF8C+cLPUaOcH8ySp5vHscgqurS7Aqg+gNWrRKwqWTjuxvjuqD8r/JlY1N+3sDpF1mU8HAc7NnRGDOyo1AmwUyOPa7mLsAYPXuzKW+qXqGL5uGMOqAw9kRgNkxCQHh/QpmvX7jm0oQ7KxypIAIZAYBjf8usDp3OT4AKd9B/FJ5fdX7JOSlL+Kjj7uD3qW3kVBz1JJ/riVRGdct5qouTNe0deB2jZbD5fuWa1XlJVWOG2xOGfGYhN7pfg=='
         );
 
-        $response = $this->iPizza->handlePaymentResponse($responseData);
+        $response = $this->iPizza->handleResponse($responseData);
 
         $this->assertEquals(PaymentResponse::STATUS_SUCCESS, $response->getStatus());
     }
@@ -95,7 +95,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_MAC'      => 'bg8rRUxE6W+RhkdJyUADQl43soI7C6ohtkwGDRCXyeRDQk5B2D1kkmuzJ6lZopttAFMnU1C6MOynF/VWXFVX5YZmpnm9vpFy6uz9uH/bjMfRddj0pkWe6Afa3l2MET+Nk7xOxxxHlJBX3NZndp3xO7Wdi4pyx4kZjpcM6lR+Dq9mhh0N+45bDyh+IkEmEC3GrGwQTbFGYSG9gh2zv4BuFgQj/lSprf6qUyQf8wmr/onSOGwuenYFFxYOG6aUU+/5ha0TLyQg8ed2SOAylAbSKEN+Ud2xEZ8WzxEwfiYf9WBiooRYyydmS2vRZV2KGCfUqgoPzl7b5NaSPW2PW7CheQ=='
         );
 
-        $response = $this->iPizza->handlePaymentResponse($responseData);
+        $response = $this->iPizza->handleResponse($responseData);
 
         $this->assertEquals(PaymentResponse::STATUS_CANCEL, $response->getStatus());
     }
@@ -122,7 +122,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_MAC'      => 'Lma6+YAm7JyU0WOOMpqNINT7ub8xLjrmYePBRcAFrY/Ea8Z/EhM9rYFMQive5GLDagWvay8zCNIHevYUD0P7I49hZwivluRF8C+cLPUaOcH8ySp5vHscgqurS7Aqg+gNWrRKwqWTjuxvjuqD8r/JlY1N+3sDpF1mU8HAc7NnRGDOyo1AmwUyOPa7mLsAYPXuzKW+qXqGL5uGMOqAw9kRgNkxCQHh/QpmvX7jm0oQ7KxypIAIZAYBjf8usDp3OT4AKd9B/FJ5fdX7JOSlL+Kjj7uD3qW3kVBz1JJ/riVRGdct5qouTNe0deB2jZbD5fuWa1XlJVWOG2xOGfGYhN7pfg=='
         );
 
-        $response = $this->iPizza->handlePaymentResponse($responseData);
+        $response = $this->iPizza->handleResponse($responseData);
 
         $this->assertEquals(PaymentResponse::STATUS_ERROR, $response->getStatus());
     }

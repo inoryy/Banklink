@@ -33,5 +33,5 @@ abstract class Banklink
      *
      * @param array $data Data recieved with a callback request
      */
-    abstract public function handleCallback(array $data);
+    abstract public function handleResponse(array $data);
 }
