@@ -79,7 +79,7 @@ class iPizza implements ProtocolInterface
      */
     public function handlePaymentResponse(array $responseData)
     {
-        $status = $responseData[Fields::SERVICE_ID] == Services::PAYMENT_SUCCESS ? PaymentResponse::STATUS_SUCCESS : PaymentResponse::STATUS_CANCELED;
+        $status = $responseData[Fields::SERVICE_ID] == Services::PAYMENT_SUCCESS ? PaymentResponse::STATUS_SUCCESS : PaymentResponse::STATUS_CANCEL;
         if (!$this->verifyResponseSignature($responseData)) {
             $status = PaymentResponse::STATUS_ERROR;
         }

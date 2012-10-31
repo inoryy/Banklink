@@ -81,6 +81,25 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(PaymentResponse::STATUS_SUCCESS, $response->getStatus());
     }
 
+    public function testHandlePaymentResponseCancel()
+    {
+        $responseData = array(
+            'VK_SERVICE'  => '1901',
+            'VK_VERSION'  => '008',
+            'VK_SND_ID'   => 'GENIPIZZA',
+            'VK_REC_ID'   => 'uid258629',
+            'VK_STAMP'    => '1',
+            'VK_REF'      => '13',
+            'VK_MSG'      => 'Test payment',
+            'VK_AUTO'     => 'N',
+            'VK_MAC'      => 'bg8rRUxE6W+RhkdJyUADQl43soI7C6ohtkwGDRCXyeRDQk5B2D1kkmuzJ6lZopttAFMnU1C6MOynF/VWXFVX5YZmpnm9vpFy6uz9uH/bjMfRddj0pkWe6Afa3l2MET+Nk7xOxxxHlJBX3NZndp3xO7Wdi4pyx4kZjpcM6lR+Dq9mhh0N+45bDyh+IkEmEC3GrGwQTbFGYSG9gh2zv4BuFgQj/lSprf6qUyQf8wmr/onSOGwuenYFFxYOG6aUU+/5ha0TLyQg8ed2SOAylAbSKEN+Ud2xEZ8WzxEwfiYf9WBiooRYyydmS2vRZV2KGCfUqgoPzl7b5NaSPW2PW7CheQ=='
+        );
+
+        $response = $this->iPizza->handlePaymentResponse($responseData);
+
+        $this->assertEquals(PaymentResponse::STATUS_CANCEL, $response->getStatus());
+    }
+
     public function testHandlePaymentResponseError()
     {
         $responseData = array(

@@ -17,7 +17,7 @@ class Response
     /**
      * Response signature verified, but transaction was canceled
      */
-    const STATUS_CANCELED = 0;
+    const STATUS_CANCEL = 0;
     /**
      * Response signature could not be verified
      */

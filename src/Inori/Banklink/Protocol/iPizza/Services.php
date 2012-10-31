@@ -56,6 +56,16 @@ final class Services
                     Fields::DESCRIPTION,
                     Fields::TRANSACTION_DATE,
                 );
+            case Services::PAYMENT_CANCEL:
+                return array(
+                    Fields::SERVICE_ID,
+                    Fields::PROTOCOL_VERSION,
+                    Fields::SELLER_ID,
+                    Fields::SELLER_ID_RESPONSE,
+                    Fields::ORDER_ID,
+                    Fields::ORDER_REFERENCE,
+                    Fields::DESCRIPTION,
+                );
             default:
                 throw new \InvalidArgumentException('Unsupported service id: '.$serviceId);
         }
