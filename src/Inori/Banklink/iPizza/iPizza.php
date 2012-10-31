@@ -79,7 +79,7 @@ class iPizza extends Protocol
         $result = openssl_verify($checksum, base64_decode($response[Fields::SIGNATURE]), $keyId);
         openssl_free_key($keyId);
 
-        return $result;
+        return (boolean) $result;
     }
 
     /**
@@ -155,9 +155,9 @@ class iPizza extends Protocol
                     Fields::CURRENCY,
                     Fields::SELLER_BANK_ACC_RESPONSE,
                     Fields::SELLER_NAME_RESPONSE,
-                    Fields::ORDER_REFERENCE,
                     Fields::SENDER_BANK_ACC,
                     Fields::SENDER_NAME,
+                    Fields::ORDER_REFERENCE,
                     Fields::DESCRIPTION,
                     Fields::TRANSACTION_DATE,
                 );
