@@ -4,6 +4,9 @@ namespace Inori\Test\Banklink\Protocol;
 
 use Inori\Banklink\Protocol\iPizza;
 
+use Inori\Banklink\Request,
+    Inori\Banklink\Response;
+
 /**
  * iPizza protocol test
  *
@@ -29,7 +32,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
 
     public function testPreparePaymentRequest()
     {
-        $expected = array(
+        $expected = new Request\PaymentRequest('http://example.com', array(
           'VK_SERVICE' => '1001',
           'VK_VERSION' => '008',
           'VK_SND_ID'  => 'uid258629',
@@ -46,7 +49,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
           'VK_CANCEL'  => 'http://www.google.com',
           'VK_LANG'    => 'ENG',
           'VK_MAC'     => 'g4SMbCZEbxSXF7qx8ggcRHTyWOx4Dqkb0eM6atoEC5A12SAlWDgIw5TnB319KtreUcEubrjZz9z4NQgVrSieoOX9yr3G7ciLopGaoajAr6RA9RTYP0QDoArTuDKBqFwRT6D+erTggu9Dz3G/dQKlL9SCQtUxV6yCHp0cLgzYmtUGXoC7x4WnP1NuJZwlBnJI3acsCNyw5gTnEHle0Xd2OElH84aKlItqSsPbFirWhZRLfLy8uyiwSseChnTnDXCINyFLypHNTvvn+DaE8m+nyDkL4Jt3L2rciYkLPuoXSY3JGXTzjS7TkpOPUEtBQZ65ZylltduAeknxocvSZYUskA=='
-        );
+        ));
 
         $request = $this->iPizza->preparePaymentRequest(1, 100, 'Test payment', 'ENG', 'EUR');
 

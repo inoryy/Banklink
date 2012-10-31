@@ -11,17 +11,23 @@ namespace Inori\Banklink\Protocol;
 interface ProtocolInterface
 {
     /**
-     * Prepares array of data for a payment request (Service id: 1001)
+     * @param type $orderId
+     * @param type $sum
+     * @param type $message
+     * @param type $language
+     * @param type $currency
      *
-     * @param integer $orderId
-     * @param string  $message
-     * @param float   $sum
-     * @param string  $language
-     * @param string  $currency
-     *
-     * @return array
+     * @return \Inori\Banklink\PaymentRequest
      */
-    public function preparePaymentRequest($orderId, $message, $sum, $language, $currency = 'EUR');
+    function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR');
+
+    /**
+     *
+     * @param array $responseData
+     *
+     * @return \Inori\Banklink\PaymentResponse
+     */
+    function preparePaymentResponse(array $responseData);
 
     /**
      * Data should be filtered prior to calling this method
@@ -30,5 +36,5 @@ interface ProtocolInterface
      *
      * @return array
      */
-    public function verifyPaymentResponse(array $response);
+    function verifyPaymentResponse(array $response);
 }

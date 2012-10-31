@@ -5,7 +5,11 @@ namespace Inori\Banklink\Protocol;
 use Inori\Banklink\Protocol\iPizza\Fields,
     Inori\Banklink\Protocol\iPizza\Services;
 
+use Inori\Banklink\Request,
+    Inori\Banklink\Response;
+
 use Inori\Banklink\Protocol\Util\ProtocolUtils;
+
 
 /**
  * This class implements iPizza protocol support
@@ -15,23 +19,33 @@ use Inori\Banklink\Protocol\Util\ProtocolUtils;
  */
 class iPizza implements ProtocolInterface
 {
-    private $publicKey;
-    private $privateKey;
+    protected $publicKey;
+    protected $privateKey;
 
-    private $sellerId;
-    private $sellerName;
-    private $sellerAccountNumber;
+    protected $sellerId;
+    protected $sellerName;
+    protected $sellerAccountNumber;
 
-    private $successUrl;
-    private $failureUrl;
+    protected $successUrl;
+    protected $failureUrl;
 
-    private $protocolVersion = '008';
-    private $charset         = 'UTF-8';
+    protected $protocolVersion = '008';
+    protected $requestUrl      = 'http://example.com';
+
+    protected $charset         = 'UTF-8'; // move to seb/swedbank
 
     /**
      * initialize basic data that will be used for all issued service requests
+     *
+     * @param string  $sellerId
+     * @param string  $sellerName
+     * @param integer $sellerAccNum
+     * @param string  $privateKey    Private key location
+     * @param string  $publicKey     Public key (certificate) location
+     * @param string  $successUrl
+     * @param string  $failureUrl
      */
-    public function __construct($sellerId, $sellerName, $sellerAccNum, $privKeyLoc, $pubKeyLoc, $successUrl, $failureUrl)
+    public function __construct($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $successUrl, $failureUrl)
     {
         $this->successUrl          = $successUrl;
         $this->failureUrl          = $failureUrl;
@@ -39,14 +53,42 @@ class iPizza implements ProtocolInterface
         $this->sellerName          = $sellerName;
         $this->sellerAccountNumber = $sellerAccNum;
 
-        $this->publicKey           = file_get_contents($pubKeyLoc);
-        $this->privateKey          = file_get_contents($privKeyLoc);
+        $this->publicKey           = $publicKey;
+        $this->privateKey          = $privateKey;
     }
 
     /**
      * @see Protocol::preparePaymentRequest()
      */
     public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
+    {
+        $requestData = $this->preparePaymentRequestData($orderId, $sum, $message, $language, $currency);
+
+        return new Request\PaymentRequest($this->requestUrl, $requestData);
+    }
+
+    public function preparePaymentResponse(array $responseData)
+    {
+        ;
+    }
+
+    /**
+     * @see Protocol::handlePaymentResponse()
+     */
+    public function verifyPaymentResponse(array $response)
+    {
+        $checksum = $this->generateHash($response);
+
+        $keyId = openssl_pkey_get_public('file://'.$this->publicKey);
+        $result = openssl_verify($checksum, base64_decode($response[Fields::SIGNATURE]), $keyId);
+        openssl_free_key($keyId);
+
+        return (boolean) $result;
+    }
+
+    /**
+     */
+    protected function preparePaymentRequestData($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
     {
         $data = array();
 
@@ -72,30 +114,16 @@ class iPizza implements ProtocolInterface
     }
 
     /**
-     * @see Protocol::handlePaymentResponse()
-     */
-    public function verifyPaymentResponse(array $response)
-    {
-        $checksum = $this->generateHash($response);
-
-        $keyId = openssl_pkey_get_public($this->publicKey);
-        $result = openssl_verify($checksum, base64_decode($response[Fields::SIGNATURE]), $keyId);
-        openssl_free_key($keyId);
-
-        return (boolean) $result;
-    }
-
-    /**
      *
-     * @param type $data
-     * @param type $key
-     * @return type
+     * @param array  $data
+     * @param string $key
+     * @return string
      */
     protected function getRequestSignature($data, $key)
     {
         $checksum = $this->generateHash($data);
 
-        $keyId = openssl_get_privatekey($key);
+        $keyId = openssl_get_privatekey('file://'.$key);
         openssl_sign($checksum, $signature, $keyId);
         openssl_free_key($keyId);
 

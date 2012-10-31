@@ -1,18 +1,11 @@
 <?php
 
+namespace Inori\Banklink\Request;
+
 /**
- * Description of PaymentRequest
+ * Payment request representation
  *
  * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
  * @since  31.10.2012
  */
-class PaymentRequest
-{
-    /**
-     * PaymentRequest constructor
-     */
-    public function __construct()
-    {
-        ;
-    }
-}
+class PaymentRequest extends Request {}
