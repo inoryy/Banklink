@@ -2,6 +2,8 @@
 
 namespace Inori\Banklink;
 
+use Inori\Banklink\Request\PaymentRequest;
+
 use Inori\Banklink\Protocol\ProtocolInterface;
 
 /**
@@ -20,15 +22,15 @@ abstract class Banklink
      */
     public function __construct(ProtocolInterface $protocol)
     {
-        $protocol->setRequestUrl($this->getRequestUrl());
-        $protocol->setProtocolVersion($this->getProtocolVersion());
-
         $this->protocol = $protocol;
     }
 
     public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
     {
-        return $this->protocol->preparePaymentRequest($orderId, $sum, $message, $language, $currency);
+        $requestData = $this->protocol->preparePaymentRequestData($orderId, $sum, $message, $language, $currency);
+        $requestData = array_merge($requestData, $this->getAdditionalFields());
+
+        return new PaymentRequest($this->getRequestUrl(), $requestData);
     }
 
     /**
@@ -41,5 +43,10 @@ abstract class Banklink
     }
 
     abstract protected function getRequestUrl();
-    abstract protected function getProtocolVersion();
+    /**
+     * Get array of any additional fields not directly supported by protocol (ex. encoding)
+     *
+     * @return array
+     */
+    abstract protected function getAdditionalFields();
 }

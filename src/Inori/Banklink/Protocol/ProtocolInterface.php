@@ -17,9 +17,9 @@ interface ProtocolInterface
      * @param type $language
      * @param type $currency
      *
-     * @return \Inori\Banklink\PaymentRequest
+     * @return array
      */
-    function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR', array $additionalFields = array());
+    function preparePaymentRequestData($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR');
 
     /**
      *
@@ -28,8 +28,4 @@ interface ProtocolInterface
      * @return \Inori\Banklink\PaymentResponse
      */
     function handleResponse(array $responseData);
-
-    function setRequestUrl($requestUrl);
-
-    function setProtocolVersion($protocolVersion);
 }

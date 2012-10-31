@@ -46,9 +46,9 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
           'VK_MAC'     => 'g4SMbCZEbxSXF7qx8ggcRHTyWOx4Dqkb0eM6atoEC5A12SAlWDgIw5TnB319KtreUcEubrjZz9z4NQgVrSieoOX9yr3G7ciLopGaoajAr6RA9RTYP0QDoArTuDKBqFwRT6D+erTggu9Dz3G/dQKlL9SCQtUxV6yCHp0cLgzYmtUGXoC7x4WnP1NuJZwlBnJI3acsCNyw5gTnEHle0Xd2OElH84aKlItqSsPbFirWhZRLfLy8uyiwSseChnTnDXCINyFLypHNTvvn+DaE8m+nyDkL4Jt3L2rciYkLPuoXSY3JGXTzjS7TkpOPUEtBQZ65ZylltduAeknxocvSZYUskA=='
         );
 
-        $request = $this->iPizza->preparePaymentRequest(1, 100, 'Test payment', 'ENG', 'EUR');
+        $request = $this->iPizza->preparePaymentRequestData(1, 100, 'Test payment', 'ENG', 'EUR');
 
-        $this->assertEquals($expectedRequestData, $request->getRequestData());
+        $this->assertEquals($expectedRequestData, $request);
     }
 
     public function testHandlePaymentResponseSuccess()

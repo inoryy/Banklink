@@ -17,19 +17,9 @@ class Swedbank extends Banklink
         parent::__construct($protocol);
     }
 
-    public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
-    {
-        return $this->protocol->preparePaymentRequest($orderId, $sum, $message, $language, $currency, $this->getAdditionalFields());
-    }
-
     protected function getRequestUrl()
     {
         return 'http://swedbank.ee';
-    }
-
-    protected function getProtocolVersion()
-    {
-        return '008';
     }
 
     protected function getAdditionalFields()

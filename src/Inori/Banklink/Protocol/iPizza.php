@@ -5,8 +5,7 @@ namespace Inori\Banklink\Protocol;
 use Inori\Banklink\Protocol\iPizza\Fields,
     Inori\Banklink\Protocol\iPizza\Services;
 
-use Inori\Banklink\Request\PaymentRequest,
-    Inori\Banklink\Response\PaymentResponse;
+use Inori\Banklink\Response\PaymentResponse;
 
 use Inori\Banklink\Protocol\Util\ProtocolUtils;
 
@@ -28,8 +27,7 @@ class iPizza implements ProtocolInterface
 
     protected $endpointUrl;
 
-    protected $protocolVersion = '008';
-    protected $requestUrl      = 'http://example.com';
+    protected $protocolVersion;
 
     /**
      * initialize basic data that will be used for all issued service requests
@@ -42,7 +40,7 @@ class iPizza implements ProtocolInterface
      * @param string  $endpointUrl
      * @param string  $cancelUrl
      */
-    public function __construct($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $endpointUrl)
+    public function __construct($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $endpointUrl, $version = '008')
     {
         $this->sellerId            = $sellerId;
         $this->sellerName          = $sellerName;
@@ -51,33 +49,40 @@ class iPizza implements ProtocolInterface
 
         $this->publicKey           = $publicKey;
         $this->privateKey          = $privateKey;
-    }
 
-    public function setRequestUrl($requestUrl)
-    {
-        $this->requestUrl = $requestUrl;
-    }
-
-    public function setProtocolVersion($protocolVersion)
-    {
-        $this->protocolVersion = $protocolVersion;
+        $this->protocolVersion     = $version;
     }
 
     /**
      *
-     * @param integer $orderId
-     * @param float $sum
-     * @param string $message
-     * @param string $language
-     * @param string $currency
-     *
-     * @return \Inori\Banklink\Request\PaymentRequest
+     * @param type  $orderId
+     * @param type  $sum
+     * @param type  $message
+     * @param type  $language
+     * @param type  $currency
+     * @return type
      */
-    public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR', array $additionalFields = array())
+    public function preparePaymentRequestData($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
     {
-        $requestData = $this->preparePaymentRequestData($orderId, $sum, $message, $language, $currency, $additionalFields);
+        $requestData = array(
+            Fields::SERVICE_ID       => Services::PAYMENT_REQUEST,
+            Fields::PROTOCOL_VERSION => $this->protocolVersion,
+            Fields::SELLER_ID        => $this->sellerId,
+            Fields::ORDER_ID         => $orderId,
+            Fields::SUM              => $sum,
+            Fields::CURRENCY         => $currency,
+            Fields::SELLER_BANK_ACC  => $this->sellerAccountNumber,
+            Fields::SELLER_NAME      => $this->sellerName,
+            Fields::ORDER_REFERENCE  => ProtocolUtils::generateOrderReference($orderId),
+            Fields::DESCRIPTION      => $message,
+            Fields::SUCCESS_URL      => $this->endpointUrl,
+            Fields::CANCEL_URL       => $this->endpointUrl,
+            Fields::USER_LANG        => $language
+        );
 
-        return new PaymentRequest($this->requestUrl, $requestData);
+        $requestData[Fields::SIGNATURE] = $this->getRequestSignature($requestData, $this->privateKey);
+
+        return $requestData;
     }
 
     /**
@@ -121,39 +126,6 @@ class iPizza implements ProtocolInterface
         }
 
         return $response;
-    }
-
-    /**
-     *
-     * @param type  $orderId
-     * @param type  $sum
-     * @param type  $message
-     * @param type  $language
-     * @param type  $currency
-     * @param array $additionalFields Any additional fields not directly supported by protocol (ex. encoding)
-     * @return type
-     */
-    protected function preparePaymentRequestData($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR', array $additionalFields = array())
-    {
-        $requestData = array_merge(array(
-            Fields::SERVICE_ID       => Services::PAYMENT_REQUEST,
-            Fields::PROTOCOL_VERSION => $this->protocolVersion,
-            Fields::SELLER_ID        => $this->sellerId,
-            Fields::ORDER_ID         => $orderId,
-            Fields::SUM              => $sum,
-            Fields::CURRENCY         => $currency,
-            Fields::SELLER_BANK_ACC  => $this->sellerAccountNumber,
-            Fields::SELLER_NAME      => $this->sellerName,
-            Fields::ORDER_REFERENCE  => ProtocolUtils::generateOrderReference($orderId),
-            Fields::DESCRIPTION      => $message,
-            Fields::SUCCESS_URL      => $this->endpointUrl,
-            Fields::CANCEL_URL       => $this->endpointUrl,
-            Fields::USER_LANG        => $language
-        ), $additionalFields);
-
-        $requestData[Fields::SIGNATURE] = $this->getRequestSignature($requestData, $this->privateKey);
-
-        return $requestData;
     }
 
     /**
