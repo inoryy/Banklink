@@ -12,7 +12,7 @@ class Swedbank extends Banklink
 {
     protected $requestUrl = '';
 
-    public function handleCallback(array $data)
+    public function handleResponse(array $data)
     {
         return false;
     }

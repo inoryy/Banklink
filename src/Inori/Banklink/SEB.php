@@ -11,7 +11,7 @@ namespace Inori\Banklink;
 class SEB extends Banklink
 {
 
-    public function handleCallback(array $data)
+    public function handleResponse(array $data)
     {
         return false;
     }
@@ -26,5 +26,5 @@ class SEB extends Banklink
         return false;
     }
 
-    
+
 }
