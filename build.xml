@@ -24,7 +24,7 @@
 
     <target name="phpunit"
          description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
-        <exec command="phpunit --log-junit  ${basedir}/build/logs/junit.xml --coverage-clover ${basedir}/build/logs/clover.xml"/>
+        <exec command="phpunit --log-junit  ${basedir}/build/logs/junit.xml --coverage-clover ${basedir}/build/logs/clover.xml --coverage-html ${basedir}/build/coverage"/>
     </target>
 
     <target name="pdepend"
