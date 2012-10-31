@@ -41,8 +41,6 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
           'VK_NAME'    => 'Test Testov',
           'VK_REF'     => '13',
           'VK_MSG'     => 'Test payment',
-          'VK_CHARSET' => 'UTF-8',
-          'VK_ENCODING'=> 'UTF-8',
           'VK_RETURN'  => 'http://www.google.com',
           'VK_CANCEL'  => 'http://www.google.com',
           'VK_LANG'    => 'ENG',

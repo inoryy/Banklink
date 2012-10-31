@@ -19,7 +19,7 @@ interface ProtocolInterface
      *
      * @return \Inori\Banklink\PaymentRequest
      */
-    function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR');
+    function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR', array $additionalFields = array());
 
     /**
      *

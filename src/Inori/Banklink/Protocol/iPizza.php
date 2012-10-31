@@ -31,8 +31,6 @@ class iPizza implements ProtocolInterface
     protected $protocolVersion = '008';
     protected $requestUrl      = 'http://example.com';
 
-    protected $charset         = 'UTF-8'; // move to seb/swedbank
-
     /**
      * initialize basic data that will be used for all issued service requests
      *
@@ -75,9 +73,9 @@ class iPizza implements ProtocolInterface
      *
      * @return \Inori\Banklink\Request\PaymentRequest
      */
-    public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
+    public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR', array $additionalFields = array())
     {
-        $requestData = $this->preparePaymentRequestData($orderId, $sum, $message, $language, $currency);
+        $requestData = $this->preparePaymentRequestData($orderId, $sum, $message, $language, $currency, $additionalFields);
 
         return new PaymentRequest($this->requestUrl, $requestData);
     }
@@ -126,30 +124,36 @@ class iPizza implements ProtocolInterface
     }
 
     /**
+     *
+     * @param type  $orderId
+     * @param type  $sum
+     * @param type  $message
+     * @param type  $language
+     * @param type  $currency
+     * @param array $additionalFields Any additional fields not directly supported by protocol (ex. encoding)
+     * @return type
      */
-    protected function preparePaymentRequestData($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
+    protected function preparePaymentRequestData($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR', array $additionalFields = array())
     {
-        $data = array();
+        $requestData = array_merge(array(
+            Fields::SERVICE_ID       => Services::PAYMENT_REQUEST,
+            Fields::PROTOCOL_VERSION => $this->protocolVersion,
+            Fields::SELLER_ID        => $this->sellerId,
+            Fields::ORDER_ID         => $orderId,
+            Fields::SUM              => $sum,
+            Fields::CURRENCY         => $currency,
+            Fields::SELLER_BANK_ACC  => $this->sellerAccountNumber,
+            Fields::SELLER_NAME      => $this->sellerName,
+            Fields::ORDER_REFERENCE  => ProtocolUtils::generateOrderReference($orderId),
+            Fields::DESCRIPTION      => $message,
+            Fields::SUCCESS_URL      => $this->endpointUrl,
+            Fields::CANCEL_URL       => $this->endpointUrl,
+            Fields::USER_LANG        => $language
+        ), $additionalFields);
 
-        $data[Fields::SERVICE_ID]       = Services::PAYMENT_REQUEST;
-        $data[Fields::PROTOCOL_VERSION] = $this->protocolVersion;
-        $data[Fields::SELLER_ID]        = $this->sellerId;
-        $data[Fields::ORDER_ID]         = $orderId;
-        $data[Fields::SUM]              = $sum;
-        $data[Fields::CURRENCY]         = $currency;
-        $data[Fields::SELLER_BANK_ACC]  = $this->sellerAccountNumber;
-        $data[Fields::SELLER_NAME]      = $this->sellerName;
-        $data[Fields::ORDER_REFERENCE]  = ProtocolUtils::generateOrderReference($orderId);
-        $data[Fields::DESCRIPTION]      = $message;
-        $data[Fields::CHARSET]          = $this->charset; // Move to: SEB
-        $data[Fields::ENCODING]         = $this->charset; // Move to: Swedbank
-        $data[Fields::SUCCESS_URL]      = $this->endpointUrl;
-        $data[Fields::CANCEL_URL]       = $this->endpointUrl;
-        $data[Fields::USER_LANG]        = $language;
+        $requestData[Fields::SIGNATURE] = $this->getRequestSignature($requestData, $this->privateKey);
 
-        $data[Fields::SIGNATURE]        = $this->getRequestSignature($data, $this->privateKey);
-
-        return $data;
+        return $requestData;
     }
 
     /**
