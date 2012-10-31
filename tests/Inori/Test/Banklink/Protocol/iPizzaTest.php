@@ -6,9 +6,7 @@ use Inori\Banklink\Protocol\iPizza;
 use Inori\Banklink\Response\PaymentResponse;
 
 /**
- * iPizza protocol test
- *
- * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
+ * @author Roman Marintsenko <roman.marintsenko@gmail.com>
  * @since  15.01.2012
  */
 class iPizzaTest extends \PHPUnit_Framework_TestCase

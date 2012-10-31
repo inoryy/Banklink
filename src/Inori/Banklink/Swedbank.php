@@ -7,7 +7,7 @@ use Inori\Banklink\Protocol\iPizza;
 /**
  * Banklink implementation for Swedbank using iPizza protocol for communication
  *
- * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
+ * @author Roman Marintsenko <roman.marintsenko@gmail.com>
  * @since  11.01.2012
  */
 class Swedbank extends Banklink

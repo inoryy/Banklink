@@ -13,7 +13,7 @@ use Inori\Banklink\Protocol\Util\ProtocolUtils;
 /**
  * This class implements iPizza protocol support
  *
- * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
+ * @author Roman Marintsenko <roman.marintsenko@gmail.com>
  * @since  11.01.2012
  */
 class iPizza implements ProtocolInterface

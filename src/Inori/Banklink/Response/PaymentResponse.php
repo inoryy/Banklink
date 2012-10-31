@@ -5,7 +5,7 @@ namespace Inori\Banklink\Response;
 /**
  * Payment response representation
  *
- * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
+ * @author Roman Marintsenko <roman.marintsenko@gmail.com>
  * @since  31.10.2012
  */
 class PaymentResponse extends Response

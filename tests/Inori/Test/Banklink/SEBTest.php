@@ -4,12 +4,9 @@ namespace Inori\Test\Banklink;
 
 use Inori\Banklink\SEB;
 use Inori\Banklink\Protocol\iPizza;
-use Inori\Banklink\Response\PaymentResponse;
 
 /**
- * Description of SEBTest
- *
- * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
+ * @author Roman Marintsenko <roman.marintsenko@gmail.com>
  * @since  31.10.2012
  */
 class SEBTest extends \PHPUnit_Framework_TestCase

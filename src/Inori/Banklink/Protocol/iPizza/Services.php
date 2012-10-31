@@ -5,7 +5,7 @@ namespace Inori\Banklink\Protocol\iPizza;
 /**
  * List of all services available via iPizza
  *
- * @author Roman Marintsenko <roman.marintsenko@knplabs.com>
+ * @author Roman Marintsenko <roman.marintsenko@gmail.com>
  * @since  10.01.2012
  */
 final class Services
