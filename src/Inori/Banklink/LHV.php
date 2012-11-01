@@ -5,15 +5,15 @@ namespace Inori\Banklink;
 use Inori\Banklink\Protocol\iPizza;
 
 /**
- * Banklink implementation for Swedbank using iPizza protocol for communication
- * For specs see https://www.swedbank.ee/static/pdf/business/d2d/paymentcollection/info_banklink_techspec_eng.pdf
+ * Banklink implementation for LHV bank using iPizza protocol for communication
+ * For specs see http://www.lhv.ee/images/docs/Bank_Link_Technical_Specification-EN.pdf
  *
  * @author Roman Marintsenko <roman.marintsenko@gmail.com>
- * @since  11.01.2012
+ * @since  1.11.2012
  */
-class Swedbank extends Banklink
+class LHV extends Banklink
 {
-    protected $requestUrl = 'http://swedbank.ee';
+    protected $requestUrl = 'http://lhv.ee';
 
     /**
      * Force iPizza protocol
@@ -35,7 +35,7 @@ class Swedbank extends Banklink
     protected function getAdditionalFields()
     {
         return array(
-            'VK_ENCODING' => 'UTF-8'
+            'VK_CHARSET' => 'UTF-8'
         );
     }
 }
