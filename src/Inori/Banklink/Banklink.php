@@ -9,7 +9,7 @@ use Inori\Banklink\Protocol\ProtocolInterface;
 /**
  * General abstract class that defines public API for all banklink implementations
  *
- * @author Roman Marintsenko <roman.marintsenko@gmail.com>
+ * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  11.01.2012
  */
 abstract class Banklink

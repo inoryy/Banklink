@@ -5,7 +5,7 @@ namespace Inori\Banklink\Request;
 /**
  * Generic request representation
  *
- * @author Roman Marintsenko <roman.marintsenko@gmail.com>
+ * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  31.10.2012
  */
 abstract class Request

@@ -8,7 +8,7 @@ use Inori\Banklink\Protocol\iPizza;
  * Banklink implementation for SEB bank using iPizza protocol for communication
  * For specs see http://seb.ee/en/business/collection-payments/collection-payments-web/bank-link-specification
  *
- * @author Roman Marintsenko <roman.marintsenko@gmail.com>
+ * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  11.01.2012
  */
 class SEB extends Banklink

@@ -8,7 +8,7 @@ use Inori\Banklink\Protocol\iPizza;
  * Banklink implementation for LHV bank using iPizza protocol for communication
  * For specs see http://www.lhv.ee/images/docs/Bank_Link_Technical_Specification-EN.pdf
  *
- * @author Roman Marintsenko <roman.marintsenko@gmail.com>
+ * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  1.11.2012
  */
 class LHV extends Banklink

@@ -6,7 +6,7 @@ use Inori\Banklink\SEB;
 use Inori\Banklink\Protocol\iPizza;
 
 /**
- * @author Roman Marintsenko <roman.marintsenko@gmail.com>
+ * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  31.10.2012
  */
 class SEBTest extends \PHPUnit_Framework_TestCase

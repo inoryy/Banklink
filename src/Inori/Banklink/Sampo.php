@@ -9,7 +9,7 @@ use Inori\Banklink\Protocol\iPizza;
  * For specs see https://www.sampopank.ee/public/documents/Pangalink_makse_spetsifikatsioon_eng.pdf
  *               https://www.sampopank.ee/public/documents/Pangalink_autentimise_spetsifikatsioon_eng.pdf
  *
- * @author Roman Marintsenko <roman.marintsenko@gmail.com>
+ * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  1.11.2012
  */
 class Sampo extends Banklink

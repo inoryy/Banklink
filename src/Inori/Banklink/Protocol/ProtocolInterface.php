@@ -5,7 +5,7 @@ namespace Inori\Banklink\Protocol;
 /**
  * Generic Protocol interface
  *
- * @author Roman Marintsenko <roman.marintsenko@gmail.com>
+ * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  11.01.2012
  */
 interface ProtocolInterface

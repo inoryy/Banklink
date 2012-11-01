@@ -5,7 +5,7 @@ namespace Inori\Test\Banklink\Protocol\Util;
 use Inori\Banklink\Protocol\Util\ProtocolUtils;
 
 /**
- * @author Roman Marintsenko <roman.marintsenko@gmail.com>
+ * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  11.01.2012
  */
 class ProtocolUtilsTest extends \PHPUnit_Framework_TestCase

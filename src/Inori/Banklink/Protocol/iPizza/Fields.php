@@ -5,7 +5,7 @@ namespace Inori\Banklink\Protocol\iPizza;
 /**
  * List of all fields used by iPizza protocol
  *
- * @author Roman Marintsenko <roman.marintsenko@gmail.com>
+ * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  10.01.2011
  */
 final class Fields

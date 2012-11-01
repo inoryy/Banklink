@@ -5,10 +5,10 @@ namespace Inori\Banklink;
 use Inori\Banklink\Protocol\iPizza;
 
 /**
- * Banklink implementation for LHV bank using iPizza protocol for communication
+ * Banklink implementation for Krediidipank bank using iPizza protocol for communication
  * For specs see http://www.krediidipank.ee/business/settlements/bank-link/tehniline_kirjeldus_inglise.pdf
  *
- * @author Roman Marintsenko <roman.marintsenko@gmail.com>
+ * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  1.11.2012
  */
 class Krediidipank extends Banklink

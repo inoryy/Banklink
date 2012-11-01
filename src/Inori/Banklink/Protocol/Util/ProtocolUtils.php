@@ -5,7 +5,7 @@ namespace Inori\Banklink\Protocol\Util;
 /**
  * Protocol utilities that are used across all protocols
  *
- * @author Roman Marintsenko <roman.marintsenko@gmail.com>
+ * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  31.10.2012
  */
 class ProtocolUtils
