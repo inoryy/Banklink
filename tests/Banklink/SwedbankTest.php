@@ -1,17 +1,17 @@
 <?php
 
-namespace Inori\Test\Banklink;
+namespace Banklink;
 
-use Inori\Banklink\SEB;
-use Inori\Banklink\Protocol\iPizza;
+use Banklink\Swedbank;
+use Banklink\Protocol\iPizza;
 
 /**
  * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  31.10.2012
  */
-class SEBTest extends \PHPUnit_Framework_TestCase
+class SwedbankTest extends \PHPUnit_Framework_TestCase
 {
-    private $seb;
+    private $swedbank;
 
     public function setUp()
     {
@@ -24,7 +24,7 @@ class SEBTest extends \PHPUnit_Framework_TestCase
             'http://www.google.com'
         );
 
-        $this->seb = new SEB($protocol);
+        $this->swedbank = new Swedbank($protocol);
     }
 
     public function testPreparePaymentRequest()
@@ -43,13 +43,13 @@ class SEBTest extends \PHPUnit_Framework_TestCase
           'VK_RETURN'   => 'http://www.google.com',
           'VK_CANCEL'   => 'http://www.google.com',
           'VK_LANG'     => 'ENG',
-          'VK_CHARSET'  => 'UTF-8',
+          'VK_ENCODING' => 'UTF-8',
           'VK_MAC'      => 'g4SMbCZEbxSXF7qx8ggcRHTyWOx4Dqkb0eM6atoEC5A12SAlWDgIw5TnB319KtreUcEubrjZz9z4NQgVrSieoOX9yr3G7ciLopGaoajAr6RA9RTYP0QDoArTuDKBqFwRT6D+erTggu9Dz3G/dQKlL9SCQtUxV6yCHp0cLgzYmtUGXoC7x4WnP1NuJZwlBnJI3acsCNyw5gTnEHle0Xd2OElH84aKlItqSsPbFirWhZRLfLy8uyiwSseChnTnDXCINyFLypHNTvvn+DaE8m+nyDkL4Jt3L2rciYkLPuoXSY3JGXTzjS7TkpOPUEtBQZ65ZylltduAeknxocvSZYUskA=='
         );
 
-        $request = $this->seb->preparePaymentRequest(1, 100, 'Test payment', 'ENG', 'EUR');
+        $request = $this->swedbank->preparePaymentRequest(1, 100, 'Test payment', 'ENG', 'EUR');
 
         $this->assertEquals($expectedRequestData, $request->getRequestData());
-        $this->assertEquals('http://seb.ee', $request->getRequestUrl());
+        $this->assertEquals('http://swedbank.ee', $request->getRequestUrl());
     }
 }

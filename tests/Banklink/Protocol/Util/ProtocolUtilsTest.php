@@ -1,8 +1,8 @@
 <?php
 
-namespace Inori\Test\Banklink\Protocol\Util;
+namespace Banklink\Protocol\Util;
 
-use Inori\Banklink\Protocol\Util\ProtocolUtils;
+use Banklink\Protocol\Util\ProtocolUtils;
 
 /**
  * @author Roman Marintsenko <inoryy@gmail.com>

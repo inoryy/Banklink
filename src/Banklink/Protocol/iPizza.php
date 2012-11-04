@@ -1,13 +1,13 @@
 <?php
 
-namespace Inori\Banklink\Protocol;
+namespace Banklink\Protocol;
 
-use Inori\Banklink\Protocol\iPizza\Fields,
-    Inori\Banklink\Protocol\iPizza\Services;
+use Banklink\Protocol\iPizza\Fields,
+    Banklink\Protocol\iPizza\Services;
 
-use Inori\Banklink\Response\PaymentResponse;
+use Banklink\Response\PaymentResponse;
 
-use Inori\Banklink\Protocol\Util\ProtocolUtils;
+use Banklink\Protocol\Util\ProtocolUtils;
 
 
 /**
@@ -90,7 +90,7 @@ class iPizza implements ProtocolInterface
      *
      * @param array $responseData
      *
-     * @return \Inori\Banklink\Response\Response
+     * @return \Banklink\Response\Response
      *
      * @throws \InvalidArgumentException
      */
@@ -110,7 +110,7 @@ class iPizza implements ProtocolInterface
      *
      * @param array $responseData
      *
-     * @return \Inori\Banklink\Response\PaymentResponse
+     * @return \Banklink\Response\PaymentResponse
      */
     protected function handlePaymentResponse(array $responseData)
     {

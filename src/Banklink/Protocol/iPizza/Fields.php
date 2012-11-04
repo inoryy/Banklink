@@ -1,6 +1,6 @@
 <?php
 
-namespace Inori\Banklink\Protocol\iPizza;
+namespace Banklink\Protocol\iPizza;
 
 /**
  * List of all fields used by iPizza protocol

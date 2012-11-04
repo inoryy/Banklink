@@ -1,24 +1,24 @@
 <?php
 
-namespace Inori\Banklink;
+namespace Banklink;
 
-use Inori\Banklink\Protocol\iPizza;
+use Banklink\Protocol\iPizza;
 
 /**
- * Banklink implementation for Swedbank using iPizza protocol for communication
- * For specs see https://www.swedbank.ee/static/pdf/business/d2d/paymentcollection/info_banklink_techspec_eng.pdf
+ * Banklink implementation for SEB bank using iPizza protocol for communication
+ * For specs see http://seb.ee/en/business/collection-payments/collection-payments-web/bank-link-specification
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  11.01.2012
  */
-class Swedbank extends Banklink
+class SEB extends Banklink
 {
-    protected $requestUrl = 'http://swedbank.ee';
+    protected $requestUrl = 'http://seb.ee';
 
     /**
      * Force iPizza protocol
      *
-     * @param \Inori\Banklink\iPizza $protocol
+     * @param \Banklink\iPizza $protocol
      */
     public function __construct(iPizza $protocol)
     {
@@ -35,7 +35,7 @@ class Swedbank extends Banklink
     protected function getAdditionalFields()
     {
         return array(
-            'VK_ENCODING' => 'UTF-8'
+            'VK_CHARSET' => 'UTF-8'
         );
     }
 }

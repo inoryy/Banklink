@@ -1,10 +1,10 @@
 <?php
 
-namespace Inori\Banklink;
+namespace Banklink;
 
-use Inori\Banklink\Request\PaymentRequest;
+use Banklink\Request\PaymentRequest;
 
-use Inori\Banklink\Protocol\ProtocolInterface;
+use Banklink\Protocol\ProtocolInterface;
 
 /**
  * General abstract class that defines public API for all banklink implementations
@@ -19,7 +19,7 @@ abstract class Banklink
     protected $requestUrl;
 
     /**
-     * @param \Inori\Banklink\Protocol\ProtocolInterface $protocol
+     * @param \Banklink\Protocol\ProtocolInterface $protocol
      * @param string | null                              $requestUrl
      */
     public function __construct(ProtocolInterface $protocol, $requestUrl = null)
@@ -38,7 +38,7 @@ abstract class Banklink
      * @param string  $language
      * @param string  $currency
      *
-     * @return \Inori\Banklink\Request\PaymentRequest
+     * @return \Banklink\Request\PaymentRequest
      */
     public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
     {
@@ -51,7 +51,7 @@ abstract class Banklink
     /**
      * @param array $responseData
      * 
-     * @return \Inori\Banklink\Response\Response
+     * @return \Banklink\Response\Response
      */
     public function handleResponse(array $responseData)
     {

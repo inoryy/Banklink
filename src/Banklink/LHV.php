@@ -1,8 +1,8 @@
 <?php
 
-namespace Inori\Banklink;
+namespace Banklink;
 
-use Inori\Banklink\Protocol\iPizza;
+use Banklink\Protocol\iPizza;
 
 /**
  * Banklink implementation for LHV bank using iPizza protocol for communication
@@ -18,7 +18,7 @@ class LHV extends Banklink
     /**
      * Force iPizza protocol
      *
-     * @param \Inori\Banklink\iPizza $protocol
+     * @param \Banklink\iPizza $protocol
      */
     public function __construct(iPizza $protocol)
     {

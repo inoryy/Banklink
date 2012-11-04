@@ -1,6 +1,6 @@
 <?php
 
-namespace Inori\Banklink\Response;
+namespace Banklink\Response;
 
 /**
  * Generic response representation

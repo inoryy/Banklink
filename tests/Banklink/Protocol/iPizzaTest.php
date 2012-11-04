@@ -1,9 +1,9 @@
 <?php
 
-namespace Inori\Test\Banklink\Protocol;
+namespace Banklink\Protocol;
 
-use Inori\Banklink\Protocol\iPizza;
-use Inori\Banklink\Response\PaymentResponse;
+use Banklink\Protocol\iPizza;
+use Banklink\Response\PaymentResponse;
 
 /**
  * @author Roman Marintsenko <inoryy@gmail.com>

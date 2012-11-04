@@ -1,6 +1,6 @@
 <?php
 
-namespace Inori\Banklink\Protocol\Util;
+namespace Banklink\Protocol\Util;
 
 /**
  * Protocol utilities that are used across all protocols

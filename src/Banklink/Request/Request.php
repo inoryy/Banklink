@@ -1,6 +1,6 @@
 <?php
 
-namespace Inori\Banklink\Request;
+namespace Banklink\Request;
 
 /**
  * Generic request representation

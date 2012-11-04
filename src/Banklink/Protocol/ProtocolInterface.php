@@ -1,6 +1,6 @@
 <?php
 
-namespace Inori\Banklink\Protocol;
+namespace Banklink\Protocol;
 
 /**
  * Generic Protocol interface
@@ -39,7 +39,7 @@ interface ProtocolInterface
      *
      * @param array $responseData
      *
-     * @return \Inori\Banklink\Response\Response
+     * @return \Banklink\Response\Response
      */
     function handleResponse(array $responseData);
 }
