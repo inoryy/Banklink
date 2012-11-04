@@ -11,6 +11,19 @@ namespace Inori\Banklink\Protocol;
 interface ProtocolInterface
 {
     /**
+     * initialize basic data that will be used for all issued service requests
+     *
+     * @param string  $sellerId
+     * @param string  $sellerName
+     * @param integer $sellerAccNum
+     * @param string  $privateKey    Private key location
+     * @param string  $publicKey     Public key (certificate) location
+     * @param string  $endpointUrl
+     * @param string  $version
+     */
+    function __construct($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $endpointUrl, $version = '008');
+
+    /**
      * @param type $orderId
      * @param type $sum
      * @param type $message
