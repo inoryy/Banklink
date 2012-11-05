@@ -50,6 +50,6 @@ class SEBTest extends \PHPUnit_Framework_TestCase
         $request = $this->seb->preparePaymentRequest(1, 100, 'Test payment', 'ENG', 'EUR');
 
         $this->assertEquals($expectedRequestData, $request->getRequestData());
-        $this->assertEquals('http://seb.ee', $request->getRequestUrl());
+        $this->assertEquals('https://www.seb.ee/cgi-bin/unet3.sh/un3min.r', $request->getRequestUrl());
     }
 }

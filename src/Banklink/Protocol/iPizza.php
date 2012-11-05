@@ -180,7 +180,7 @@ class iPizza implements ProtocolInterface
      * @param array $data
      *
      * @return string
-     * 
+     *
      * @throws \LogicException
      */
     protected function generateHash(array $data)
@@ -194,7 +194,7 @@ class iPizza implements ProtocolInterface
             }
 
             $content = $data[$fieldName];
-            $checksum .= str_pad(strlen($content), 3, '0', STR_PAD_LEFT) . $content;
+            $checksum .= str_pad(mb_strlen($content, 'UTF-8'), 3, '0', STR_PAD_LEFT) . $content;
         }
 
         return $checksum;

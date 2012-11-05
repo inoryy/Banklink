@@ -133,4 +133,31 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
 
         $response = $this->iPizza->handleResponse($responseData);
     }
+
+    public function testHandlePaymentResponseSuccessWithSpecialCharacters()
+    {
+        $responseData = array(
+            'VK_SERVICE'  => '1101',
+            'VK_VERSION'  => '008',
+            'VK_SND_ID'   => 'GENIPIZZA',
+            'VK_REC_ID'   => 'uid258629',
+            'VK_STAMP'    => '1',
+            'VK_T_NO'     => '17947',
+            'VK_AMOUNT'   => '100',
+            'VK_CURR'     => 'EUR',
+            'VK_REC_ACC'  => '119933113300',
+            'VK_REC_NAME' => 'Test Testov',
+            'VK_REF'      => '13',
+            'VK_MSG'      => 'Test payment',
+            'VK_T_DATE'   => '31.10.2012',
+            'VK_AUTO'     => 'N',
+            'VK_SND_NAME' => 'Tõõger Leõpäöld',
+            'VK_SND_ACC'  => '221234567897',
+            'VK_MAC'      => 'tg2hMbWzoZBach+R5AcwCoerkv1jMMPMez7MuYViI4YNJPBGZ4QcyhlMScasq9JSRSTFhq6dmLh2pbZgn17YNXY4WN2MyHaTLEb02itEsfeVOu1Z9S4WaTmI7gtGMtFUY1xxIr/QOLYo2A4HA6EvGFrJPdy1mN/Zpkd/aJpusDsEJ/Sz+UTkwTR7EJLDzdtctchXkCyIffsUtNYNMDaH8l0u2a5o3zwnD0rTKTx1KUWRIxZ/mtidoXBbTFq5Ggi31yz6DPi1P1Xx5//AmfecvF7yONE6gYh7WacjzssIcYlDw5X9QSyJYk3Oj5rp31XvZ8SoBRSeaAgOtd2RGrqwVw=='
+        );
+
+        $response = $this->iPizza->handleResponse($responseData);
+
+        $this->assertEquals(PaymentResponse::STATUS_SUCCESS, $response->getStatus());
+    }
 }

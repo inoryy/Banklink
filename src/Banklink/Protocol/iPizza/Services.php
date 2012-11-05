@@ -12,7 +12,7 @@ final class Services
 {
     // Requests
     const PAYMENT_REQUEST      = '1001';
-    const AUTHENTICATE_REQUEST         = '3001';
+    const AUTHENTICATE_REQUEST = '3001';
 
     // Responses
     const PAYMENT_SUCCESS      = '1101';
