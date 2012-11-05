@@ -17,17 +17,21 @@ abstract class Banklink
     protected $protocol;
 
     protected $requestUrl;
+    protected $testRequestUrl;
 
     /**
      * @param \Banklink\Protocol\ProtocolInterface $protocol
-     * @param string | null                              $requestUrl
+     * @param boolean                              $testMode
+     * @param string | null                        $requestUrl
      */
-    public function __construct(ProtocolInterface $protocol, $requestUrl = null)
+    public function __construct(ProtocolInterface $protocol, $testMode = false, $requestUrl = null)
     {
         $this->protocol = $protocol;
 
-        if ($requestUrl) {
+        if ($requestUrl && !$testMode) {
             $this->requestUrl = $requestUrl;
+        } else if ($testMode) {
+            $this->requestUrl = $this->testRequestUrl;
         }
     }
 
@@ -50,7 +54,7 @@ abstract class Banklink
 
     /**
      * @param array $responseData
-     * 
+     *
      * @return \Banklink\Response\Response
      */
     public function handleResponse(array $responseData)

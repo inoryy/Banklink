@@ -13,7 +13,8 @@ use Banklink\Protocol\iPizza;
  */
 class Krediidipank extends Banklink
 {
-    protected $requestUrl = 'http://krediidipank.ee';
+    protected $requestUrl = 'https://i-pank.krediidipank.ee/teller/maksa';
+    protected $testRequestUrl = 'https://pangalink.net/banklink/008/krediidipank';
 
     /**
      * Force iPizza protocol

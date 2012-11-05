@@ -13,7 +13,8 @@ use Banklink\Protocol\iPizza;
  */
 class LHV extends Banklink
 {
-    protected $requestUrl = 'http://lhv.ee';
+    protected $requestUrl = 'https://www.lhv.ee/banklink';
+    protected $testRequestUrl = 'https://pangalink.net/banklink/008/lhv';
 
     /**
      * Force iPizza protocol
