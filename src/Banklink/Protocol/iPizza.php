@@ -187,16 +187,16 @@ class iPizza implements ProtocolInterface
     {
         $id = $data[Fields::SERVICE_ID];
 
-        $checksum = '';
+        $hash = '';
         foreach (Services::getFieldsForService($id) as $fieldName) {
             if (!isset($data[$fieldName])) {
                 throw new \LogicException(sprintf('Cannot generate %s service hash without %s field', $id, $fieldName));
             }
 
             $content = $data[$fieldName];
-            $checksum .= str_pad(mb_strlen($content, 'UTF-8'), 3, '0', STR_PAD_LEFT) . $content;
+            $hash .= str_pad(mb_strlen($content, 'UTF-8'), 3, '0', STR_PAD_LEFT) . $content;
         }
 
-        return $checksum;
+        return $hash;
     }
 }

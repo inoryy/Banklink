@@ -142,18 +142,18 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_SND_ID'   => 'GENIPIZZA',
             'VK_REC_ID'   => 'uid258629',
             'VK_STAMP'    => '1',
-            'VK_T_NO'     => '17947',
+            'VK_T_NO'     => '18193',
             'VK_AMOUNT'   => '100',
             'VK_CURR'     => 'EUR',
             'VK_REC_ACC'  => '119933113300',
             'VK_REC_NAME' => 'Test Testov',
             'VK_REF'      => '13',
             'VK_MSG'      => 'Test payment',
-            'VK_T_DATE'   => '31.10.2012',
+            'VK_T_DATE'   => '06.11.2012',
             'VK_AUTO'     => 'N',
             'VK_SND_NAME' => 'Tõõger Leõpäöld',
             'VK_SND_ACC'  => '221234567897',
-            'VK_MAC'      => 'tg2hMbWzoZBach+R5AcwCoerkv1jMMPMez7MuYViI4YNJPBGZ4QcyhlMScasq9JSRSTFhq6dmLh2pbZgn17YNXY4WN2MyHaTLEb02itEsfeVOu1Z9S4WaTmI7gtGMtFUY1xxIr/QOLYo2A4HA6EvGFrJPdy1mN/Zpkd/aJpusDsEJ/Sz+UTkwTR7EJLDzdtctchXkCyIffsUtNYNMDaH8l0u2a5o3zwnD0rTKTx1KUWRIxZ/mtidoXBbTFq5Ggi31yz6DPi1P1Xx5//AmfecvF7yONE6gYh7WacjzssIcYlDw5X9QSyJYk3Oj5rp31XvZ8SoBRSeaAgOtd2RGrqwVw=='
+            'VK_MAC'      => 'eK4mEiRhpZ/gz1/4GEaNwvX+AhfpaTJOQRGdWky4Cb6Gqubn3pgSDeApdcccu+WMrAX1ozzx3H/kEzIHn2NT3mFDUHNkEnOlx7OFgNZY+Wvypz18GCYyW/QIsNi/dk3HTzAymU6rVhGSi9v9OkogASRrSn6OMnFofa+WIwvnHJzHCZ8uY37NSERHv+FcT7CGoHHgU5+3hjEAWsXkX4TRDfrWvzsb/tkDaJbNv0KHo+WjcPHL/rBVIoexZpahaf4z4f1g6DfH6LOOgvwbjJZ3JEHNvE+DM5bY58Asn8MxOayYJ3hZ39J0hdepO+2+YUdkqPPxyJIvufXeoaGtsu0AYQ=='
         );
 
         $response = $this->iPizza->handleResponse($responseData);
