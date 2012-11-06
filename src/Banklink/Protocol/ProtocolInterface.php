@@ -42,4 +42,6 @@ interface ProtocolInterface
      * @return \Banklink\Response\Response
      */
     function handleResponse(array $responseData);
+
+    function setEncodings($requestEncoding, $responseEncoding);
 }

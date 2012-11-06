@@ -19,6 +19,9 @@ abstract class Banklink
     protected $requestUrl;
     protected $testRequestUrl;
 
+    protected $requestEncoding = 'UTF-8';
+    protected $responseEncoding = 'ISO-8859-1';
+
     /**
      * @param \Banklink\Protocol\ProtocolInterface $protocol
      * @param boolean                              $testMode
@@ -27,6 +30,7 @@ abstract class Banklink
     public function __construct(ProtocolInterface $protocol, $testMode = false, $requestUrl = null)
     {
         $this->protocol = $protocol;
+        $this->protocol->setEncodings($this->requestEncoding, $this->responseEncoding);
 
         if ($requestUrl && !$testMode) {
             $this->requestUrl = $requestUrl;

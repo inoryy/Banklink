@@ -29,6 +29,9 @@ class iPizza implements ProtocolInterface
 
     protected $protocolVersion;
 
+    protected $requestEncoding = 'UTF-8';
+    protected $responseEncoding = 'ISO-8859-1';
+
     /**
      * initialize basic data that will be used for all issued service requests
      *
@@ -51,6 +54,17 @@ class iPizza implements ProtocolInterface
         $this->privateKey          = $privateKey;
 
         $this->protocolVersion     = $version;
+    }
+
+    /**
+     *
+     * @param string $requestEncoding
+     * @param string $responseEncoding
+     */
+    public function setEncodings($requestEncoding, $responseEncoding)
+    {
+        $this->requestEncoding = $requestEncoding;
+        $this->responseEncoding = $responseEncoding;
     }
 
     /**
@@ -146,6 +160,7 @@ class iPizza implements ProtocolInterface
     protected function getRequestSignature($data)
     {
         $hash = $this->generateHash($data);
+        $hash = mb_convert_encoding($hash, $this->requestEncoding, 'UTF-8');
 
         $keyId = openssl_get_privatekey('file://'.$this->privateKey);
         openssl_sign($hash, $signature, $keyId);
@@ -194,7 +209,7 @@ class iPizza implements ProtocolInterface
             }
 
             $content = $data[$fieldName];
-            $hash .= str_pad(mb_strlen($content, 'UTF-8'), 3, '0', STR_PAD_LEFT) . $content;
+            $hash .= str_pad(mb_strlen($content, $this->responseEncoding), 3, '0', STR_PAD_LEFT) . $content;
         }
 
         return $hash;

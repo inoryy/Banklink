@@ -38,7 +38,7 @@ class SEB extends Banklink
     protected function getAdditionalFields()
     {
         return array(
-            'VK_CHARSET' => 'UTF-8'
+            'VK_CHARSET' => $this->requestEncoding
         );
     }
 }

@@ -38,7 +38,7 @@ class Swedbank extends Banklink
     protected function getAdditionalFields()
     {
         return array(
-            'VK_ENCODING' => 'UTF-8'
+            'VK_ENCODING' => $this->requestEncoding
         );
     }
 }
