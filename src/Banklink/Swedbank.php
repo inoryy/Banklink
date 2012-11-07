@@ -13,6 +13,8 @@ use Banklink\Protocol\iPizza;
  */
 class Swedbank extends Banklink
 {
+    const ENCODING_FIELD = 'VK_ENCODING';
+
     protected $requestUrl = 'https://www.swedbank.ee/banklink';
     protected $testRequestUrl = 'https://pangalink.net/banklink/008/swedbank';
 
@@ -29,6 +31,20 @@ class Swedbank extends Banklink
     }
 
     /**
+     * @param array $responseData
+     *
+     * @return string
+     */
+    protected function getResponseEncoding(array $responseData)
+    {
+        if (isset($responseData[self::ENCODING_FIELD])) {
+            return $responseData[self::ENCODING_FIELD];
+        }
+
+        return $this->responseEncoding;
+    }
+
+    /**
      * Force UTF-8 encoding
      *
      * @see Banklink::getAdditionalFields()
@@ -38,7 +54,7 @@ class Swedbank extends Banklink
     protected function getAdditionalFields()
     {
         return array(
-            'VK_ENCODING' => $this->requestEncoding
+            self::ENCODING_FIELD => $this->requestEncoding
         );
     }
 }

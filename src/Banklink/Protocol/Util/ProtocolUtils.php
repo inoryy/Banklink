@@ -45,4 +45,25 @@ class ProtocolUtils
 
         return $orderId . $checkSum;
     }
+
+    /**
+     * Convert array values from one encoding to another
+     *
+     * @param array  $values
+     * @param string $inputEncoding
+     * @param string $outputEncoding
+     *
+     * @return array
+     */
+    public static function convertValues(array $values, $inputEncoding, $outputEncoding)
+    {
+        $converted = array();
+        foreach ($values as $field => $value) {
+            $value = mb_convert_encoding($value, $outputEncoding, $inputEncoding);
+
+            $converted[$field] = $value;
+        }
+
+        return $converted;
+    }
 }

@@ -29,9 +29,6 @@ class iPizza implements ProtocolInterface
 
     protected $protocolVersion;
 
-    protected $requestEncoding = 'UTF-8';
-    protected $responseEncoding = 'ISO-8859-1';
-
     /**
      * initialize basic data that will be used for all issued service requests
      *
@@ -57,26 +54,16 @@ class iPizza implements ProtocolInterface
     }
 
     /**
-     *
-     * @param string $requestEncoding
-     * @param string $responseEncoding
-     */
-    public function setEncodings($requestEncoding, $responseEncoding)
-    {
-        $this->requestEncoding = $requestEncoding;
-        $this->responseEncoding = $responseEncoding;
-    }
-
-    /**
      * @param integer  $orderId
      * @param float    $sum
      * @param string   $message
+     * @param string   $outputEncoding
      * @param string   $language
      * @param string   $currency
      *
      * @return array
      */
-    public function preparePaymentRequestData($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
+    public function preparePaymentRequestData($orderId, $sum, $message, $outputEncoding, $language = 'EST', $currency = 'EUR')
     {
         $requestData = array(
             Fields::SERVICE_ID       => Services::PAYMENT_REQUEST,
@@ -94,6 +81,8 @@ class iPizza implements ProtocolInterface
             Fields::USER_LANG        => $language
         );
 
+        $requestData = ProtocolUtils::convertValues($requestData, $outputEncoding, 'UTF-8');
+
         $requestData[Fields::SIGNATURE] = $this->getRequestSignature($requestData);
 
         return $requestData;
@@ -102,14 +91,17 @@ class iPizza implements ProtocolInterface
     /**
      * Determine which response exactly by service id, if it's supported then call related internal method
      *
-     * @param array $responseData
+     * @param array  $responseData
+     * @param string $inputEncoding
      *
      * @return \Banklink\Response\Response
      *
      * @throws \InvalidArgumentException
      */
-    public function handleResponse(array $responseData)
+    public function handleResponse(array $responseData, $inputEncoding)
     {
+        $responseData = ProtocolUtils::convertValues($responseData, $inputEncoding, 'UTF-8');
+
         $service = $responseData[Fields::SERVICE_ID];
         if (in_array($service, Services::getPaymentServices())) {
             return $this->handlePaymentResponse($responseData);
@@ -153,14 +145,14 @@ class iPizza implements ProtocolInterface
     /**
      * Generate request signature built with mandatory request data and private key
      *
-     * @param array $data
+     * @param array  $data
+     * @param string $encoding
      *
      * @return string
      */
     protected function getRequestSignature($data)
     {
         $hash = $this->generateHash($data);
-        $hash = mb_convert_encoding($hash, $this->requestEncoding, 'UTF-8');
 
         $keyId = openssl_get_privatekey('file://'.$this->privateKey);
         openssl_sign($hash, $signature, $keyId);
@@ -174,16 +166,16 @@ class iPizza implements ProtocolInterface
     /**
      * Verify that response data is correctly signed
      *
-     * @param array $response
+     * @param array $responseData
      *
      * @return boolean
      */
-    protected function verifyResponseSignature(array $response)
+    protected function verifyResponseSignature(array $responseData)
     {
-        $hash = $this->generateHash($response);
+        $hash = $this->generateHash($responseData);
 
         $keyId = openssl_pkey_get_public('file://'.$this->publicKey);
-        $result = openssl_verify($hash, base64_decode($response[Fields::SIGNATURE]), $keyId);
+        $result = openssl_verify($hash, base64_decode($responseData[Fields::SIGNATURE]), $keyId);
         openssl_free_key($keyId);
 
         return (boolean) $result;
@@ -192,7 +184,7 @@ class iPizza implements ProtocolInterface
     /**
      * Generate request/response hash based on mandatory fields
      *
-     * @param array $data
+     * @param array  $data
      *
      * @return string
      *
@@ -209,7 +201,7 @@ class iPizza implements ProtocolInterface
             }
 
             $content = $data[$fieldName];
-            $hash .= str_pad(mb_strlen($content, $this->responseEncoding), 3, '0', STR_PAD_LEFT) . $content;
+            $hash .= str_pad(mb_strlen($content, 'UTF-8'), 3, '0', STR_PAD_LEFT) . $content;
         }
 
         return $hash;

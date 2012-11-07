@@ -44,7 +44,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
           'VK_MAC'     => 'g4SMbCZEbxSXF7qx8ggcRHTyWOx4Dqkb0eM6atoEC5A12SAlWDgIw5TnB319KtreUcEubrjZz9z4NQgVrSieoOX9yr3G7ciLopGaoajAr6RA9RTYP0QDoArTuDKBqFwRT6D+erTggu9Dz3G/dQKlL9SCQtUxV6yCHp0cLgzYmtUGXoC7x4WnP1NuJZwlBnJI3acsCNyw5gTnEHle0Xd2OElH84aKlItqSsPbFirWhZRLfLy8uyiwSseChnTnDXCINyFLypHNTvvn+DaE8m+nyDkL4Jt3L2rciYkLPuoXSY3JGXTzjS7TkpOPUEtBQZ65ZylltduAeknxocvSZYUskA=='
         );
 
-        $request = $this->iPizza->preparePaymentRequestData(1, 100, 'Test payment', 'ENG', 'EUR');
+        $request = $this->iPizza->preparePaymentRequestData(1, 100, 'Test payment', 'UTF-8', 'ENG', 'EUR');
 
         $this->assertEquals($expectedRequestData, $request);
     }
@@ -71,7 +71,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_MAC'      => 'Lma6+YAm7JyU0WOOMpqNINT7ub8xLjrmYePBRcAFrY/Ea8Z/EhM9rYFMQive5GLDagWvay8zCNIHevYUD0P7I49hZwivluRF8C+cLPUaOcH8ySp5vHscgqurS7Aqg+gNWrRKwqWTjuxvjuqD8r/JlY1N+3sDpF1mU8HAc7NnRGDOyo1AmwUyOPa7mLsAYPXuzKW+qXqGL5uGMOqAw9kRgNkxCQHh/QpmvX7jm0oQ7KxypIAIZAYBjf8usDp3OT4AKd9B/FJ5fdX7JOSlL+Kjj7uD3qW3kVBz1JJ/riVRGdct5qouTNe0deB2jZbD5fuWa1XlJVWOG2xOGfGYhN7pfg=='
         );
 
-        $response = $this->iPizza->handleResponse($responseData);
+        $response = $this->iPizza->handleResponse($responseData, 'ISO-8859-1');
 
         $this->assertEquals(PaymentResponse::STATUS_SUCCESS, $response->getStatus());
     }
@@ -90,7 +90,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_MAC'      => 'bg8rRUxE6W+RhkdJyUADQl43soI7C6ohtkwGDRCXyeRDQk5B2D1kkmuzJ6lZopttAFMnU1C6MOynF/VWXFVX5YZmpnm9vpFy6uz9uH/bjMfRddj0pkWe6Afa3l2MET+Nk7xOxxxHlJBX3NZndp3xO7Wdi4pyx4kZjpcM6lR+Dq9mhh0N+45bDyh+IkEmEC3GrGwQTbFGYSG9gh2zv4BuFgQj/lSprf6qUyQf8wmr/onSOGwuenYFFxYOG6aUU+/5ha0TLyQg8ed2SOAylAbSKEN+Ud2xEZ8WzxEwfiYf9WBiooRYyydmS2vRZV2KGCfUqgoPzl7b5NaSPW2PW7CheQ=='
         );
 
-        $response = $this->iPizza->handleResponse($responseData);
+        $response = $this->iPizza->handleResponse($responseData, 'ISO-8859-1');
 
         $this->assertEquals(PaymentResponse::STATUS_CANCEL, $response->getStatus());
     }
@@ -117,7 +117,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_MAC'      => 'Lma6+YAm7JyU0WOOMpqNINT7ub8xLjrmYePBRcAFrY/Ea8Z/EhM9rYFMQive5GLDagWvay8zCNIHevYUD0P7I49hZwivluRF8C+cLPUaOcH8ySp5vHscgqurS7Aqg+gNWrRKwqWTjuxvjuqD8r/JlY1N+3sDpF1mU8HAc7NnRGDOyo1AmwUyOPa7mLsAYPXuzKW+qXqGL5uGMOqAw9kRgNkxCQHh/QpmvX7jm0oQ7KxypIAIZAYBjf8usDp3OT4AKd9B/FJ5fdX7JOSlL+Kjj7uD3qW3kVBz1JJ/riVRGdct5qouTNe0deB2jZbD5fuWa1XlJVWOG2xOGfGYhN7pfg=='
         );
 
-        $response = $this->iPizza->handleResponse($responseData);
+        $response = $this->iPizza->handleResponse($responseData, 'ISO-8859-1');
 
         $this->assertEquals(PaymentResponse::STATUS_ERROR, $response->getStatus());
     }
@@ -131,7 +131,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_SERVICE'  => '1111',
         );
 
-        $response = $this->iPizza->handleResponse($responseData);
+        $response = $this->iPizza->handleResponse($responseData, 'ISO-8859-1');
     }
 
     public function testHandlePaymentResponseSuccessWithSpecialCharacters()
@@ -156,7 +156,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_MAC'      => 'eK4mEiRhpZ/gz1/4GEaNwvX+AhfpaTJOQRGdWky4Cb6Gqubn3pgSDeApdcccu+WMrAX1ozzx3H/kEzIHn2NT3mFDUHNkEnOlx7OFgNZY+Wvypz18GCYyW/QIsNi/dk3HTzAymU6rVhGSi9v9OkogASRrSn6OMnFofa+WIwvnHJzHCZ8uY37NSERHv+FcT7CGoHHgU5+3hjEAWsXkX4TRDfrWvzsb/tkDaJbNv0KHo+WjcPHL/rBVIoexZpahaf4z4f1g6DfH6LOOgvwbjJZ3JEHNvE+DM5bY58Asn8MxOayYJ3hZ39J0hdepO+2+YUdkqPPxyJIvufXeoaGtsu0AYQ=='
         );
 
-        $response = $this->iPizza->handleResponse($responseData);
+        $response = $this->iPizza->handleResponse($responseData, 'ISO-8859-1');
 
         $this->assertEquals(PaymentResponse::STATUS_SUCCESS, $response->getStatus());
     }

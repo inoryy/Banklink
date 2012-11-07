@@ -30,7 +30,6 @@ abstract class Banklink
     public function __construct(ProtocolInterface $protocol, $testMode = false, $requestUrl = null)
     {
         $this->protocol = $protocol;
-        $this->protocol->setEncodings($this->requestEncoding, $this->responseEncoding);
 
         if ($requestUrl && !$testMode) {
             $this->requestUrl = $requestUrl;
@@ -48,9 +47,9 @@ abstract class Banklink
      *
      * @return \Banklink\Request\PaymentRequest
      */
-    public function preparePaymentRequest($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR')
+    public function preparePaymentRequest($orderId, $sum, $message, $language = 'EST', $currency = 'EUR')
     {
-        $requestData = $this->protocol->preparePaymentRequestData($orderId, $sum, $message, $language, $currency);
+        $requestData = $this->protocol->preparePaymentRequestData($orderId, $sum, $message, $this->requestEncoding, $language, $currency);
         $requestData = array_merge($requestData, $this->getAdditionalFields());
 
         return new PaymentRequest($this->requestUrl, $requestData);
@@ -63,7 +62,19 @@ abstract class Banklink
      */
     public function handleResponse(array $responseData)
     {
-        return $this->protocol->handleResponse($responseData);
+        return $this->protocol->handleResponse($responseData, $this->getResponseEncoding($responseData));
+    }
+
+    /**
+     * Assuming response data may have some additional field to specify encoding, this method can be overriden
+     *
+     * @param array $responseData
+     *
+     * @return string
+     */
+    protected function getResponseEncoding(array $responseData)
+    {
+        return $this->responseEncoding;
     }
 
     /**

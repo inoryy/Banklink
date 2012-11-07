@@ -32,7 +32,7 @@ interface ProtocolInterface
      *
      * @return array
      */
-    function preparePaymentRequestData($orderId, $sum, $message = '', $language = 'EST', $currency = 'EUR');
+    function preparePaymentRequestData($orderId, $sum, $message, $outputEncoding, $language = 'EST', $currency = 'EUR');
 
     /**
      * Determine which response exactly by service id, if it's supported then call related internal method
@@ -41,7 +41,5 @@ interface ProtocolInterface
      *
      * @return \Banklink\Response\Response
      */
-    function handleResponse(array $responseData);
-
-    function setEncodings($requestEncoding, $responseEncoding);
+    function handleResponse(array $responseData, $inputEncoding);
 }
