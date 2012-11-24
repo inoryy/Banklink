@@ -44,6 +44,15 @@ class Response
 
     /**
      *
+     * @return boolean
+     */
+    public function isSuccesful()
+    {
+        return $this->status === self::STATUS_SUCCESS;
+    }
+
+    /**
+     *
      * @return string
      */
     public function getStatus()
