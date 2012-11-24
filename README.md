@@ -1,16 +1,6 @@
-Banklink implementations for Estonian Internet Banks services.
+PHP library for integrating various Baltic banks internet services (payment, authentication)
 ==============
 
-Swedbank, SEB and Sampo all share one protocol - iPizza.
-Nordea uses e-payment.
+See [http://banklink.inoryy.com](http://banklink.inoryy.com) for documentation.
 
-This application is written in PHP and follows [PSR-0] (https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) standard to handle autoloading.
-
-Support status:
-* SEB:          Payments - Yes, Authentication - No
-* LHV:          Payments - Yes, Authentication - No
-* Sampo:        Payments - Yes, Authentication - No
-* Nordea:       Payments - **No**,  Authentication - No
-* EstCard:      Payments - **No**,  Authentication - No
-* Swedbank:     Payments - Yes, Authentication - No
-* Krediidipank: Payments - Yes, Authentication - No
+[![Build Status](https://travis-ci.org/Inori/Banklink.png)](https://travis-ci.org/Inori/Banklink)
