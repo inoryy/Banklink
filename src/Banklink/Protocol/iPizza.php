@@ -81,7 +81,7 @@ class iPizza implements ProtocolInterface
             Fields::USER_LANG        => $language
         );
 
-        $requestData = ProtocolUtils::convertValues($requestData, $outputEncoding, 'UTF-8');
+        $requestData = ProtocolUtils::convertValues($requestData, 'UTF-8', $outputEncoding);
 
         $requestData[Fields::SIGNATURE] = $this->getRequestSignature($requestData);
 
@@ -100,11 +100,12 @@ class iPizza implements ProtocolInterface
      */
     public function handleResponse(array $responseData, $inputEncoding)
     {
+        $verification = $this->verifyResponseSignature($responseData, $inputEncoding);
         $responseData = ProtocolUtils::convertValues($responseData, $inputEncoding, 'UTF-8');
 
         $service = $responseData[Fields::SERVICE_ID];
         if (in_array($service, Services::getPaymentServices())) {
-            return $this->handlePaymentResponse($responseData);
+            return $this->handlePaymentResponse($responseData, $verification);
         }
 
         throw new \InvalidArgumentException('Unsupported service with id: '.$service);
@@ -118,12 +119,12 @@ class iPizza implements ProtocolInterface
      *
      * @return \Banklink\Response\PaymentResponse
      */
-    protected function handlePaymentResponse(array $responseData)
+    protected function handlePaymentResponse(array $responseData, $verification)
     {
-        // try to guess status by service id
-        $status = $responseData[Fields::SERVICE_ID] == Services::PAYMENT_SUCCESS ? PaymentResponse::STATUS_SUCCESS : PaymentResponse::STATUS_CANCEL;
-        if (!$this->verifyResponseSignature($responseData)) {
-            // if verification fails then force error status
+        // if response was verified, try to guess status by service id
+        if ($verification) {
+            $status = $responseData[Fields::SERVICE_ID] == Services::PAYMENT_SUCCESS ? PaymentResponse::STATUS_SUCCESS : PaymentResponse::STATUS_CANCEL;
+        } else {
             $status = PaymentResponse::STATUS_ERROR;
         }
 
@@ -166,13 +167,14 @@ class iPizza implements ProtocolInterface
     /**
      * Verify that response data is correctly signed
      *
-     * @param array $responseData
+     * @param array  $responseData
+     * @param string $encoding Response data encoding
      *
      * @return boolean
      */
-    protected function verifyResponseSignature(array $responseData)
+    protected function verifyResponseSignature(array $responseData, $encoding)
     {
-        $hash = $this->generateHash($responseData);
+        $hash = $this->generateHash($responseData, $encoding);
 
         $keyId = openssl_pkey_get_public('file://'.$this->publicKey);
         $result = openssl_verify($hash, base64_decode($responseData[Fields::SIGNATURE]), $keyId);
@@ -185,12 +187,13 @@ class iPizza implements ProtocolInterface
      * Generate request/response hash based on mandatory fields
      *
      * @param array  $data
+     * @param string $encoding Data encoding
      *
      * @return string
      *
      * @throws \LogicException
      */
-    protected function generateHash(array $data)
+    protected function generateHash(array $data, $encoding = 'UTF-8')
     {
         $id = $data[Fields::SERVICE_ID];
 
@@ -201,7 +204,7 @@ class iPizza implements ProtocolInterface
             }
 
             $content = $data[$fieldName];
-            $hash .= str_pad(mb_strlen($content, 'UTF-8'), 3, '0', STR_PAD_LEFT) . $content;
+            $hash .= str_pad(mb_strlen($content, $encoding), 3, '0', STR_PAD_LEFT) . $content;
         }
 
         return $hash;

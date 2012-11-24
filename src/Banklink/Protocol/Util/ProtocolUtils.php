@@ -57,13 +57,8 @@ class ProtocolUtils
      */
     public static function convertValues(array $values, $inputEncoding, $outputEncoding)
     {
-        $converted = array();
-        foreach ($values as $field => $value) {
-            $value = mb_convert_encoding($value, $outputEncoding, $inputEncoding);
-
-            $converted[$field] = $value;
-        }
-
-        return $converted;
+        return array_map(function($value) use($inputEncoding, $outputEncoding) {
+            return mb_convert_encoding($value, $outputEncoding, $inputEncoding);
+        }, $values);
     }
 }
