@@ -16,9 +16,11 @@ class SoloTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->solo = new Solo(
-            '10274768',
-            'vtWHT6T6z3G0xJlu5oB8ulB85iKhXQIO',
+            '10274580',
+            'WBTGlRKU57bHOnH6Ey0W4TFrsV9PDAiu',
             'http://www.google.com',
+            null,
+            null,
             'md5'
         );
     }
@@ -27,9 +29,9 @@ class SoloTest extends \PHPUnit_Framework_TestCase
     {
         $expectedRequestData = array(
             'SOLOPMT_VERSION' => '0003',
-            'SOLOPMT_STAMP' => 12345,
+            'SOLOPMT_STAMP' => 1,
             'SOLOPMT_RCV_ID' => '10274580',
-            'SOLOPMT_LANGUAGE' => 4,
+            'SOLOPMT_LANGUAGE' => 3,
             'SOLOPMT_AMOUNT' => '100',
             'SOLOPMT_REF' => 13,
             'SOLOPMT_DATE' => 'EXPRESS',
@@ -37,7 +39,7 @@ class SoloTest extends \PHPUnit_Framework_TestCase
             'SOLOPMT_RETURN' => 'http://www.google.com',
             'SOLOPMT_CANCEL' => 'http://www.google.com',
             'SOLOPMT_REJECT' => 'http://www.google.com',
-            'SOLOPMT_MAC' => '199B150C51085934DAB6072CFF5F7F2C',
+            'SOLOPMT_MAC' => 'A53DD635463AE22E7827D7C6A5BC133C',
             'SOLOPMT_CONFIRM' => 'YES',
             'SOLOPMT_KEYVERS' => '0001',
             'SOLOPMT_CUR' => 'EUR',

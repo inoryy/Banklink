@@ -23,6 +23,9 @@ final class Fields
     const SELLER_NAME              = 'SOLOPMT_RCV_NAME';
     const SELLER_BANK_ACC          = 'SOLOPMT_RCV_ACCOUNT';
 
+    const TRANSACTION_DATE         = 'SOLOPMT_DATE';
+    const TRANSACTION_CONFIRM      = 'SOLOPMT_CONFIRM';
+
     // data provided in response
     const SELLER_ID_RESPONSE       = 'VK_REC_ID';
     const SELLER_NAME_RESPONSE     = 'VK_REC_NAME';
@@ -30,7 +33,6 @@ final class Fields
     const SENDER_NAME              = 'VK_SND_NAME';
     const SENDER_BANK_ACC          = 'VK_SND_ACC';
     const TRANSACTION_ID           = 'VK_T_NO';
-    const TRANSACTION_DATE         = 'VK_T_DATE';
 
     // Callback URLs
     const SUCCESS_URL       = 'SOLOPMT_RETURN';
@@ -40,6 +42,7 @@ final class Fields
     // Request configs
     // This data will most likely be static
     const PROTOCOL_VERSION  = 'SOLOPMT_VERSION';
+    const MAC_KEY_VERSION   = 'SOLOPMT_KEYVERS';
 
     const SIGNATURE         = 'SOLOPMT_MAC';
 
