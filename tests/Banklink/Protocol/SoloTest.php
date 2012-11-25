@@ -17,8 +17,6 @@ class SoloTest extends \PHPUnit_Framework_TestCase
     {
         $this->solo = new Solo(
             '10274768',
-            'Test Testov',
-            '119933113311',
             'vtWHT6T6z3G0xJlu5oB8ulB85iKhXQIO',
             'http://www.google.com',
             'md5'
@@ -45,7 +43,7 @@ class SoloTest extends \PHPUnit_Framework_TestCase
             'SOLOPMT_CUR' => 'EUR',
         );
 
-        $request = $this->solo->preparePaymentRequestData(1, 100, 'Test payment', 'UTF-8', 'ENG', 'EUR');
+        $request = $this->solo->preparePaymentRequestData(1, 100, 'Test payment', 'ISO-8859-1', 'ENG', 'EUR');
 
         $this->assertEquals($expectedRequestData, $request);
     }
