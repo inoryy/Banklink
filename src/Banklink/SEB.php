@@ -19,9 +19,9 @@ class SEB extends Banklink
     /**
      * Force iPizza protocol
      *
-     * @param \Banklink\iPizza $protocol
-     * @param boolean          $testMode
-     * @param string | null    $requestUrl
+     * @param \Banklink\Protocol\iPizza $protocol
+     * @param boolean                   $testMode
+     * @param string | null             $requestUrl
      */
     public function __construct(iPizza $protocol, $testMode = false, $requestUrl = null)
     {
