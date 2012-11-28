@@ -49,4 +49,20 @@ class SoloTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expectedRequestData, $request);
     }
+
+    public function testHandlePaymentResponseSuccess()
+    {
+        $responseData = array(
+            'SOLOPMT_RETURN_VERSION' => '0003',
+            'SOLOPMT_RETURN_STAMP'   => '1',
+            'SOLOPMT_RETURN_PAID'    => 'PEPM20121128000000019311',
+            'SOLOPMT_RETURN_REF'     => '13',
+            'SOLOPMT_RETURN_MAC'     => '37D887A50DD8DF11406A1617B5FDE5BF'
+        );
+
+        $response = $this->solo->handleResponse($responseData, 'ISO-8859-1');
+
+        $this->assertInstanceOf('Banklink\Response\Response', $response);
+        $this->assertEquals(PaymentResponse::STATUS_SUCCESS, $response->getStatus());
+    }
 }

@@ -73,6 +73,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
 
         $response = $this->iPizza->handleResponse($responseData, 'ISO-8859-1');
 
+        $this->assertInstanceOf('Banklink\Response\Response', $response);
         $this->assertEquals(PaymentResponse::STATUS_SUCCESS, $response->getStatus());
     }
 
