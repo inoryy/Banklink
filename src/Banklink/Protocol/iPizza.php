@@ -180,7 +180,7 @@ class iPizza implements ProtocolInterface
         $result = openssl_verify($hash, base64_decode($responseData[Fields::SIGNATURE]), $keyId);
         openssl_free_key($keyId);
 
-        return (boolean) $result;
+        return $result === 1;
     }
 
     /**
