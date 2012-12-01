@@ -27,12 +27,11 @@ final class Fields
     const TRANSACTION_CONFIRM      = 'SOLOPMT_CONFIRM';
 
     // data provided in response
-    const SELLER_ID_RESPONSE       = 'VK_REC_ID';
-    const SELLER_NAME_RESPONSE     = 'VK_REC_NAME';
-    const SELLER_BANK_ACC_RESPONSE = 'VK_REC_ACC';
-    const SENDER_NAME              = 'VK_SND_NAME';
-    const SENDER_BANK_ACC          = 'VK_SND_ACC';
-    const TRANSACTION_ID           = 'VK_T_NO';
+    const PROTOCOL_VERSION_RESPONSE = 'SOLOPMT_RETURN_VERSION';
+    const ORDER_ID_RESPONSE         = 'SOLOPMT_RETURN_STAMP';
+    const PAYMENT_CODE              = 'SOLOPMT_RETURN_PAID';
+    const ORDER_REFERENCE_RESPONSE  = 'SOLOPMT_RETURN_REF';
+    const SIGNATURE_RESPONSE        = 'SOLOPMT_RETURN_MAC';
 
     // Callback URLs
     const SUCCESS_URL       = 'SOLOPMT_RETURN';

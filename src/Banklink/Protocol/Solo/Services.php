@@ -29,6 +29,35 @@ final class Services
     }
 
     /**
+     * Get array of mandatory fields for successful payment response
+     *
+     * @return array
+     */
+    public static function getPaymentResponseSuccessFields()
+    {
+        return array(
+            Fields::PROTOCOL_VERSION_RESPONSE,
+            Fields::ORDER_ID_RESPONSE,
+            Fields::ORDER_REFERENCE_RESPONSE,
+            Fields::PAYMENT_CODE,
+        );
+    }
+
+    /**
+     * Get array of mandatory fields for cancelled payment response
+     *
+     * @return array
+     */
+    public static function getPaymentResponseCancelFields()
+    {
+        return array(
+            Fields::PROTOCOL_VERSION_RESPONSE,
+            Fields::ORDER_ID_RESPONSE,
+            Fields::ORDER_REFERENCE_RESPONSE,
+        );
+    }
+
+    /**
      * Can't instantiate this class
      */
     private function __construct() {}

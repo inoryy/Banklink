@@ -5,7 +5,7 @@ namespace Banklink\Protocol;
 use Banklink\Protocol\Solo\Fields,
     Banklink\Protocol\Solo\Services;
 
-use Banklink\Response\PaymentResponse;
+use Banklink\Protocol\Solo\Response\PaymentResponse;
 
 use Banklink\Protocol\Util\ProtocolUtils;
 
@@ -65,16 +65,19 @@ class Solo implements ProtocolInterface
     /**
      * Determine which response exactly by service id, if it's supported then call related internal method
      *
+     * @todo currently only supports payment response
+     *
      * @param array  $responseData
      * @param string $inputEncoding Will most likely always be ISO-8859-1
      *
      * @return \Banklink\Response\Response
-     *
-     * @throws \InvalidArgumentException
      */
     public function handleResponse(array $responseData, $inputEncoding)
     {
-        return null;
+        $verification = $this->verifyResponseSignature($responseData, $inputEncoding);
+        $responseData = ProtocolUtils::convertValues($responseData, $inputEncoding, 'UTF-8');
+
+        return $this->handlePaymentResponse($responseData, $verification);
     }
 
     /**
@@ -120,6 +123,34 @@ class Solo implements ProtocolInterface
     }
 
     /**
+     * Prepare payment response instance
+     * Some data is only set if response is succesful
+     *
+     * @param array   $responseData
+     * @param boolean $verification
+     *
+     * @return \Banklink\Protocol\Solo\Response\PaymentResponse
+     */
+    protected function handlePaymentResponse(array $responseData, $verification)
+    {
+        // if response was verified, try to guess status by service id
+        if ($verification) {
+            $status = isset($responseData[Fields::PAYMENT_CODE]) ? PaymentResponse::STATUS_SUCCESS : PaymentResponse::STATUS_CANCEL;
+        } else {
+            $status = PaymentResponse::STATUS_ERROR;
+        }
+
+        $response = new PaymentResponse($status, $responseData);
+        $response->setOrderId($responseData[Fields::ORDER_ID_RESPONSE]);
+        
+        if (PaymentResponse::STATUS_SUCCESS === $status) {
+            $response->setPaymentCode($responseData[Fields::PAYMENT_CODE]);
+        }
+
+        return $response;
+    }
+
+    /**
      * Generate request signature built with mandatory request data and private key
      *
      * @todo currently only supports payment signature generation
@@ -134,6 +165,27 @@ class Solo implements ProtocolInterface
     protected function getRequestSignature($data)
     {
         return $this->generateHash($data, Services::getPaymentFields());
+    }
+
+    /**
+     * Verify that response data is correctly signed
+     *
+     * @param array  $responseData
+     * @param string $encoding Response data encoding
+     *
+     * @return boolean
+     */
+    protected function verifyResponseSignature(array $responseData, $encoding)
+    {
+        if (!isset($responseData[Fields::SIGNATURE_RESPONSE])) {
+            return false;
+        }
+
+        $fields = isset($responseData[Fields::PAYMENT_CODE]) ? Services::getPaymentResponseSuccessFields() : Services::getPaymentResponseCancelFields();
+
+        $hash = $this->generateHash($responseData, $fields);
+
+        return $hash === $responseData[Fields::SIGNATURE_RESPONSE];
     }
 
     /**
