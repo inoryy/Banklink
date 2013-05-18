@@ -100,7 +100,7 @@ class iPizza implements ProtocolInterface
      */
     public function handleResponse(array $responseData, $inputEncoding)
     {
-        $verification = $this->verifyResponseSignature($responseData, $inputEncoding);
+        $verification = $this->verifyResponseSignature($responseData);
         $responseData = ProtocolUtils::convertValues($responseData, $inputEncoding, 'UTF-8');
 
         $service = $responseData[Fields::SERVICE_ID];
@@ -172,9 +172,9 @@ class iPizza implements ProtocolInterface
      *
      * @return boolean
      */
-    protected function verifyResponseSignature(array $responseData, $encoding)
+    protected function verifyResponseSignature(array $responseData)
     {
-        $hash = $this->generateHash($responseData, $encoding);
+        $hash = $this->generateHash($responseData);
 
         $keyId = openssl_pkey_get_public('file://'.$this->publicKey);
         $result = openssl_verify($hash, base64_decode($responseData[Fields::SIGNATURE]), $keyId);
@@ -193,7 +193,7 @@ class iPizza implements ProtocolInterface
      *
      * @throws \LogicException
      */
-    protected function generateHash(array $data, $encoding = 'UTF-8')
+    protected function generateHash(array $data)
     {
         $id = $data[Fields::SERVICE_ID];
 
@@ -204,7 +204,7 @@ class iPizza implements ProtocolInterface
             }
 
             $content = $data[$fieldName];
-            $hash .= str_pad(mb_strlen($content, $encoding), 3, '0', STR_PAD_LEFT) . $content;
+            $hash .= str_pad(strlen($content), 3, '0', STR_PAD_LEFT) . $content;
         }
 
         return $hash;
