@@ -29,6 +29,8 @@ class iPizza implements ProtocolInterface
 
     protected $protocolVersion;
 
+    protected $mbStrlen;
+
     /**
      * initialize basic data that will be used for all issued service requests
      *
@@ -38,9 +40,10 @@ class iPizza implements ProtocolInterface
      * @param string  $privateKey    Private key location
      * @param string  $publicKey     Public key (certificate) location
      * @param string  $endpointUrl
-     * @param string  $cancelUrl
+     * @param string  $version
+     * @param boolean $mbStrlen      Use mb_strlen for string length calculation?
      */
-    public function __construct($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $endpointUrl, $version = '008')
+    public function __construct($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $endpointUrl, $mbStrlen = false, $version = '008')
     {
         $this->sellerId            = $sellerId;
         $this->sellerName          = $sellerName;
@@ -49,6 +52,8 @@ class iPizza implements ProtocolInterface
 
         $this->publicKey           = $publicKey;
         $this->privateKey          = $privateKey;
+
+        $this->mbStrlen            = $mbStrlen;
 
         $this->protocolVersion     = $version;
     }
@@ -205,21 +210,11 @@ class iPizza implements ProtocolInterface
             }
 
             $content = $data[$fieldName];
-            // always use UTF-8 encoding to calculate string length, but don't force it for content itself
-            $length = $this->getStringLengthForHash(mb_convert_encoding($content, 'UTF-8', $encoding));
+            $length = $this->mbStrlen ? mb_strlen($content, $encoding) : strlen($content);
 
             $hash .= str_pad($length, 3, '0', STR_PAD_LEFT) . $content;
         }
 
         return $hash;
-    }
-
-    /**
-     * This can be overridden when length is calculated differently
-     * Example: Swedbank & multibyte strings
-     */
-    protected function getStringLengthForHash($string)
-    {
-        return strlen($string);
     }
 }
