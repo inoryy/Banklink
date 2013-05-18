@@ -210,7 +210,7 @@ class iPizza implements ProtocolInterface
 
             $hash .= str_pad($length, 3, '0', STR_PAD_LEFT) . $content;
         }
-        //var_dump($hash);exit;
+
         return $hash;
     }
 
