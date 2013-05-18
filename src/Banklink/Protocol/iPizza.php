@@ -205,9 +205,18 @@ class iPizza implements ProtocolInterface
             }
 
             $content = $data[$fieldName];
-            $hash .= str_pad(strlen($content), 3, '0', STR_PAD_LEFT) . $content;
+            $hash .= str_pad($this->getStringLengthForHash($content), 3, '0', STR_PAD_LEFT) . $content;
         }
 
         return $hash;
+    }
+
+    /**
+     * This can be overridden when length is calculated differently
+     * Example: Swedbank & multibyte strings
+     */
+    protected function getStringLengthForHash($string)
+    {
+        return strlen($string);
     }
 }
