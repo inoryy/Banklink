@@ -15,7 +15,7 @@ use Banklink\Protocol\iPizza;
 class DanskeBank extends Banklink
 {
     protected $requestUrl = 'https://www2.danskebank.ee/ibank/pizza/pizza';
-    protected $testRequestUrl = 'https://pangalink.net/banklink/008/sampo';
+    protected $testRequestUrl = 'https://pangalink.net/banklink/sampo';
 
     /**
      * Force iPizza protocol

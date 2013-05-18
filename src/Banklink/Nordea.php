@@ -14,7 +14,7 @@ use Banklink\Protocol\Solo;
 class Nordea extends Banklink
 {
     protected $requestUrl = 'https://netbank.nordea.com/pnbepay/epayn.jsp';
-    protected $testRequestUrl = 'https://pangalink.net/banklink/0003/nordea';
+    protected $testRequestUrl = 'https://pangalink.net/banklink/nordea';
 
     protected $requestEncoding = 'ISO-8859-1';
 

@@ -14,7 +14,7 @@ use Banklink\Protocol\iPizza;
 class SEB extends Banklink
 {
     protected $requestUrl = 'https://www.seb.ee/cgi-bin/unet3.sh/un3min.r';
-    protected $testRequestUrl = 'https://pangalink.net/banklink/008/seb';
+    protected $testRequestUrl = 'https://pangalink.net/banklink/seb';
 
     /**
      * Force iPizza protocol
