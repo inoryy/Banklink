@@ -74,7 +74,21 @@ abstract class Banklink
      */
     protected function getResponseEncoding(array $responseData)
     {
+        if ($this->getEncodingField() && isset($responseData[$this->getEncodingField()])) {
+            return $responseData[$this->getEncodingField()];
+        }
+
         return $this->responseEncoding;
+    }
+
+    /**
+     * If Bank supports encoding field like VK_CHARSET
+     *
+     * @return string | null
+     */
+    protected function getEncodingField()
+    {
+        return null;
     }
 
     /**

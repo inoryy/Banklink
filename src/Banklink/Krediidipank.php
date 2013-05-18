@@ -31,19 +31,11 @@ class Krediidipank extends Banklink
     }
 
     /**
-     * Check for encoding field under VK_CHARSET
-     *
-     * @param array $responseData
-     *
-     * @return string
+     * @inheritDoc
      */
-    protected function getResponseEncoding(array $responseData)
+    protected function getEncodingField()
     {
-        if (isset($responseData['VK_CHARSET'])) {
-            return $responseData['VK_CHARSET'];
-        }
-
-        return $this->responseEncoding;
+        return 'VK_CHARSET';
     }
 
     /**

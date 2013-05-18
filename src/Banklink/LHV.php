@@ -29,6 +29,14 @@ class LHV extends Banklink
     }
 
     /**
+     * @inheritDoc
+     */
+    protected function getEncodingField()
+    {
+        return 'VK_CHARSET';
+    }
+
+    /**
      * Force UTF-8 encoding
      *
      * @see Banklink::getAdditionalFields()
