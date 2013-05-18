@@ -100,9 +100,9 @@ class iPizza implements ProtocolInterface
      */
     public function handleResponse(array $responseData, $inputEncoding)
     {
-        $responseData = ProtocolUtils::convertValues($responseData, $inputEncoding, 'UTF-8');
+        $verificationSuccess = $this->verifyResponseSignature($responseData, $inputEncoding);
 
-        $verificationSuccess = $this->verifyResponseSignature($responseData);
+        $responseData = ProtocolUtils::convertValues($responseData, $inputEncoding, 'UTF-8');
 
         $service = $responseData[Fields::SERVICE_ID];
         if (in_array($service, Services::getPaymentServices())) {
@@ -173,9 +173,9 @@ class iPizza implements ProtocolInterface
      *
      * @return boolean
      */
-    protected function verifyResponseSignature(array $responseData)
+    protected function verifyResponseSignature(array $responseData, $encoding)
     {
-        $hash = $this->generateHash($responseData);
+        $hash = $this->generateHash($responseData, $encoding);
 
         $keyId = openssl_pkey_get_public('file://'.$this->publicKey);
         $result = openssl_verify($hash, base64_decode($responseData[Fields::SIGNATURE]), $keyId);
@@ -194,7 +194,7 @@ class iPizza implements ProtocolInterface
      *
      * @throws \LogicException
      */
-    protected function generateHash(array $data)
+    protected function generateHash(array $data, $encoding = 'UTF-8')
     {
         $id = $data[Fields::SERVICE_ID];
 
@@ -205,9 +205,12 @@ class iPizza implements ProtocolInterface
             }
 
             $content = $data[$fieldName];
-            $hash .= str_pad($this->getStringLengthForHash($content), 3, '0', STR_PAD_LEFT) . $content;
-        }
+            // always use UTF-8 encoding to calculate string length, but don't force it for content itself
+            $length = $this->getStringLengthForHash(mb_convert_encoding($content, 'UTF-8', $encoding));
 
+            $hash .= str_pad($length, 3, '0', STR_PAD_LEFT) . $content;
+        }
+        //var_dump($hash);exit;
         return $hash;
     }
 
