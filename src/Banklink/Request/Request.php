@@ -34,6 +34,23 @@ abstract class Request
     }
 
     /**
+     * Generates HTML view for request <input> fields
+     * NB! This does not generate actual <form> element, it must be rendered manually
+     *
+     * @return string
+     */
+    public function buildRequestHtml()
+    {
+        $output = '';
+
+        foreach ($this->requestData as $key => $value) {
+            $output .= sprintf('<input id="%s" name="%s" value="%s" type="hidden" />', strtolower($key), $key, $value);
+        }
+
+        return $output;
+    }
+
+    /**
      * Get URL to where request data should be sent (most likely via POST method)
      *
      * @return string
