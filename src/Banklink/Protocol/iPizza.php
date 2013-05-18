@@ -100,12 +100,13 @@ class iPizza implements ProtocolInterface
      */
     public function handleResponse(array $responseData, $inputEncoding)
     {
-        $verification = $this->verifyResponseSignature($responseData);
         $responseData = ProtocolUtils::convertValues($responseData, $inputEncoding, 'UTF-8');
+
+        $verificationSuccess = $this->verifyResponseSignature($responseData);
 
         $service = $responseData[Fields::SERVICE_ID];
         if (in_array($service, Services::getPaymentServices())) {
-            return $this->handlePaymentResponse($responseData, $verification);
+            return $this->handlePaymentResponse($responseData, $verificationSuccess);
         }
 
         throw new \InvalidArgumentException('Unsupported service with id: '.$service);
@@ -119,10 +120,10 @@ class iPizza implements ProtocolInterface
      *
      * @return \Banklink\Response\PaymentResponse
      */
-    protected function handlePaymentResponse(array $responseData, $verification)
+    protected function handlePaymentResponse(array $responseData, $verificationSuccess)
     {
         // if response was verified, try to guess status by service id
-        if ($verification) {
+        if ($verificationSuccess) {
             $status = $responseData[Fields::SERVICE_ID] == Services::PAYMENT_SUCCESS ? PaymentResponse::STATUS_SUCCESS : PaymentResponse::STATUS_CANCEL;
         } else {
             $status = PaymentResponse::STATUS_ERROR;
