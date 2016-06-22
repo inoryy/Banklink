@@ -6,7 +6,9 @@ namespace Banklink\Protocol\iPizza;
  * List of all fields used by iPizza protocol
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
- * @since  10.01.2011
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
+ * 
+ * @since  20.02.2015
  */
 final class Fields
 {
@@ -31,7 +33,6 @@ final class Fields
     const SENDER_NAME              = 'VK_SND_NAME';
     const SENDER_BANK_ACC          = 'VK_SND_ACC';
     const TRANSACTION_ID           = 'VK_T_NO';
-    const TRANSACTION_DATE         = 'VK_T_DATE';
 
     // Callback URLs
     const SUCCESS_URL       = 'VK_RETURN';
@@ -42,6 +43,11 @@ final class Fields
     const PROTOCOL_VERSION  = 'VK_VERSION';
 
     const SIGNATURE         = 'VK_MAC';
+    
+    //New banklink spec addons
+    const REQUEST_DATETIME  = 'VK_DATETIME';
+    const RESPONSE_DATETIME = 'VK_T_DATETIME';
+    
 
     /**
      * Can't instantiate this class

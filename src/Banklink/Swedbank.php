@@ -9,17 +9,19 @@ use Banklink\Protocol\iPizza;
  * For specs see https://www.swedbank.ee/static/pdf/business/d2d/paymentcollection/info_banklink_techspec_eng.pdf
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
- * @since  11.01.2012
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
+ * 
+ * @since  20.02.2015
  */
 class Swedbank extends Banklink
 {
     protected $requestUrl = 'https://www.swedbank.ee/banklink';
-    protected $testRequestUrl = 'https://pangalink.net/banklink/swedbank';
+    protected $testRequestUrl = 'https://pangalink.net/banklink/swedbank-common';
 
     /**
      * Force iPizza protocol
      *
-     * @param \Banklink\iPizza $protocol
+     * @param iPizza $protocol
      * @param boolean          $testMode
      * @param string | null    $requestUrl
      */

@@ -2,11 +2,9 @@
 
 namespace Banklink\Protocol;
 
-use Banklink\Protocol\iPizza\Fields,
-    Banklink\Protocol\iPizza\Services;
-
+use Banklink\Protocol\iPizza\Fields;
+use Banklink\Protocol\iPizza\Services;
 use Banklink\Response\PaymentResponse;
-
 use Banklink\Protocol\Util\ProtocolUtils;
 
 
@@ -14,7 +12,9 @@ use Banklink\Protocol\Util\ProtocolUtils;
  * This class implements iPizza protocol support
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
- * @since  11.01.2012
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
+ * 
+ * @since  20.02.2015
  */
 class iPizza implements ProtocolInterface
 {
@@ -29,8 +29,6 @@ class iPizza implements ProtocolInterface
 
     protected $protocolVersion;
 
-    protected $mbStrlen;
-
     /**
      * initialize basic data that will be used for all issued service requests
      *
@@ -41,9 +39,8 @@ class iPizza implements ProtocolInterface
      * @param string  $publicKey     Public key (certificate) location
      * @param string  $endpointUrl
      * @param string  $version
-     * @param boolean $mbStrlen      Use mb_strlen for string length calculation?
      */
-    public function __construct($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $endpointUrl, $mbStrlen = false, $version = '008')
+    public function __construct($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $endpointUrl, $version = '008')
     {
         $this->sellerId            = $sellerId;
         $this->sellerName          = $sellerName;
@@ -52,8 +49,6 @@ class iPizza implements ProtocolInterface
 
         $this->publicKey           = $publicKey;
         $this->privateKey          = $privateKey;
-
-        $this->mbStrlen            = $mbStrlen;
 
         $this->protocolVersion     = $version;
     }
@@ -70,8 +65,9 @@ class iPizza implements ProtocolInterface
      */
     public function preparePaymentRequestData($orderId, $sum, $message, $outputEncoding, $language = 'EST', $currency = 'EUR')
     {
+        $now = new \DateTime();
         $requestData = array(
-            Fields::SERVICE_ID       => Services::PAYMENT_REQUEST,
+            Fields::SERVICE_ID       => Services::PAYMENT_REQUEST_2015,
             Fields::PROTOCOL_VERSION => $this->protocolVersion,
             Fields::SELLER_ID        => $this->sellerId,
             Fields::ORDER_ID         => $orderId,
@@ -83,8 +79,8 @@ class iPizza implements ProtocolInterface
             Fields::DESCRIPTION      => $message,
             Fields::SUCCESS_URL      => $this->endpointUrl,
             Fields::CANCEL_URL       => $this->endpointUrl,
-            Fields::USER_LANG        => $language
-        );
+            Fields::USER_LANG        => $language,
+            Fields::REQUEST_DATETIME => $now->format(\DateTime::ISO8601));
 
         $requestData = ProtocolUtils::convertValues($requestData, 'UTF-8', $outputEncoding);
 
@@ -129,7 +125,7 @@ class iPizza implements ProtocolInterface
     {
         // if response was verified, try to guess status by service id
         if ($verificationSuccess) {
-            $status = $responseData[Fields::SERVICE_ID] == Services::PAYMENT_SUCCESS ? PaymentResponse::STATUS_SUCCESS : PaymentResponse::STATUS_CANCEL;
+            $status = $responseData[Fields::SERVICE_ID] == Services::PAYMENT_SUCCESS_2015 ? PaymentResponse::STATUS_SUCCESS : PaymentResponse::STATUS_CANCEL;
         } else {
             $status = PaymentResponse::STATUS_ERROR;
         }
@@ -143,7 +139,7 @@ class iPizza implements ProtocolInterface
             $response->setSenderName($responseData[Fields::SENDER_NAME]);
             $response->setSenderBankAccount($responseData[Fields::SENDER_BANK_ACC]);
             $response->setTransactionId($responseData[Fields::TRANSACTION_ID]);
-            $response->setTransactionDate(new \DateTime($responseData[Fields::TRANSACTION_DATE]));
+            $response->setTransactionDate(new \DateTime($responseData[Fields::RESPONSE_DATETIME]));
         }
 
         return $response;
@@ -153,11 +149,10 @@ class iPizza implements ProtocolInterface
      * Generate request signature built with mandatory request data and private key
      *
      * @param array  $data
-     * @param string $encoding
      *
      * @return string
      */
-    protected function getRequestSignature($data)
+    public function getRequestSignature($data)
     {
         $hash = $this->generateHash($data);
 
@@ -178,7 +173,7 @@ class iPizza implements ProtocolInterface
      *
      * @return boolean
      */
-    protected function verifyResponseSignature(array $responseData, $encoding)
+    public function verifyResponseSignature(array $responseData, $encoding)
     {
         $hash = $this->generateHash($responseData, $encoding);
 
@@ -199,7 +194,7 @@ class iPizza implements ProtocolInterface
      *
      * @throws \LogicException
      */
-    protected function generateHash(array $data, $encoding = 'UTF-8')
+    public function generateHash(array $data, $encoding = 'UTF-8')
     {
         $id = $data[Fields::SERVICE_ID];
 
@@ -210,7 +205,7 @@ class iPizza implements ProtocolInterface
             }
 
             $content = $data[$fieldName];
-            $length = $this->mbStrlen ? mb_strlen($content, $encoding) : strlen($content);
+            $length = mb_strlen($content, $encoding);
 
             $hash .= str_pad($length, 3, '0', STR_PAD_LEFT) . $content;
         }

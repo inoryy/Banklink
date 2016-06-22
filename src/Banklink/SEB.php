@@ -9,19 +9,21 @@ use Banklink\Protocol\iPizza;
  * For specs see http://seb.ee/en/business/collection-payments/collection-payments-web/bank-link-specification
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
- * @since  11.01.2012
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
+ * 
+ * @since  20.02.2015
  */
 class SEB extends Banklink
 {
     protected $requestUrl = 'https://www.seb.ee/cgi-bin/unet3.sh/un3min.r';
-    protected $testRequestUrl = 'https://pangalink.net/banklink/seb';
+    protected $testRequestUrl = 'https://pangalink.net/banklink/seb-common';
 
     /**
      * Force iPizza protocol
      *
-     * @param \Banklink\Protocol\iPizza $protocol
-     * @param boolean                   $testMode
-     * @param string | null             $requestUrl
+     * @param iPizza $protocol
+     * @param boolean          $testMode
+     * @param string | null    $requestUrl
      */
     public function __construct(iPizza $protocol, $testMode = false, $requestUrl = null)
     {
@@ -33,7 +35,7 @@ class SEB extends Banklink
      */
     protected function getEncodingField()
     {
-        return 'VK_CHARSET';
+        return 'VK_ENCODING';
     }
 
     /**
@@ -46,7 +48,7 @@ class SEB extends Banklink
     protected function getAdditionalFields()
     {
         return array(
-            'VK_CHARSET' => $this->requestEncoding
+            'VK_ENCODING' => $this->requestEncoding
         );
     }
 }

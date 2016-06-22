@@ -3,14 +3,15 @@
 namespace Banklink;
 
 use Banklink\Request\PaymentRequest;
-
 use Banklink\Protocol\ProtocolInterface;
 
 /**
  * General abstract class that defines public API for all banklink implementations
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
- * @since  11.01.2012
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
+ *
+ * @since  20.02.2015
  */
 abstract class Banklink
 {
@@ -20,7 +21,7 @@ abstract class Banklink
     protected $testRequestUrl;
 
     protected $requestEncoding = 'UTF-8';
-    protected $responseEncoding = 'ISO-8859-1';
+    protected $responseEncoding = 'UTF-8';
 
     /**
      * @param \Banklink\Protocol\ProtocolInterface $protocol

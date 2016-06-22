@@ -10,17 +10,19 @@ use Banklink\Protocol\iPizza;
  *               https://www.danskebank.ee/public/documents/Pangalink_autentimise_spetsifikatsioon_eng.pdf
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
- * @since  1.11.2012
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
+ * 
+ * @since  20.02.2015
  */
 class DanskeBank extends Banklink
 {
     protected $requestUrl = 'https://www2.danskebank.ee/ibank/pizza/pizza';
-    protected $testRequestUrl = 'https://pangalink.net/banklink/sampo';
+    protected $testRequestUrl = 'https://pangalink.net/banklink/sampo-common';
 
     /**
      * Force iPizza protocol
      *
-     * @param \Banklink\iPizza $protocol
+     * @param iPizza $protocol
      * @param boolean          $testMode
      * @param string | null    $requestUrl
      */

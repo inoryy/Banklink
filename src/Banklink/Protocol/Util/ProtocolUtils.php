@@ -17,7 +17,7 @@ class ProtocolUtils
      *
      * @param integer $orderId Order id
      *
-     * @throws InvalidArgumentException If order id is too long or short
+     * @throws \InvalidArgumentException If order id is too long or short
      *
      * @return string
      */

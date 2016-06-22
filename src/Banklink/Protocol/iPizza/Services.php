@@ -6,22 +6,24 @@ namespace Banklink\Protocol\iPizza;
  * List of all services available via iPizza
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
- * @since  10.01.2012
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
+ * 
+ * @since  20.02.2015
  */
 final class Services
 {
     // Requests
-    const PAYMENT_REQUEST      = '1001';
+    const PAYMENT_REQUEST_2015 = '1011';
     const AUTHENTICATE_REQUEST = '3001';
 
     // Responses
-    const PAYMENT_SUCCESS      = '1101';
-    const PAYMENT_CANCEL       = '1901';
+    const PAYMENT_SUCCESS_2015 = '1111';
+    const PAYMENT_CANCEL_2015  = '1911';
     const PAYMENT_ERROR        = '1902';
     const AUTHENTICATE_SUCCESS = '3002';
 
     /**
-     * Fetch mandatory fields for a given service
+     * Fetch mandatory fields for a given service (for VK_MAC calculation)
      *
      * @param string $serviceId
      * @return array
@@ -30,7 +32,7 @@ final class Services
     public static function getFieldsForService($serviceId)
     {
         switch ($serviceId) {
-            case Services::PAYMENT_REQUEST:
+            case Services::PAYMENT_REQUEST_2015:
                 return array(
                     Fields::SERVICE_ID,
                     Fields::PROTOCOL_VERSION,
@@ -41,9 +43,12 @@ final class Services
                     Fields::SELLER_BANK_ACC,
                     Fields::SELLER_NAME,
                     Fields::ORDER_REFERENCE,
-                    Fields::DESCRIPTION
+                    Fields::DESCRIPTION,
+                    Fields::SUCCESS_URL,
+                    Fields::CANCEL_URL,
+                    Fields::REQUEST_DATETIME
                 );
-            case Services::PAYMENT_SUCCESS:
+            case Services::PAYMENT_SUCCESS_2015:
                 return array(
                     Fields::SERVICE_ID,
                     Fields::PROTOCOL_VERSION,
@@ -59,9 +64,9 @@ final class Services
                     Fields::SENDER_NAME,
                     Fields::ORDER_REFERENCE,
                     Fields::DESCRIPTION,
-                    Fields::TRANSACTION_DATE,
+                    Fields::RESPONSE_DATETIME
                 );
-            case Services::PAYMENT_CANCEL:
+            case Services::PAYMENT_CANCEL_2015:
                 return array(
                     Fields::SERVICE_ID,
                     Fields::PROTOCOL_VERSION,
@@ -69,7 +74,7 @@ final class Services
                     Fields::SELLER_ID_RESPONSE,
                     Fields::ORDER_ID,
                     Fields::ORDER_REFERENCE,
-                    Fields::DESCRIPTION,
+                    Fields::DESCRIPTION
                 );
             default:
                 throw new \InvalidArgumentException('Unsupported service id: '.$serviceId);
@@ -84,16 +89,17 @@ final class Services
     public static function getPaymentServices()
     {
         return array(
-            self::PAYMENT_REQUEST,
-            self::PAYMENT_SUCCESS,
-            self::PAYMENT_CANCEL,
+            self::PAYMENT_REQUEST_2015,
+            self::PAYMENT_SUCCESS_2015,
+            self::PAYMENT_CANCEL_2015,
             self::PAYMENT_ERROR
         );
     }
 
     /**
      * Fetch supported authentication services
-     *
+     * //TODO: Not upgraded ATM
+     * 
      * @return array
      */
     public static function getAuthenticationServices()
