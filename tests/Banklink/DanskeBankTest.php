@@ -2,9 +2,7 @@
 
 namespace Banklink;
 
-use Banklink\DanskeBank;
 use Banklink\Protocol\iPizza;
-
 use Banklink\Response\PaymentResponse;
 
 /**
@@ -13,7 +11,7 @@ use Banklink\Response\PaymentResponse;
  */
 class DanskeBankTest extends \PHPUnit_Framework_TestCase
 {
-    private $swedbank;
+    private $bank;
 
     public function setUp()
     {
@@ -27,13 +25,13 @@ class DanskeBankTest extends \PHPUnit_Framework_TestCase
             true
         );
 
-        $this->swedbank = new DanskeBank($protocol);
+        $this->bank = new DanskeBank($protocol);
     }
 
     public function testHandlePaymentResponseSuccessWithSpecialCharacters()
     {
         $responseData = array(
-            'VK_SERVICE'  => '1101',
+            'VK_SERVICE'  => '1111',
             'VK_VERSION'  => '008',
             'VK_SND_ID'   => 'GENIPIZZA',
             'VK_REC_ID'   => 'uid258629',
@@ -50,10 +48,11 @@ class DanskeBankTest extends \PHPUnit_Framework_TestCase
             'VK_ENCODING' => 'ISO-8859-1',
             'VK_SND_NAME' => mb_convert_encoding('Tõõger Leõpäöld', 'ISO-8859-1', 'UTF-8'),
             'VK_SND_ACC'  => '221234567897',
-            'VK_MAC'      => 'eK4mEiRhpZ/gz1/4GEaNwvX+AhfpaTJOQRGdWky4Cb6Gqubn3pgSDeApdcccu+WMrAX1ozzx3H/kEzIHn2NT3mFDUHNkEnOlx7OFgNZY+Wvypz18GCYyW/QIsNi/dk3HTzAymU6rVhGSi9v9OkogASRrSn6OMnFofa+WIwvnHJzHCZ8uY37NSERHv+FcT7CGoHHgU5+3hjEAWsXkX4TRDfrWvzsb/tkDaJbNv0KHo+WjcPHL/rBVIoexZpahaf4z4f1g6DfH6LOOgvwbjJZ3JEHNvE+DM5bY58Asn8MxOayYJ3hZ39J0hdepO+2+YUdkqPPxyJIvufXeoaGtsu0AYQ=='
+            'VK_T_DATETIME' => '2016-06-22T19:36:25+0300',
+            'VK_MAC'      => 'WqwQNSpN0vjbmhT9pUghyJUZEBvyN3aBWfNPy7INvKYPifj/SVR6GlLveZk/70dUIPeS6jFCcFEwo8/1y+3TVIwVHQrsP0/L6fZqELuT10M+x/0tjdRd2o8eqiTEd6AlxCAmt306BcZf/FiXLFg+x0TIUb43cgmDb5NbWcMJHDj+U8ivUjNKdpoeF94Fahq5r0X5DTebK6ghMsleZ/70+Hyu7ZBfA3Gor8Wb7U/+C+kcQFUKKbV9N4Drb2PsH4qI2cs2PjKSvrK13CZ7fFRUTl3ka2DM1eClcTxL5HiaOL4/gUi5evqJtkR94foLZlLZ4TMa+PhBIFVR3zsT6eoEFw=='
         );
 
-        $response = $this->swedbank->handleResponse($responseData);
+        $response = $this->bank->handleResponse($responseData);
 
         $this->assertInstanceOf('Banklink\Response\Response', $response);
         $this->assertEquals(PaymentResponse::STATUS_SUCCESS, $response->getStatus());
