@@ -2,33 +2,40 @@
 
 namespace Banklink\Protocol;
 
-use Banklink\Protocol\iPizza;
 use Banklink\Response\PaymentResponse;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Roman Marintsenko <inoryy@gmail.com>
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
  * @since  15.01.2012
  */
-class iPizzaTest extends \PHPUnit_Framework_TestCase
+class iPizzaTest extends TestCase
 {
+    /**
+     * @var \Banklink\Protocol\iPizza
+     */
     private $iPizza;
 
     public function setUp()
     {
-        $this->iPizza = new iPizza(
+        $this->iPizza = \Mockery::mock('Banklink\Protocol\iPizza');
+        $this->iPizza->shouldReceive('getRequestSignature')->andReturn('unit-testing');
+        $this->iPizza->makePartial();
+        $this->iPizza->configure(
             'uid258629',
             'Test Testov',
             '119933113300',
             __DIR__.'/../data/iPizza/private_key.pem',
             __DIR__.'/../data/iPizza/public_key.pem',
-            'http://www.google.com'
-        );
+            'http://www.google.com');
     }
 
     public function testPreparePaymentRequest()
     {
+        $now = new \DateTime();
         $expectedRequestData = array(
-          'VK_SERVICE' => '1001',
+          'VK_SERVICE' => '1011',
           'VK_VERSION' => '008',
           'VK_SND_ID'  => 'uid258629',
           'VK_STAMP'   => '1',
@@ -41,7 +48,8 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
           'VK_RETURN'  => 'http://www.google.com',
           'VK_CANCEL'  => 'http://www.google.com',
           'VK_LANG'    => 'ENG',
-          'VK_MAC'     => 'g4SMbCZEbxSXF7qx8ggcRHTyWOx4Dqkb0eM6atoEC5A12SAlWDgIw5TnB319KtreUcEubrjZz9z4NQgVrSieoOX9yr3G7ciLopGaoajAr6RA9RTYP0QDoArTuDKBqFwRT6D+erTggu9Dz3G/dQKlL9SCQtUxV6yCHp0cLgzYmtUGXoC7x4WnP1NuJZwlBnJI3acsCNyw5gTnEHle0Xd2OElH84aKlItqSsPbFirWhZRLfLy8uyiwSseChnTnDXCINyFLypHNTvvn+DaE8m+nyDkL4Jt3L2rciYkLPuoXSY3JGXTzjS7TkpOPUEtBQZ65ZylltduAeknxocvSZYUskA=='
+          'VK_MAC'     => 'unit-testing',
+          'VK_DATETIME' => $now->format(\DateTime::ISO8601)
         );
 
         $request = $this->iPizza->preparePaymentRequestData(1, 100, 'Test payment', 'UTF-8', 'ENG', 'EUR');
@@ -51,8 +59,10 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
 
     public function testHandlePaymentResponseSuccess()
     {
+        $this->iPizza->shouldReceive('verifyResponseSignature')->andReturn(true);
+        $now = new \DateTime();
         $responseData = array(
-            'VK_SERVICE'  => '1101',
+            'VK_SERVICE'  => '1111',
             'VK_VERSION'  => '008',
             'VK_SND_ID'   => 'GENIPIZZA',
             'VK_REC_ID'   => 'uid258629',
@@ -68,7 +78,8 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_AUTO'     => 'N',
             'VK_SND_NAME' => 'Test Account Owner',
             'VK_SND_ACC'  => '221234576897',
-            'VK_MAC'      => 'Lma6+YAm7JyU0WOOMpqNINT7ub8xLjrmYePBRcAFrY/Ea8Z/EhM9rYFMQive5GLDagWvay8zCNIHevYUD0P7I49hZwivluRF8C+cLPUaOcH8ySp5vHscgqurS7Aqg+gNWrRKwqWTjuxvjuqD8r/JlY1N+3sDpF1mU8HAc7NnRGDOyo1AmwUyOPa7mLsAYPXuzKW+qXqGL5uGMOqAw9kRgNkxCQHh/QpmvX7jm0oQ7KxypIAIZAYBjf8usDp3OT4AKd9B/FJ5fdX7JOSlL+Kjj7uD3qW3kVBz1JJ/riVRGdct5qouTNe0deB2jZbD5fuWa1XlJVWOG2xOGfGYhN7pfg=='
+            'VK_MAC'      => 'unit-testing',
+            'VK_T_DATETIME' => $now->format(\DateTime::ISO8601)
         );
 
         $response = $this->iPizza->handleResponse($responseData, 'ISO-8859-1');
@@ -79,8 +90,9 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
 
     public function testHandlePaymentResponseCancel()
     {
+        $this->iPizza->shouldReceive('verifyResponseSignature')->andReturn(true);
         $responseData = array(
-            'VK_SERVICE'  => '1901',
+            'VK_SERVICE'  => '1911',
             'VK_VERSION'  => '008',
             'VK_SND_ID'   => 'GENIPIZZA',
             'VK_REC_ID'   => 'uid258629',
@@ -88,7 +100,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_REF'      => '13',
             'VK_MSG'      => 'Test payment',
             'VK_AUTO'     => 'N',
-            'VK_MAC'      => 'bg8rRUxE6W+RhkdJyUADQl43soI7C6ohtkwGDRCXyeRDQk5B2D1kkmuzJ6lZopttAFMnU1C6MOynF/VWXFVX5YZmpnm9vpFy6uz9uH/bjMfRddj0pkWe6Afa3l2MET+Nk7xOxxxHlJBX3NZndp3xO7Wdi4pyx4kZjpcM6lR+Dq9mhh0N+45bDyh+IkEmEC3GrGwQTbFGYSG9gh2zv4BuFgQj/lSprf6qUyQf8wmr/onSOGwuenYFFxYOG6aUU+/5ha0TLyQg8ed2SOAylAbSKEN+Ud2xEZ8WzxEwfiYf9WBiooRYyydmS2vRZV2KGCfUqgoPzl7b5NaSPW2PW7CheQ=='
+            'VK_MAC'      => 'unit-testing'
         );
 
         $response = $this->iPizza->handleResponse($responseData, 'ISO-8859-1');
@@ -99,8 +111,10 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
 
     public function testHandlePaymentResponseError()
     {
+        $this->iPizza->shouldReceive('verifyResponseSignature')->andReturn(false);
+        $now = new \DateTime();
         $responseData = array(
-            'VK_SERVICE'  => '1101',
+            'VK_SERVICE'  => '1111',
             'VK_VERSION'  => '008',
             'VK_SND_ID'   => 'GENIPIZZA',
             'VK_REC_ID'   => 'uid258629',
@@ -116,7 +130,8 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
             'VK_AUTO'     => 'N',
             'VK_SND_NAME' => 'Test Account Owner',
             'VK_SND_ACC'  => '221234576897',
-            'VK_MAC'      => 'Lma6+YAm7JyU0WOOMpqNINT7ub8xLjrmYePBRcAFrY/Ea8Z/EhM9rYFMQive5GLDagWvay8zCNIHevYUD0P7I49hZwivluRF8C+cLPUaOcH8ySp5vHscgqurS7Aqg+gNWrRKwqWTjuxvjuqD8r/JlY1N+3sDpF1mU8HAc7NnRGDOyo1AmwUyOPa7mLsAYPXuzKW+qXqGL5uGMOqAw9kRgNkxCQHh/QpmvX7jm0oQ7KxypIAIZAYBjf8usDp3OT4AKd9B/FJ5fdX7JOSlL+Kjj7uD3qW3kVBz1JJ/riVRGdct5qouTNe0deB2jZbD5fuWa1XlJVWOG2xOGfGYhN7pfg=='
+            'VK_MAC'      => 'unit-testing',
+            'VK_T_DATETIME' => $now->format(\DateTime::ISO8601)
         );
 
         $response = $this->iPizza->handleResponse($responseData, 'ISO-8859-1');
@@ -131,7 +146,7 @@ class iPizzaTest extends \PHPUnit_Framework_TestCase
     public function testHandleResponseUnsupportedService()
     {
         $responseData = array(
-            'VK_SERVICE'  => '1111',
+            'VK_SERVICE'  => '1101',
         );
 
         $response = $this->iPizza->handleResponse($responseData, 'ISO-8859-1');

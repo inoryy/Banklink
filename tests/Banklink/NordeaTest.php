@@ -2,15 +2,19 @@
 
 namespace Banklink;
 
-use Banklink\Nordea;
 use Banklink\Protocol\Solo;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Roman Marintsenko <inoryy@gmail.com>
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
  * @since  01.12.2012
  */
-class NordeaTest extends \PHPUnit_Framework_TestCase
+class NordeaTest extends TestCase
 {
+    /**
+     * @var Nordea
+     */
     private $nordea;
 
     public function setUp()

@@ -2,38 +2,41 @@
 
 namespace Banklink;
 
-use Banklink\Swedbank;
-use Banklink\Protocol\iPizza;
-
 use Banklink\Response\PaymentResponse;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Roman Marintsenko <inoryy@gmail.com>
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
  * @since  31.10.2012
  */
-class SwedbankTest extends \PHPUnit_Framework_TestCase
+class SwedbankTest extends TestCase
 {
+    /**
+     * @var Swedbank
+     */
     private $swedbank;
 
     public function setUp()
     {
-        $protocol = new iPizza(
+        $protocol = \Mockery::mock('Banklink\Protocol\iPizza')->makePartial();
+        $protocol->shouldReceive('getRequestSignature')->once()->andReturn('unit-testing');
+        $protocol->shouldReceive('verifyResponseSignature')->once()->andReturn(true);
+        $protocol->configure(
             'uid258629',
             'Test Testov',
             '119933113300',
             __DIR__.'/data/iPizza/private_key.pem',
             __DIR__.'/data/iPizza/public_key.pem',
-            'http://www.google.com',
-            true
-        );
-
-        $this->swedbank = new Swedbank($protocol);
+            'http://www.google.com');
+        $this->swedbank = new Swedbank($protocol, true);
     }
 
     public function testPreparePaymentRequest()
     {
+        $now = new \DateTime();
         $expectedRequestData = array(
-          'VK_SERVICE'  => '1001',
+          'VK_SERVICE'  => '1011',
           'VK_VERSION'  => '008',
           'VK_SND_ID'   => 'uid258629',
           'VK_STAMP'    => '1',
@@ -47,19 +50,21 @@ class SwedbankTest extends \PHPUnit_Framework_TestCase
           'VK_CANCEL'   => 'http://www.google.com',
           'VK_LANG'     => 'ENG',
           'VK_ENCODING' => 'UTF-8',
-          'VK_MAC'      => 'g4SMbCZEbxSXF7qx8ggcRHTyWOx4Dqkb0eM6atoEC5A12SAlWDgIw5TnB319KtreUcEubrjZz9z4NQgVrSieoOX9yr3G7ciLopGaoajAr6RA9RTYP0QDoArTuDKBqFwRT6D+erTggu9Dz3G/dQKlL9SCQtUxV6yCHp0cLgzYmtUGXoC7x4WnP1NuJZwlBnJI3acsCNyw5gTnEHle0Xd2OElH84aKlItqSsPbFirWhZRLfLy8uyiwSseChnTnDXCINyFLypHNTvvn+DaE8m+nyDkL4Jt3L2rciYkLPuoXSY3JGXTzjS7TkpOPUEtBQZ65ZylltduAeknxocvSZYUskA=='
+          'VK_MAC'      => 'unit-testing',
+          'VK_DATETIME' => $now->format(\DateTime::ISO8601)
         );
 
         $request = $this->swedbank->preparePaymentRequest(1, 100, 'Test payment', 'ENG', 'EUR');
 
         $this->assertEquals($expectedRequestData, $request->getRequestData());
-        $this->assertEquals('https://www.swedbank.ee/banklink', $request->getRequestUrl());
+        $this->assertEquals('https://pangalink.net/banklink/swedbank-common', $request->getRequestUrl());
     }
 
     public function testHandlePaymentResponseSuccessWithSpecialCharacters()
     {
+        $now = new \DateTime();
         $responseData = array(
-            'VK_SERVICE'  => '1101',
+            'VK_SERVICE'  => '1111',
             'VK_VERSION'  => '008',
             'VK_SND_ID'   => 'GENIPIZZA',
             'VK_REC_ID'   => 'uid258629',
@@ -76,7 +81,8 @@ class SwedbankTest extends \PHPUnit_Framework_TestCase
             'VK_ENCODING' => 'ISO-8859-1',
             'VK_SND_NAME' => mb_convert_encoding('Tõõger Leõpäöld', 'ISO-8859-1', 'UTF-8'),
             'VK_SND_ACC'  => '221234567897',
-            'VK_MAC'      => 'eK4mEiRhpZ/gz1/4GEaNwvX+AhfpaTJOQRGdWky4Cb6Gqubn3pgSDeApdcccu+WMrAX1ozzx3H/kEzIHn2NT3mFDUHNkEnOlx7OFgNZY+Wvypz18GCYyW/QIsNi/dk3HTzAymU6rVhGSi9v9OkogASRrSn6OMnFofa+WIwvnHJzHCZ8uY37NSERHv+FcT7CGoHHgU5+3hjEAWsXkX4TRDfrWvzsb/tkDaJbNv0KHo+WjcPHL/rBVIoexZpahaf4z4f1g6DfH6LOOgvwbjJZ3JEHNvE+DM5bY58Asn8MxOayYJ3hZ39J0hdepO+2+YUdkqPPxyJIvufXeoaGtsu0AYQ=='
+            'VK_MAC'      => 'unit-testing',
+            'VK_T_DATETIME' => $now->format(\DateTime::ISO8601)
         );
 
         $response = $this->swedbank->handleResponse($responseData);

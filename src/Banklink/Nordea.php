@@ -9,11 +9,12 @@ use Banklink\Protocol\Solo;
  * For specs see http://www.nordea.ee/sitemod/upload/root/www.nordea.ee%20-%20default/Teenused%20firmale/E-Payment_v1_1.pdf
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
  * @since  25.11.2012
  */
 class Nordea extends Banklink
 {
-    protected $requestUrl = 'https://netbank.nordea.com/pnbepay/epayn.jsp';
+    protected $productionRequestUrl = 'https://netbank.nordea.com/pnbepay/epayn.jsp';
     protected $testRequestUrl = 'https://pangalink.net/banklink/nordea';
 
     protected $requestEncoding = 'ISO-8859-1';
@@ -23,11 +24,10 @@ class Nordea extends Banklink
      *
      * @param \Banklink\Protocol\Solo $protocol
      * @param boolean                 $testMode
-     * @param string | null           $requestUrl
      */
-    public function __construct(Solo $protocol, $testMode = false, $requestUrl = null)
+    public function __construct(Solo $protocol, $testMode = false)
     {
-        parent::__construct($protocol, $testMode, $requestUrl);
+        parent::__construct($protocol, $testMode);
     }
 
     protected function getAdditionalFields()

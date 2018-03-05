@@ -15,10 +15,11 @@ use Banklink\Protocol\ProtocolInterface;
  */
 abstract class Banklink
 {
+    protected $isTestMode;
     protected $protocol;
 
-    protected $requestUrl;
     protected $testRequestUrl;
+    protected $productionRequestUrl;
 
     protected $requestEncoding = 'UTF-8';
     protected $responseEncoding = 'UTF-8';
@@ -26,17 +27,11 @@ abstract class Banklink
     /**
      * @param \Banklink\Protocol\ProtocolInterface $protocol
      * @param boolean                              $testMode
-     * @param string | null                        $requestUrl
      */
-    public function __construct(ProtocolInterface $protocol, $testMode = false, $requestUrl = null)
+    public function __construct(ProtocolInterface $protocol, $testMode = false)
     {
         $this->protocol = $protocol;
-
-        if ($requestUrl && !$testMode) {
-            $this->requestUrl = $requestUrl;
-        } else if ($testMode) {
-            $this->requestUrl = $this->testRequestUrl;
-        }
+        $this->isTestMode = $testMode;
     }
 
     /**
@@ -53,7 +48,7 @@ abstract class Banklink
         $requestData = $this->protocol->preparePaymentRequestData($orderId, $sum, $message, $this->requestEncoding, $language, $currency);
         $requestData = array_merge($requestData, $this->getAdditionalFields());
 
-        return new PaymentRequest($this->requestUrl, $requestData);
+        return new PaymentRequest($this->getRequestUrl(), $requestData);
     }
 
     /**
@@ -98,4 +93,12 @@ abstract class Banklink
      * @return array
      */
     abstract protected function getAdditionalFields();
+
+    /**
+     * @return mixed
+     */
+    public function getRequestUrl()
+    {
+        return $this->isTestMode ? $this->testRequestUrl : $this->productionRequestUrl;
+    }
 }

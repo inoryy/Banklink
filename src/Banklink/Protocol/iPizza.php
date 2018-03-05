@@ -42,15 +42,7 @@ class iPizza implements ProtocolInterface
      */
     public function __construct($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $endpointUrl, $version = '008')
     {
-        $this->sellerId            = $sellerId;
-        $this->sellerName          = $sellerName;
-        $this->sellerAccountNumber = $sellerAccNum;
-        $this->endpointUrl         = $endpointUrl;
-
-        $this->publicKey           = $publicKey;
-        $this->privateKey          = $privateKey;
-
-        $this->protocolVersion     = $version;
+        $this->configure($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $endpointUrl, $version);
     }
 
     /**
@@ -211,5 +203,27 @@ class iPizza implements ProtocolInterface
         }
 
         return $hash;
+    }
+
+    /**
+     * @param $sellerId
+     * @param $sellerName
+     * @param $sellerAccNum
+     * @param $privateKey
+     * @param $publicKey
+     * @param $endpointUrl
+     * @param $version
+     */
+    public function configure($sellerId, $sellerName, $sellerAccNum, $privateKey, $publicKey, $endpointUrl, $version = '008')
+    {
+        $this->sellerId = $sellerId;
+        $this->sellerName = $sellerName;
+        $this->sellerAccountNumber = $sellerAccNum;
+        $this->endpointUrl = $endpointUrl;
+
+        $this->publicKey = $publicKey;
+        $this->privateKey = $privateKey;
+
+        $this->protocolVersion = $version;
     }
 }

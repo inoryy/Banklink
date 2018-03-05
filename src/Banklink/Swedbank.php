@@ -15,19 +15,18 @@ use Banklink\Protocol\iPizza;
  */
 class Swedbank extends Banklink
 {
-    protected $requestUrl = 'https://www.swedbank.ee/banklink';
+    protected $productionRequestUrl = 'https://www.swedbank.ee/banklink';
     protected $testRequestUrl = 'https://pangalink.net/banklink/swedbank-common';
 
     /**
      * Force iPizza protocol
      *
-     * @param iPizza $protocol
-     * @param boolean          $testMode
-     * @param string | null    $requestUrl
+     * @param iPizza  $protocol
+     * @param boolean $testMode
      */
-    public function __construct(iPizza $protocol, $testMode = false, $requestUrl = null)
+    public function __construct(iPizza $protocol, $testMode = false)
     {
-        parent::__construct($protocol, $testMode, $requestUrl);
+        parent::__construct($protocol, $testMode);
     }
 
     /**

@@ -2,13 +2,13 @@
 
 namespace Banklink\Protocol\Util;
 
-use Banklink\Protocol\Util\ProtocolUtils;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  11.01.2012
  */
-class ProtocolUtilsTest extends \PHPUnit_Framework_TestCase
+class ProtocolUtilsTest extends TestCase
 {
     /**
      * Test for normal checksum

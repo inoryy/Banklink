@@ -9,11 +9,12 @@ use Banklink\Protocol\iPizza;
  * For specs see http://www.krediidipank.ee/business/settlements/bank-link/tehniline_kirjeldus_inglise.pdf
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
  * @since  1.11.2012
  */
 class Krediidipank extends Banklink
 {
-    protected $requestUrl = 'https://i-pank.krediidipank.ee/teller/maksa';
+    protected $productionRequestUrl = 'https://i-pank.krediidipank.ee/teller/maksa';
     protected $testRequestUrl = 'https://pangalink.net/banklink/krediidipank';
 
     protected $responseEncoding = 'ISO-8859-13';
@@ -21,13 +22,12 @@ class Krediidipank extends Banklink
     /**
      * Force iPizza protocol
      *
-     * @param \Banklink\iPizza $protocol
-     * @param boolean          $testMode
-     * @param string | null    $requestUrl
+     * @param iPizza  $protocol
+     * @param boolean $testMode
      */
-    public function __construct(iPizza $protocol, $testMode = false, $requestUrl = null)
+    public function __construct(iPizza $protocol, $testMode = false)
     {
-        parent::__construct($protocol, $testMode, $requestUrl);
+        parent::__construct($protocol, $testMode);
     }
 
     /**

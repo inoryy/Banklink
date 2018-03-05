@@ -2,14 +2,14 @@
 
 namespace Banklink\Protocol;
 
-use Banklink\Protocol\Solo;
 use Banklink\Response\PaymentResponse;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Roman Marintsenko <inoryy@gmail.com>
  * @since  25.11.2012
  */
-class SoloTest extends \PHPUnit_Framework_TestCase
+class SoloTest extends TestCase
 {
     private $solo;
 

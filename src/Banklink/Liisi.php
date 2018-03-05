@@ -13,19 +13,18 @@ use Banklink\Protocol\iPizza;
  */
 class Liisi extends Banklink
 {
-    protected $requestUrl = 'https://klient.liisi.ee/api/ipizza/';
+    protected $productionRequestUrl = 'https://klient.liisi.ee/api/ipizza/';
     protected $testRequestUrl = 'https://prelive.liisi.ee:8953/api/ipizza/';
 
     /**
      * Force iPizza protocol
      *
-     * @param iPizza $protocol
-     * @param boolean          $testMode
-     * @param string | null    $requestUrl
+     * @param iPizza  $protocol
+     * @param boolean $testMode
      */
-    public function __construct(iPizza $protocol, $testMode = false, $requestUrl = null)
+    public function __construct(iPizza $protocol, $testMode = false)
     {
-        parent::__construct($protocol, $testMode, $requestUrl);
+        parent::__construct($protocol, $testMode);
     }
 
     /**

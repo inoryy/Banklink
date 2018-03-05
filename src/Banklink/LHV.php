@@ -9,23 +9,23 @@ use Banklink\Protocol\iPizza;
  * For specs see http://www.lhv.ee/images/docs/Bank_Link_Technical_Specification-EN.pdf
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
+ * @author Markus Karileet <markus.karileet@codehouse.ee>
  * @since  1.11.2012
  */
 class LHV extends Banklink
 {
-    protected $requestUrl = 'https://www.lhv.ee/banklink';
+    protected $productionRequestUrl = 'https://www.lhv.ee/banklink';
     protected $testRequestUrl = 'https://pangalink.net/banklink/lhv';
 
     /**
      * Force iPizza protocol
      *
-     * @param \Banklink\iPizza $protocol
-     * @param boolean          $testMode
-     * @param string | null    $requestUrl
+     * @param iPizza  $protocol
+     * @param boolean $testMode
      */
-    public function __construct(iPizza $protocol, $testMode = false, $requestUrl = null)
+    public function __construct(iPizza $protocol, $testMode = false)
     {
-        parent::__construct($protocol, $testMode, $requestUrl);
+        parent::__construct($protocol, $testMode);
     }
 
     /**

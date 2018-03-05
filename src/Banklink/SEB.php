@@ -15,19 +15,18 @@ use Banklink\Protocol\iPizza;
  */
 class SEB extends Banklink
 {
-    protected $requestUrl = 'https://www.seb.ee/cgi-bin/unet3.sh/un3min.r';
+    protected $productionRequestUrl = 'https://www.seb.ee/cgi-bin/unet3.sh/un3min.r';
     protected $testRequestUrl = 'https://pangalink.net/banklink/seb-common';
 
     /**
      * Force iPizza protocol
      *
-     * @param iPizza $protocol
-     * @param boolean          $testMode
-     * @param string | null    $requestUrl
+     * @param iPizza  $protocol
+     * @param boolean $testMode
      */
-    public function __construct(iPizza $protocol, $testMode = false, $requestUrl = null)
+    public function __construct(iPizza $protocol, $testMode = false)
     {
-        parent::__construct($protocol, $testMode, $requestUrl);
+        parent::__construct($protocol, $testMode);
     }
 
     /**

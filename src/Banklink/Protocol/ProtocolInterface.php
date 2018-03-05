@@ -11,11 +11,11 @@ namespace Banklink\Protocol;
 interface ProtocolInterface
 {
     /**
-     * @param type $orderId
-     * @param type $sum
-     * @param type $message
-     * @param type $language
-     * @param type $currency
+     * @param int $orderId
+     * @param int $sum
+     * @param string $message
+     * @param string $language
+     * @param string $currency
      *
      * @return array
      */
