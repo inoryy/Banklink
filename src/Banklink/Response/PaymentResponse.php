@@ -14,7 +14,7 @@ class PaymentResponse extends Response
     protected $orderId;
     protected $currency;
     protected $senderName;
-    protected $senderAccountNumber;
+    protected $senderBankAccount;
 
     /**
      * Set orderId
